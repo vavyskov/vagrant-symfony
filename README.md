@@ -27,7 +27,7 @@ Debian Symfony (Node.js, Yarn, PostgreSQL, Adminer) stack
 
 4. Optionally configure your system `hosts` file:
 
-		192.168.33.10 symfony.example.com
+		192.168.33.10 vagrant.example.com
 
 	Path:
 		- Linux: `/etc/hosts`
