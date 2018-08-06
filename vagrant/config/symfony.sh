@@ -101,8 +101,11 @@ a2enmod mpm_itk
 a2enmod rewrite expires
 
 #rm -rf /var/www/html
-mkdir -p /home/vagrant/workspace/public
-#echo "Public folder" > /home/vagrant/workspace/public/index.html
+mkdir -p /home/vagrant/www/public
+#echo "Public folder" > /home/vagrant/www/public/index.html
+
+## New Project
+cp /vagrant/config/new-project.sh /home/vagrant/
 
 ## -----------------------------------------------------------------------------
 
@@ -122,20 +125,23 @@ cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
+## Only once
+FIRST_RUN=true
+if [ -d "/usr/lib/postgresql" ]; then 
+    FIRST_RUN=false
+fi
+
 ## PostgreSQL
 apt install -y postgresql php-pgsql
 
+## Set PostgreSQL password
+if [ $FIRST_RUN == true ]; then
+  sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
+fi
 
 
 
 
-## Fixme: password authentication failed (vagrant up --provision)
-
-
-
-
-
-sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
 
 #sudo -u postgres createdb $POSTGRES_DB
 #sudo -u postgres createuser $POSTGRES_USER
@@ -162,13 +168,12 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 ## -----------------------------------------------------------------------------
 
 ## Adminer (old)
-apt install -y adminer
+#apt install -y adminer
 
 ## Adminer (latest)
-#mkdir -p /usr/share/adminer/adminer
-#wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php
-#echo '50 2 5 * * /usr/bin/wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
-## Fixme: Permission
+mkdir -p /usr/share/adminer/adminer
+wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php
+echo '50 2 5 * * /usr/bin/wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
 
 ## Adminer - alias
 echo "Alias /adminer /usr/share/adminer/adminer" | sudo tee /etc/apache2/conf-available/adminer.conf
@@ -259,5 +264,5 @@ service postgresql reload
 ## -----------------------------------------------------------------------------
 
 ## Fix disk fragmentation (increases compression efficiency)
-#dd if=/dev/zero of=/EMPTY bs=1M
-#rm -f /EMPTY
+#sudo dd if=/dev/zero of=/EMPTY bs=1M
+#sudo rm -f /EMPTY

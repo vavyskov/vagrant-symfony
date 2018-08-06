@@ -4,28 +4,51 @@ Debian Symfony (Node.js, Yarn, PostgreSQL, Adminer) stack
 
 ## Usage
 
-### 1. Open the terminal and navigate to the directory containing the `Vagrant` file:
+1. Download and extract ZIP file or clone the repository:
 
-Run `vagrant up` to configure the `symfony.example.com` server environment.
+		$ git clone https://github.com/vavyskov/vagrant-symfony.git
 
-### 2. Open the web browser:
+2. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
 
-Symfony:
-- URL: `localhost` or `192.168.33.10`
-- Edit the `workspace` directory as you needed
+		$ vagrant up
 
-Adminer:
-- URL: `localhost/adminer` or `192.168.33.10/adminer`
-- System: `PostgreSQL`
-- User: `Postgres`
-- Password: `Postgres`
-- Database: `Postgres`
+3. Open the web browser:
 
-### 3. Optionally configure your system `hosts` file:
+	Symfony:
+		- URL: `localhost` or `192.168.33.10`
+		- Edit the `workspace/vagrant` directory as you needed
 
-    192.168.33.10 symfony.example.com
+	Adminer:
+		- URL: `localhost/adminer` or `192.168.33.10/adminer`
+		- System: `PostgreSQL`
+		- User: `Postgres`
+		- Password: `Postgres`
+		- Database: `Postgres`
 
-Path:
-- Linux: `/etc/hosts`
-- macOX: `/private/etc/hosts`
-- Windows: `C:\Windows\System32\drivers\etc\hosts`
+4. Optionally configure your system `hosts` file:
+
+		192.168.33.10 symfony.example.com
+
+	Path:
+		- Linux: `/etc/hosts`
+		- macOX: `/private/etc/hosts`
+		- Windows: `C:\Windows\System32\drivers\etc\hosts`
+
+## How create new project for example `my-next-project`:
+
+1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run commands:
+	
+		$ vagrant ssh
+		$ sudo ./new-project.sh my-next-project
+		$ exit
+	
+2. Create new folder `workspace/my-next-project/public`.
+3. Open `Vagrantfile`, add new `config.vm.synced_folder` definition and run command
+	
+		$ vagrant reload
+	
+4. Configure your system `hosts` file:
+
+		192.168.33.10 my-next-project.example.com
+
+5. Optionally create new database `my-next-project` (for example with `Adminer` application).
