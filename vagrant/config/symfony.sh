@@ -182,10 +182,11 @@ service apache2 restart
 
 ## -----------------------------------------------------------------------------
 
-## Development
+## Git
+apt install -y git
 
 ## Composer (old)
-#apt install -y git composer
+#apt install -y composer
 
 ## Composer (latest)
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
