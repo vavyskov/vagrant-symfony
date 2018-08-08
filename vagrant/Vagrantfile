@@ -11,12 +11,12 @@ Vagrant.configure("2") do |config|
   
   
   ## Box (required)
-#  config.vm.box = "debian/contrib-stretch64" ## Enable when do not use "Template"
+  config.vm.box = "debian/contrib-stretch64" ## Enable when do not use "Template"
 
-  config.vm.box = "vavyskov/symfony" ## "Template"
+#  config.vm.box = "vavyskov/symfony" ## "Template"
 
   ## Run shell script
-#  config.vm.provision :shell, path: "config/symfony.sh" ## Enable when do not use "Template"
+  config.vm.provision :shell, path: "config/symfony.sh" ## Enable when do not use "Template"
 
   
   
