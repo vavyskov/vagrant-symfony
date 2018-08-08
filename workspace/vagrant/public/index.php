@@ -1,4 +1,8 @@
 <?php
+global $mysql_version,
+       $postgres_version,
+       $memcached_version;
+
 // MySQL
 /*$mysqli = @new mysqli('localhost', 'mysql', 'mysql');
 if (!mysqli_connect_errno()) {
@@ -52,7 +56,7 @@ if ($m->addServer('localhost', 11211)) {
   </head>
 
   <body class="pb-5 mb-4">
-    <header class="bg-dark text-white mb-5 pt-4 pb-3">
+    <header class="bg-dark text-white mb-5 pt-4 pb-3 sticky-top">
       <div class="container">
         <div class="media">
           <i class="far fa-lightbulb fa-6x"></i>
@@ -70,8 +74,8 @@ if ($m->addServer('localhost', 11211)) {
           <td>Apache</td>
           <td>
             <?php 
-              $av = explode( '/', apache_get_version() );
-              echo $av[1];
+              $apache_version = explode( '/', apache_get_version() );
+              echo $apache_version[1];
             ?>
           </td>
         </tr>
@@ -86,7 +90,10 @@ if ($m->addServer('localhost', 11211)) {
         <tr>
           <td>PHP</td>
           <td>
-            <?php echo (PHP_VERSION+0).PHP_EOL; ?>
+            <?php
+                $php_version = explode(".", phpversion());
+                echo "$php_version[0].$php_version[1]";
+            ?>
           </td>
         </tr>
 
