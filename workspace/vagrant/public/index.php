@@ -160,6 +160,18 @@ if ($m->addServer('localhost', 11211)) {
         <p class="text-center">Vagrant stack by VeV-VA Vyškov</p>
       </div>
     </footer>
+
+    <script>
+      const success = document.querySelectorAll(".fa-check");
+
+      function color() {
+        success.forEach(item => item.classList.add('text-success'));
+      }
+
+      window.onload = function () {
+        color();
+      };
+    </script>
   </body>
 
   </html>
