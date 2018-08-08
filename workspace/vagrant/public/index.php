@@ -1,23 +1,7 @@
 <?php
-global $mysql_version,
-       $postgres_version,
-       $memcached_version;
-
-// MySQL
-/*$mysqli = @new mysqli('localhost', 'mysql', 'mysql');
-if (!mysqli_connect_errno()) {
-	$mysql_version = $mysqli->server_info;
-}
-$mysqli->close();*/
-
-// PostgreSQL
-$dbconn = pg_connect("host=localhost dbname=postgres user=postgres password=postgres");
-$stat = pg_connection_status($dbconn);
-if ($stat === PGSQL_CONNECTION_OK) {
-  $postgres_version = pg_version($dbconn)['client'];
-}
 
 // Memcached
+$memcached_version = false;
 /*$m = new Memcached();
 if ($m->addServer('localhost', 11211)) {
 	$memcached_version = $m->getVersion();
@@ -81,13 +65,6 @@ if ($m->addServer('localhost', 11211)) {
         </tr>
 
         <tr>
-          <td>Node.js</td>
-          <td>
-            ?
-          </td>
-        </tr>
-
-        <tr>
           <td>PHP</td>
           <td>
             <?php
@@ -100,14 +77,24 @@ if ($m->addServer('localhost', 11211)) {
         <tr>
           <td>MySQL</td>
           <td>
-            <?php echo ($mysql_version ? $mysql_version : 'N/A'); ?>
+            <?php
+              if (exec('mysql -V')) {
+                  $my_version = explode(" ", exec('mysql -V'));
+              }
+              echo ($my_version ? $my_version[2] : 'N/A');
+            ?>
           </td>
         </tr>
 
         <tr>
           <td>PostgreSQL</td>
           <td>
-            <?php echo ($postgres_version ? $postgres_version : 'N/A'); ?>
+            <?php
+              if (exec('psql -V')) {
+                $pg_version = explode(" ", exec('psql -V'));
+              }
+              echo ($pg_version ? $pg_version[2] : 'N/A');
+            ?>
           </td>
         </tr>
 
@@ -115,6 +102,27 @@ if ($m->addServer('localhost', 11211)) {
           <td>Memcached</td>
           <td>
             <?php echo ($memcached_version ? $memcached_version : 'N/A'); ?>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Npm</td>
+          <td>
+            <?php echo (exec('npm -v') ? exec('npm -v') : 'N/A'); ?>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Node.js</td>
+          <td>
+            <?php echo (exec('nodejs -v') ? ltrim(exec('nodejs -v'), 'v') : 'N/A'); ?>
+          </td>
+        </tr>
+
+        <tr>
+          <td>Yarn</td>
+          <td>
+            <?php echo (exec('yarn -v') ? exec('yarn -v') : 'N/A'); ?>
           </td>
         </tr>
       </table>
