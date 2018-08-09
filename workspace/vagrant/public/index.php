@@ -149,6 +149,13 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
+          <td>Npm</td>
+          <td>
+            <?php echo (exec('npm -v') ? exec('npm -v') : $na); ?>
+          </td>
+        </tr>
+        
+        <tr>
           <td>Node.js</td>
           <td>
             <?php echo (exec('nodejs -v') ? ltrim(exec('nodejs -v'), 'v') : $na); ?>
