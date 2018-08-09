@@ -1,13 +1,5 @@
 <?php
 
-// Memcached
-$memcached_version = false;
-/*$m = new Memcached();
-if ($m->addServer('localhost', 11211)) {
-	$memcached_version = $m->getVersion();
-	$memcached_version = current($memcached_version);
-}*/
-
 // External access
 /*echo
   $_SERVER['SERVER_ADDR'] .' | '.
@@ -15,6 +7,9 @@ if ($m->addServer('localhost', 11211)) {
   $_SERVER['SERVER_NAME'] .' | '.
   gethostname() .' | '.
   gethostbyaddr($_SERVER['REMOTE_ADDR']);*/
+  
+// Not available (N/A)
+$na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-middle'>";
 
 ?>
 
@@ -27,7 +22,7 @@ if ($m->addServer('localhost', 11211)) {
 
     <title>Vagrant (public folder)</title>
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="asset/bootstrap.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
     <style>
       .container {
@@ -53,7 +48,7 @@ if ($m->addServer('localhost', 11211)) {
     </header>
     <main class="container">
       <h2>Installed software</h2>
-      <table class="table table-striped">
+      <table class="table table-striped border-bottom mb-5">
         <tr>
           <td>Apache</td>
           <td>
@@ -81,7 +76,7 @@ if ($m->addServer('localhost', 11211)) {
               if (exec('mysql -V')) {
                   $my_version = explode(" ", exec('mysql -V'));
               }
-              echo ($my_version ? $my_version[2] : 'N/A');
+              echo ($my_version ? $my_version[3] : $na);
             ?>
           </td>
         </tr>
@@ -93,67 +88,105 @@ if ($m->addServer('localhost', 11211)) {
               if (exec('psql -V')) {
                 $pg_version = explode(" ", exec('psql -V'));
               }
-              echo ($pg_version ? $pg_version[2] : 'N/A');
+              echo ($pg_version ? $pg_version[2] : $na);
             ?>
           </td>
         </tr>
-
+        
+        <tr>
+          <td>Image Magick</td>
+          <td>
+            <?php
+              //echo (exec('convert -showversion') ? exec('convert -showversion') : 'N/A');
+              echo (exec('convert -version') ? exec('convert -version') : $na);
+            ?>
+          </td>
+        </tr>
+        
         <tr>
           <td>Memcached</td>
           <td>
-            <?php echo ($memcached_version ? $memcached_version : 'N/A'); ?>
+            <?php echo ($memcached_version ? $memcached_version : $na); ?>
           </td>
         </tr>
-
+        
         <tr>
-          <td>Npm</td>
+          <td>Xdebug</td>
           <td>
-            <?php echo (exec('npm -v') ? exec('npm -v') : 'N/A'); ?>
+            <?php echo (phpversion('xdebug') ? phpversion('xdebug') : $na); ?>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>??? SSH</td>
+          <td>
+            <?php echo (exec('ssh -V') ? exec('ssh -V') : $na); ?>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>Git</td>
+          <td>
+            <?php
+              if (exec('git --version')) {
+                $git_version = explode(" ", exec('git --version'));
+              }
+              echo ($git_version ? $git_version[2] : $na);
+            ?>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>??? Composer</td>
+          <td>
+            <?php
+              if (exec('composer --version')) {
+                $composer_version = explode(" ", exec('composer --version'));
+              }
+              echo ($composer_version ? $composer_version[2] : $na);
+            ?>
           </td>
         </tr>
 
         <tr>
           <td>Node.js</td>
           <td>
-            <?php echo (exec('nodejs -v') ? ltrim(exec('nodejs -v'), 'v') : 'N/A'); ?>
+            <?php echo (exec('nodejs -v') ? ltrim(exec('nodejs -v'), 'v') : $na); ?>
           </td>
         </tr>
 
         <tr>
           <td>Yarn</td>
           <td>
-            <?php echo (exec('yarn -v') ? exec('yarn -v') : 'N/A'); ?>
+            <?php echo (exec('yarn -v') ? exec('yarn -v') : $na); ?>
           </td>
         </tr>
       </table>
 
-      <h2>PHP Modules</h2>
-      <table class="table table-striped">
-        <tr>
-          <td>MySQL</td>
-          <td><i class="fas fa-<?php echo (class_exists('mysqli') ? 'check' : 'times'); ?>"></i></td>
-        </tr>
-
-        <tr>
-          <td>CURL</td>
-          <td><i class="fas fa-<?php echo (function_exists('curl_init') ? 'check' : 'times'); ?>"></i></td>
-        </tr>
-
-        <tr>
-          <td>mcrypt</td>
-          <td><i class="fas fa-<?php echo (function_exists('mcrypt_encrypt') ? 'check' : 'times'); ?>"></i></td>
-        </tr>
-
-        <tr>
-          <td>memcached</td>
-          <td><i class="fas fa-<?php echo (class_exists('Memcached') ? 'check' : 'times'); ?>"></i></td>
-        </tr>
-
-        <tr>
-          <td>gd</td>
-          <td><i class="fas fa-<?php echo (function_exists('imagecreate') ? 'check' : 'times'); ?>"></i></td>
-        </tr>
+      <h2>PHP Extensions</h2>
+      <table class='table table-striped border-bottom mb-5'>
+        <?php
+          $php_extension = array(
+            "SQLite3" => "sqlite3",
+            "GD" => "gd",
+            "Multibyte String" => "mbstring",
+            "??? OPcache" => "opcache",
+            "XML" => "xml",
+            "cURL" => "curl",        
+            "Zip" => "zip",
+            "LDAP" => "ldap",
+            "Mcrypt" => "mcrypt",
+            "Memcache" => "memcache",
+          );
+          foreach ($php_extension as $key => $value) {
+            (extension_loaded($value) ? $state='check' : $state='times');
+            echo "<tr><td>$key</td><td>";
+            echo "<img src='asset/$state.svg' alt='N/A' height='16' width='16' class='align-middle'>";
+            echo "</td></tr>";
+          }
+        ?>
       </table>
+      
     </main>
     <footer class="bg-dark text-white-50 pt-3 pb-1 mt-5 fixed-bottom">
       <div class="container">
@@ -162,7 +195,7 @@ if ($m->addServer('localhost', 11211)) {
     </footer>
 
     <script>
-      const success = document.querySelectorAll(".fa-check");
+      /*const success = document.querySelectorAll(".fa-check");
 
       function color() {
         success.forEach(item => item.classList.add('text-success'));
@@ -170,7 +203,7 @@ if ($m->addServer('localhost', 11211)) {
 
       window.onload = function () {
         color();
-      };
+      };*/
     </script>
   </body>
 
