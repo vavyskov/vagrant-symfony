@@ -3,9 +3,9 @@
 **.box
 
 # Ignore system files
-.DS_Store           # macOS
+.DS_Store
 
 # Ignore IDEs files
-.idea/              # PhpStorm
+.idea/
 
 # Ignore configuration files that may contain sensitive information
