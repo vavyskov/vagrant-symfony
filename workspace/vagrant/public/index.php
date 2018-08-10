@@ -157,13 +157,6 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             ?>
           </td>
         </tr>
-
-        <tr>
-          <td>Npm</td>
-          <td>
-            <?php echo (exec('npm -v') ? exec('npm -v') : $na); ?>
-          </td>
-        </tr>
         
         <tr>
           <td>Node.js</td>
@@ -176,6 +169,13 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
           <td>Yarn</td>
           <td>
             <?php echo (exec('yarn -v') ? exec('yarn -v') : $na); ?>
+          </td>
+        </tr>
+        
+        <tr>
+          <td>MongoDB</td>
+          <td>
+            <?php echo (exec('mongod --version') ? exec('mongod --version') : $na); ?>
           </td>
         </tr>
       </table>
