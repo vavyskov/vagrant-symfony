@@ -2,6 +2,11 @@
 
 Debian Symfony (Node.js, Yarn, PostgreSQL, Adminer) stack
 
+# Requirements
+1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
+2. [Vagrant](https://www.vagrantup.com/)
+3. [Git](https://git-scm.com/) (optional)
+
 ## Usage
 
 1. Download and extract ZIP file or clone the repository:
