@@ -50,11 +50,21 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
       <h2>Installed software</h2>
       <table class="table table-striped border-bottom mb-5">
         <tr>
+          <td>Linux</td>
+          <td>
+            <?php
+              echo (exec('lsb_release -d') ? ltrim(strstr(exec('lsb_release -d'), ":"), ":") : $na);
+            ?>
+          </td>
+        </tr>
+        
+        <tr>
           <td>Apache</td>
           <td>
             <?php 
               $apache_version = explode( '/', apache_get_version() );
-              echo $apache_version[1];
+              //echo $apache_version[1];
+              echo substr($apache_version[1], 0, strrpos($apache_version[1], " "));
             ?>
           </td>
         </tr>
