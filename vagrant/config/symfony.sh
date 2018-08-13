@@ -91,7 +91,7 @@ npm install yarn -g
 
 ## Apache
 apt install -y apache2
-cp /vagrant/config/apache.conf /etc/apache2/sites-enabled/000-default.conf
+cp /vagrant/config/apache.conf /etc/apache2/sites-available/000-default.conf
 
 ## Apache website permissions
 apt install -y libapache2-mpm-itk
@@ -112,7 +112,6 @@ cp /vagrant/config/new-project.sh /home/vagrant/
 ## PHP 7.0
 #apt install -y php php-gd php-mbstring php-opcache php-xml php-curl php-zip php-ldap
 ##apt install -y php-cli php-xdebug libpng-dev
-#cp /vagrant/config/php.ini /etc/php/7.0/apache2/conf.d/
 
 ## PHP 7.2
 apt install -y apt-transport-https lsb-release ca-certificates
@@ -121,6 +120,10 @@ sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/
 apt update
 ## apt-cache search php7.2
 apt install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
+cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
+
+## PHP configuration
+#cp /vagrant/config/php.ini /etc/php/7.0/apache2/conf.d/
 cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
