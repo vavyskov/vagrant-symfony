@@ -3,10 +3,18 @@ set -eux
 
 ## Variables
 POSTGRES_ROOT_PASSWORD=postgres
-
 #POSTGRES_DB=postgresql
 #POSTGRES_USER=postgresql
 #POSTGRES_PASSWORD=postgresql
+
+## E-mail
+#MX_RECORD=mail.website.cz
+#EMAIL_DOMAIN=website.cz
+#HOSTNAME=example.com
+
+#EMAIL_SMTP = smtp.centrum.cz
+#EMAIL_USERNAME = user@centrum.cz
+#EMAIL_PASSWORD = password
 
 ## -----------------------------------------------------------------------------
 
@@ -15,36 +23,26 @@ apt-get update
 #apt-get upgrade -y
 
 ## Certificates
-apt install -y ca-certificates openssl
+apt-get install -y ca-certificates openssl
 
 ## Language
-apt install -y locales
+apt-get install -y locales
 locale-gen cs_CZ.UTF-8
 
 ## Configuration
-apt install -y debconf-utils
+apt-get install -y debconf-utils
 
 ## System tools
-apt install -y curl zip unzip
-#apt install -y wget mc nmon
+apt-get install -y curl zip unzip
+#apt-get install -y wget nmon
 
-## IPv6
-echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.d/ipv6.conf
-sysctl -p
-
-## VMware
-apt install -y open-vm-tools
-
-## SSH
-sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
-#sed -i 's/#PermitEmptyPasswords/PermitEmptyPasswords/' /etc/ssh/sshd_config
 
 
 
 
 
 ## Vim
-#apt install -y vim
+apt-get install -y vim
 #cat >/etc/vim/vimrc.local <<'EOF'
 #syntax on
 #set background=dark
@@ -59,7 +57,11 @@ sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
 
 
 
-## Initialization mc ?????????????????????
+## MC ?????????????????????
+apt-get install -y mc
+#cp /vagrant/config/mc /etc/mc/
+#cp /vagrant/config/mc ~/.config/
+
 ## use_internal_edit=1
 
 #cp /vagrant/config/mc/.mc.ini /home/vagrant/
@@ -71,6 +73,21 @@ sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
 #chown vagrant:vagrant /home/vagrant/.config/mc/mc.ext
 # chmod -R -x /home/vagrant/.config/mc/mc.ext
 
+
+
+
+
+## IPv6
+echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.d/ipv6.conf
+sysctl -p
+
+## VMware
+apt-get install -y open-vm-tools
+
+## SSH
+sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
+#sed -i 's/#PermitEmptyPasswords/PermitEmptyPasswords/' /etc/ssh/sshd_config
+
 ## -----------------------------------------------------------------------------
 
 ## Node.js (latest)
@@ -80,7 +97,7 @@ sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
 curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 
 ## Node.js
-apt install -y nodejs
+apt-get install -y nodejs
 
 ## Node.js - Yarn (a node module manager)
 npm install yarn -g
@@ -90,19 +107,33 @@ npm install yarn -g
 
 
 ## Apache
-apt install -y apache2
-cp /vagrant/config/apache.conf /etc/apache2/sites-available/000-default.conf
+apt-get install -y apache2
+#rm -rf /var/www/html
+#echo "Public folder" > /var/www/html/index.html
+cat > /var/www/html/index.html <<'EOF'
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>It works!</title>
+</head>
+<body>
+  <h1>It works! (public folder)</h1>
+</body>
+</html>
+EOF
+
+
+
+
+
 
 ## Apache website permissions
-apt install -y libapache2-mpm-itk
+apt-get install -y libapache2-mpm-itk
 a2enmod mpm_itk
 
 ## Apache clean URL and caching
 a2enmod rewrite expires
-
-#rm -rf /var/www/html
-mkdir -p /home/vagrant/www/public
-#echo "Public folder" > /home/vagrant/www/public/index.html
 
 ## New Project
 cp /vagrant/config/new-project.sh /home/vagrant/
@@ -110,17 +141,16 @@ cp /vagrant/config/new-project.sh /home/vagrant/
 ## -----------------------------------------------------------------------------
 
 ## PHP 7.0
-#apt install -y php php-gd php-mbstring php-opcache php-xml php-curl php-zip php-ldap
-##apt install -y php-cli php-xdebug libpng-dev
+#apt-get install -y php php-gd php-mbstring php-opcache php-xml php-curl php-zip php-ldap
+##apt-get install -y php-cli php-xdebug libpng-dev
 
 ## PHP 7.2
-apt install -y apt-transport-https lsb-release ca-certificates
+apt-get install -y apt-transport-https lsb-release ca-certificates
 wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-apt update
+apt-get update
 ## apt-cache search php7.2
-apt install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
-cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
+apt-get install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
 
 ## PHP configuration
 #cp /vagrant/config/php.ini /etc/php/7.0/apache2/conf.d/
@@ -135,7 +165,7 @@ if [ -d "/usr/lib/postgresql" ]; then
 fi
 
 ## PostgreSQL
-apt install -y postgresql php-pgsql
+apt-get install -y postgresql php-pgsql
 
 ## Set PostgreSQL password
 if [ $FIRST_RUN == true ]; then
@@ -171,7 +201,7 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 ## -----------------------------------------------------------------------------
 
 ## Adminer (old)
-#apt install -y adminer
+#apt-get install -y adminer
 
 ## Adminer (latest)
 mkdir -p /usr/share/adminer/adminer
@@ -186,18 +216,32 @@ service apache2 restart
 ## -----------------------------------------------------------------------------
 
 ## Git
-apt install -y git
+apt-get install -y git
 
 ## Composer (old)
-#apt install -y composer
+#apt-get install -y composer
 
 ## Composer (latest)
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-## Setup XDebug
+
+
+
+
+## XDebug (version A)
+#apt-get install -y php-xdebug
 #cp xdebug-docker.ini /usr/local/etc/php/conf.d/
 #echo "zend_extension = '$(find / -name xdebug.so 2> /dev/null)'\n$(cat /usr/local/etc/php/conf.d/xdebug-docker.ini)" > /usr/local/etc/php/conf.d/xdebug-docker.ini
 #cp /usr/local/etc/php/conf.d/xdebug-docker.ini /etc/php5/cli/conf.d/
+
+## XDebug (version B)
+#apt-get install -y php-pear php-dev xdebug
+#echo "
+#[xdebug]
+#zend_extension=/usr/lib/php/20170718/xdebug.so
+#xdebug.remote_enable=1
+#xdebug.remote_host=192.168.33.1
+#xdebug.remote_port=9000">>/etc/php/7.2/apache2/php.ini
 
 
 
@@ -205,7 +249,7 @@ curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin
 
 ## Swap (variant A)
 ## Enble dynamic swap space to prevent "Out of memory" crashes
-apt install -y swapspace
+apt-get install -y swapspace
 
 ## Swap (variant B)
 ## https://www.digitalocean.com/community/tutorials/how-to-add-swap-on-ubuntu-14-04
@@ -221,7 +265,7 @@ apt install -y swapspace
 ## -----------------------------------------------------------------------------
 
 ## Image tools
-#apt install -y libjpeg-progs optipng gifsicle php-imagick
+#apt-get install -y libjpeg-progs optipng gifsicle php-imagick
 
 ## -----------------------------------------------------------------------------
 
@@ -229,6 +273,14 @@ apt install -y swapspace
 service apache2 reload
 service postgresql reload
 #service swapspace status
+
+## -----------------------------------------------------------------------------
+
+## E-mail
+#apt-get install -y ssmtp
+#sed -i 's/#FromLineOverride=YES/FromLineOverride=YES/' /etc/ssmtp/ssmtp.conf
+
+#apt-get install -y sendmail
 
 ## -----------------------------------------------------------------------------
 
