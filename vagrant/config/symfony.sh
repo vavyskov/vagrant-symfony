@@ -102,10 +102,6 @@ apt-get install -y nodejs
 ## Node.js - Yarn (a node module manager)
 npm install yarn -g
 
-
-
-
-
 ## Apache
 apt-get install -y apache2
 #rm -rf /var/www/html
@@ -118,15 +114,10 @@ cat > /var/www/html/index.html <<'EOF'
   <title>It works!</title>
 </head>
 <body>
-  <h1>It works! (public folder)</h1>
+  <h1>It works!</h1>
 </body>
 </html>
 EOF
-
-
-
-
-
 
 ## Apache website permissions
 apt-get install -y libapache2-mpm-itk
@@ -172,6 +163,19 @@ if [ $FIRST_RUN == true ]; then
   sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
 fi
 
+## Enable password-base authentication
+sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+
+## Init the database
+#/etc/profile.d/profile.local.sh
+
+
+
+
+
+
+
 
 
 
@@ -190,13 +194,6 @@ fi
 
 
 
-
-## Enable password-base authentication
-sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
-sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
-
-## Init the database
-#/etc/profile.d/profile.local.sh
 
 ## -----------------------------------------------------------------------------
 
@@ -223,29 +220,6 @@ apt-get install -y git
 
 ## Composer (latest)
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-
-
-
-
-## XDebug (version A)
-#apt-get install -y php-xdebug
-#cp xdebug-docker.ini /usr/local/etc/php/conf.d/
-#echo "zend_extension = '$(find / -name xdebug.so 2> /dev/null)'\n$(cat /usr/local/etc/php/conf.d/xdebug-docker.ini)" > /usr/local/etc/php/conf.d/xdebug-docker.ini
-#cp /usr/local/etc/php/conf.d/xdebug-docker.ini /etc/php5/cli/conf.d/
-
-## XDebug (version B)
-#apt-get install -y php-pear php-dev xdebug
-#echo "
-#[xdebug]
-#zend_extension=/usr/lib/php/20170718/xdebug.so
-#xdebug.remote_enable=1
-#xdebug.remote_host=192.168.33.1
-#xdebug.remote_port=9000">>/etc/php/7.2/apache2/php.ini
-
-
-
-
 
 ## Swap (variant A)
 ## Enble dynamic swap space to prevent "Out of memory" crashes
@@ -277,7 +251,26 @@ service postgresql reload
 ## -----------------------------------------------------------------------------
 
 ## E-mail
-#apt-get install -y ssmtp
+apt-get install -y ssmtp
+#cp /vagrant/config/ssmtp.conf /etc/ssmtp/
+
+#cat > /etc/ssmtp/ssmtp.conf <<'EOF'
+#EOF
+
+#cat << EOF > /etc/ssmtp/ssmtp.conf
+#root=user@host.name
+#hostname=host.name
+#mailhub=smtp.host.name:465
+#FromLineOverride=YES
+#AuthUser=username@gmail.com
+#AuthPass=password
+#AuthMethod=LOGIN
+#UseTLS=YES
+#EOF
+
+#sed -i 's/root=postmaster/root=postmaster@example.com/' /etc/ssmtp/ssmtp.conf
+#sed -i 's/mailhub=mail/mailhub=mail.example.com/' /etc/ssmtp/ssmtp.conf
+#sed -i 's/#rewriteDomain=/rewriteDomain=example.com/' /etc/ssmtp/ssmtp.conf
 #sed -i 's/#FromLineOverride=YES/FromLineOverride=YES/' /etc/ssmtp/ssmtp.conf
 
 #apt-get install -y sendmail

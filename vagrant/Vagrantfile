@@ -8,14 +8,27 @@ Vagrant.configure("2") do |config|
   #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
   #config.vm.box_url = "file:///opt/vagrant/boxes/customBox.box"
   
-  ## Box (required)
-  config.vm.box = "vavyskov/symfony" ## "Template"
+  
+  
+  
+  
+  ## Box (required) - Template
+#  config.vm.box = "vavyskov/symfony"
   
   ## Enable when do not use "Template"
-#  config.vm.box = "debian/contrib-stretch64"
-#  config.vm.provision :shell, path: "config/symfony.sh"
-#  config.vm.provision :shell, path: "config/symfony-dev.sh"
+  config.vm.box = "debian/contrib-stretch64"
+  config.vm.provision :shell, path: "config/symfony.sh"  
+  config.vm.provision :shell, path: "config/symfony-dev.sh"
+  
+  
+  
+  #config.vm.define "devel" do |dev|
+  #  dev.vm.provision :shell, path: "config/symfony-dev.sh"
+  #end
+  
 
+  
+  
   
   
   ## Hostname
@@ -25,19 +38,27 @@ Vagrant.configure("2") do |config|
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
 
-  ## Share www folder to the guest VM
+  ## Share www folder for each project
   config.vm.synced_folder "../www/default", "/home/vagrant/www/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
   #config.vm.synced_folder "../www/my-next-project/", "/home/my-next-project/www/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
 
-  ## Share PostgreSQL data to the guest VM
+  
+  
+  
+  ## Share PostgreSQL data
   ##
+  ## https://www.digitalocean.com/community/tutorials/how-to-move-a-postgresql-data-directory-to-a-new-location-on-ubuntu-16-04
   ## http://climber2002.github.io/blog/2015/02/07/install-and-configure-postgresql-on-ubuntu-14-dot-04/
   ##
-  #config.vm.synced_folder "../postgres", "/var/lib/postgresql/data/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
   
-  #config.vm.synced_folder "../postgres", "/var/lib/postgresql/9.6/main/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+  #config.vm.synced_folder "../database/postgres", "/var/lib/postgresql/9.6/main/"
   
-  #config.vm.synced_folder "../postgres", "/var/lib/postgresql/9.6/data/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+  #config.vm.synced_folder "../database/postgres", "/var/lib/postgresql/9.6/main/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+  
+  config.vm.synced_folder "../database/postgres", "/var/lib/postgresql/data/", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+
+  
+  
   
   ## VirtualBox
   config.vm.provider "virtualbox" do |vb|
