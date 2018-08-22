@@ -49,11 +49,11 @@ Debian Symfony (Apache, PHP, Node.js, Yarn, PostgreSQL, Adminer) stack
 		- macOX: `/private/etc/hosts`
 		- Windows: `C:\Windows\System32\drivers\etc\hosts`
 
-7. The database is automatically backup and restore by using the triggers:
+7. The database is automatically restore and backup by using the triggers:
 
-    Backup: `vagrant halt` (destroy, suspend, package, save)
-  
     Restore: `vagrant up` (reload, resume, restore)
+    
+    Backup: `vagrant halt` (destroy, suspend, package, save)
 
 ## How create new project e.g. `my-next-project`:
 
