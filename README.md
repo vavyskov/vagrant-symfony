@@ -51,9 +51,10 @@ Debian Symfony (Apache, PHP, Node.js, Yarn, PostgreSQL, Adminer) stack
 
 7. The database is automatically backup and restore by using the triggers:
 
-  Backup:
+    Backup:
         vagrant halt (destroy, suspend, package, save)
-  Restore:
+  
+    Restore:
         vagrant up (reload, resume, restore)
 
 ## How create new project e.g. `my-next-project`:
