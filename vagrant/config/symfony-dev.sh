@@ -30,9 +30,24 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 #xdebug.remote_host=192.168.33.1
 #xdebug.remote_port=9000">>/etc/php/7.2/apache2/php.ini
 
+## XDebug (version C)
+#echo "-- Installing Xdebug --"
+#sudo aptitude install -y php-xdebug >> /vagrant/build.log 2>&1
+#echo "-- Installing libpng-dev (required for some node package) --"
+#sudo aptitude install -y libpng-dev >> /vagrant/build.log 2>&1
+#echo "-- Configure xDebug (idekey = PHP_STORM) --"
+#sudo tee -a /etc/php/7.1/mods-available/xdebug.ini << END
+#xdebug.remote_enable=1
+#xdebug.remote_connect_back=1
+#xdebug.remote_port=9001
+#xdebug.idekey=PHP_STORM
+#END
+
 ## -----------------------------------------------------------------------------
 
 ## PostgreSQL
+##
+## https://www.pgbarman.org/
 ##
 ## sudo -u postgres psql
 ## SHOW data_directory;

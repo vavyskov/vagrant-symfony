@@ -30,7 +30,7 @@ Debian Symfony (Apache, PHP, Node.js, Yarn, PostgreSQL, Adminer) stack
 
 	Symfony:
 		- URL: `localhost` or `192.168.33.10`
-		- Edit the `www/default` directory as you needed
+		- Edit the `project/default` directory as you needed
 
 	Adminer:
 		- URL: `localhost/adminer` or `192.168.33.10/adminer`
@@ -57,7 +57,7 @@ Debian Symfony (Apache, PHP, Node.js, Yarn, PostgreSQL, Adminer) stack
 		sudo ./new-project.sh my-next-project
 		exit
 	
-2. Create new folder `www/my-next-project/public`.
+2. Create new folder `project/my-next-project/public`.
 3. Open `Vagrantfile`, add new `config.vm.synced_folder` definition and run command
 	
 		vagrant reload

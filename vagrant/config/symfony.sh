@@ -149,9 +149,14 @@ cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
+## Share PostgreSQL data
+#chown -R postgres:postgres /var/lib/postgresql
+#chown -R postgres:postgres /etc/postgresql/9.6
+
 ## Only once
 FIRST_RUN=true
-if [ -d "/usr/lib/postgresql" ]; then 
+#if [ -d "/usr/lib/postgresql" ]; then 
+if [ -d "/var/lib/postgresql" ]; then 
     FIRST_RUN=false
 fi
 
@@ -163,9 +168,21 @@ if [ $FIRST_RUN == true ]; then
   sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
 fi
 
+
+
+
+
+#if [ -f "/etc/postgresql/9.6/main/pg_hba.conf" ]; then 
+
 ## Enable password-base authentication
 sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
 sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+
+#fi
+
+
+
+
 
 ## Init the database
 #/etc/profile.d/profile.local.sh
@@ -192,6 +209,9 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 ##sudo -u postgres psql -c "CREATE DATABASE music ENCODING 'UTF8'  LC_COLLATE 'utf8mb4_czech_ci';"
 
 
+
+## Remove database
+#sudo -u postgres dropdb $POSTGRES_DB
 
 
 
