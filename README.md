@@ -49,6 +49,13 @@ Debian Symfony (Apache, PHP, Node.js, Yarn, PostgreSQL, Adminer) stack
 		- macOX: `/private/etc/hosts`
 		- Windows: `C:\Windows\System32\drivers\etc\hosts`
 
+7. The database is automatically backup and restore by using the triggers:
+
+  Backup:
+        vagrant halt (destroy, suspend, package, save)
+  Restore:
+        vagrant up (reload, resume, restore)
+
 ## How create new project e.g. `my-next-project`:
 
 1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run commands:
