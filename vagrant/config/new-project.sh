@@ -13,7 +13,7 @@ fi
 
 ## Detect first parameter
 if [ "$1" = "" ]; then
-  echo -e "\nType project 'name' as the first parameter (optionally 'password' as the second parameter)!\n"
+  echo -e "\nType project 'name' as the first parameter (optional 'password' as the second parameter)!\n"
   exit
 fi
 
@@ -35,6 +35,10 @@ if [ "$2" = "" ]; then
 else
   PASSWD=$2
 fi
+
+## Show user UID and GID
+# id -u username
+# id -G username
 
 ## Add user
 useradd $1 -p ${PASSWD} -m -s /bin/bash
@@ -71,3 +75,4 @@ EOF
 a2ensite -q $1
 service apache2 reload
 echo -e "Virtual host '$1' created.\n"
+

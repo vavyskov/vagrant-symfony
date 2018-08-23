@@ -19,62 +19,41 @@ Vagrant.configure("2") do |config|
 #  config.vm.box = "debian/contrib-stretch64"
 #  config.vm.provision :shell, path: "config/symfony.sh"  
 #  config.vm.provision :shell, path: "config/symfony-dev.sh"
-  
-  
-  
-  #config.vm.define "devel" do |dev|
-  #  dev.vm.provision :shell, path: "config/symfony-dev.sh"
-  #end
-  
 
-  
-  
-  
-  
+
+
+
+
   ## Hostname
-  config.vm.hostname = "vagrant.example.com"
+  config.vm.hostname = "devel.example.com"
 
   ## Network
   config.vm.network "private_network", ip: "192.168.33.10"
   config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
 
-  ## Share folder for each project
-  config.vm.synced_folder "../project/default", "/home/vagrant/www/", id:"default", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
-  
-  #config.vm.synced_folder "../project/my-next-project/", "/home/my-next-project/www/", id:"my-next-project", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
 
+
+
+
+  ## Share folder  
+  config.vm.synced_folder "../workspace", "/var/nfs",
+    id:"default",
+    type:"nfs", 
+    mount_options:['rw','vers=3','tcp'],
+    linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async'],
+    bsd__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+
+  config.nfs.map_uid = Process.uid
+  config.nfs.map_gid = Process.gid
   
+  config.bindfs.bind_folder "/var/nfs", "/home/vagrant/www"
   
-  
-  
-  ## Share PostgreSQL data
-  ##
-  ## https://www.digitalocean.com/community/tutorials/how-to-move-a-postgresql-data-directory-to-a-new-location-on-ubuntu-16-04
-  ## http://climber2002.github.io/blog/2015/02/07/install-and-configure-postgresql-on-ubuntu-14-dot-04/
-  ##
-  
-  #config.vm.synced_folder "../database/postgres/data", "/var/lib/postgresql/9.6/main/", id:"postgres-data", :owner => "postgres", :group => "postgres"
-  
-  #config.vm.synced_folder "../database/postgres/data", "/var/lib/postgresql/9.6/main/", id:"postgres-data", type:"nfs", map_uid:"108", map_gid:"113", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
-  
-  #config.nfs.map_uid = Process.uid
-  #config.nfs.map_gid = Process.gid
-  
-#  config.vm.synced_folder "../database/postgres/config", "/etc/postgresql/9.6/main/", id:"postgres-config", type:"nfs", mount_options:['rw','vers=3','tcp'], linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
-  
-  
-  
-  
-  ## WinNFSd
-  #config.trigger.after :destroy do |trigger|
-  #  trigger.info = "Destroy winnfsd process"
-  #  trigger.run = "Taskkill /IM winnfsd.exe /F"
-  #end
-  
-  
-  
-  
-  
+  #config.bindfs.bind_folder "/vagrant-after-provision", "another/guest/mount/point", after: :provision
+
+
+
+
+
   ## Backup database
   config.trigger.before [:halt, :destroy, :suspend, :package, :save] do |backup|
     backup.info = "The database has been BACKUPED!"
@@ -87,10 +66,16 @@ Vagrant.configure("2") do |config|
     restore.run_remote = {inline: "gunzip < /vagrant/database/postgres.sql.gz | PGUSER=postgres PGPASSWORD=postgres psql postgres"}
   end
   
-  
-  
-  
-  
+  ## WinNFSd
+  #config.trigger.after :destroy do |trigger|
+  #  trigger.info = "Destroy winnfsd process"
+  #  trigger.run = "Taskkill /IM winnfsd.exe /F"
+  #end
+
+
+
+
+
   ## VirtualBox
   config.vm.provider "virtualbox" do |vb|
     vb.name = "symfony"

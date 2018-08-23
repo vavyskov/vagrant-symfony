@@ -15,6 +15,13 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
+## Project 2
+#cd /vagrant/config
+#./new-project.sh project2
+#chown -R project2:project2 /home/project2
+
+## -----------------------------------------------------------------------------
+
 ## XDebug (version A)
 #apt-get install -y php-xdebug
 #cp xdebug-docker.ini /usr/local/etc/php/conf.d/

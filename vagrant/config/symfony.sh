@@ -127,7 +127,7 @@ a2enmod mpm_itk
 a2enmod rewrite expires
 
 ## New Project
-cp /vagrant/config/new-project.sh /home/vagrant/
+cp /vagrant/config/new-project.sh /home/
 
 ## -----------------------------------------------------------------------------
 
