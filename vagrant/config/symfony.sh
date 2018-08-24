@@ -43,7 +43,7 @@ apt-get install -y curl zip unzip
 
 ## Vim
 apt-get install -y vim
-#cat >/etc/vim/vimrc.local <<'EOF'
+#cat << EOF > /etc/vim/vimrc.local
 #syntax on
 #set background=dark
 #set esckeys
@@ -106,7 +106,7 @@ npm install yarn -g
 apt-get install -y apache2
 #rm -rf /var/www/html
 #echo "Public folder" > /var/www/html/index.html
-cat > /var/www/html/index.html <<'EOF'
+cat << EOF > /var/www/html/index.html
 <!doctype html>
 <html>
 <head>
@@ -155,8 +155,8 @@ cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
 
 ## Only once
 FIRST_RUN=true
-#if [ -d "/usr/lib/postgresql" ]; then 
-if [ -d "/var/lib/postgresql" ]; then 
+if [ -d "/usr/lib/postgresql" ]; then
+#if [ -d "/var/lib/postgresql" ]; then
     FIRST_RUN=false
 fi
 
@@ -273,9 +273,6 @@ service postgresql reload
 ## E-mail
 apt-get install -y ssmtp
 #cp /vagrant/config/ssmtp.conf /etc/ssmtp/
-
-#cat > /etc/ssmtp/ssmtp.conf <<'EOF'
-#EOF
 
 #cat << EOF > /etc/ssmtp/ssmtp.conf
 #root=user@host.name

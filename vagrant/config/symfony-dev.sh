@@ -5,7 +5,7 @@ set -eux
 
 ## Apache
 #mkdir -p /home/vagrant/www/public
-cp /vagrant/config/apache.conf /etc/apache2/sites-available/000-default.conf
+cp /vagrant/config/apache-dev.conf /etc/apache2/sites-available/000-default.conf
 
 ## -----------------------------------------------------------------------------
 

@@ -25,7 +25,10 @@ Vagrant.configure("2") do |config|
 
 
   ## Hostname
-  config.vm.hostname = "devel.example.com"
+  #config.vm.hostname = "devel.example.com"
+
+  ## Guest hostname with prefix from the host computer
+  config.vm.hostname = "#{`hostname`[0..-2]}".sub(/\..*$/,'')+".example.com"
 
   ## Network
   config.vm.network "private_network", ip: "192.168.33.10"
@@ -55,15 +58,17 @@ Vagrant.configure("2") do |config|
 
 
   ## Backup database
-  config.trigger.before [:halt, :destroy, :suspend, :package, :save] do |backup|
+  config.trigger.before [:halt, :suspend, :destroy, :save] do |backup|
     backup.info = "The database has been BACKUPED!"
     backup.run_remote = {inline: "PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > /vagrant/database/postgres.sql.gz"}
+    #backup.run_remote = {path: "./vagrant/config/db-backup.sh"}
   end
   
   ## Restore database
-  config.trigger.after [:up, :reload, :resume, :restore] do |restore|
+  config.trigger.after [:up, :resume, :reload, :restore] do |restore|
     restore.info = "The database has been RESTORED!"
     restore.run_remote = {inline: "gunzip < /vagrant/database/postgres.sql.gz | PGUSER=postgres PGPASSWORD=postgres psql postgres"}
+    #restore.run_remote = {path: "./vagrant/config/db-restore.sh"}
   end
   
   ## WinNFSd
