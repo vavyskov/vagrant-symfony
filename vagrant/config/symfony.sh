@@ -75,7 +75,8 @@ apt-get install -y mc
 
 
 
-
+## Sudo
+sed -i 's/%sudo.*ALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
 
 ## IPv6
 echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.d/ipv6.conf
