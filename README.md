@@ -74,7 +74,6 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## ToDo
 
-- Restore database only if need it (detect host computer)
 - Configure e-mail sending
 
 ## Note

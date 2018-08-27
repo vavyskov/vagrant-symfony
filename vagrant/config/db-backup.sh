@@ -1,31 +1,37 @@
 #!/bin/bash
 
+FOLDER="/vagrant/database"
+
 ## Info function
 success() {
-    echo "The database $1 has been BACKUPED!"
+    echo -e "\nThe database $1 has been BACKUPED!\n"
 }
 
 ## Backup function (MySQL, Mariadb)
 backup() {
-    sudo tar -czf /vagrant/database/$1.tar.gz -C /var/lib/$1 .
+    sudo tar -czf $FOLDER/$1.tar.gz -C /var/lib/$1 .
     success $1
 }
 
 ## MySQL
 if [ -d "/var/lib/mysql" ]; then
-    backup mysql
+    backup mysql $1
 fi
 
 ## MongoDB
 if [ -d "/var/lib/mongodb" ]; then
-    backup mongodb
+    backup mongodb $1
 fi
 
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
-    PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > /vagrant/database/postgres.sql.gz
+    PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
     success postgresql
 fi
+
+## Set computer ID
+echo $1 > $FOLDER/computer-id
+
 
 
 
