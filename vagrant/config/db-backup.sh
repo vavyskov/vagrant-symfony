@@ -30,7 +30,7 @@ if [ -d "/var/lib/postgresql" ]; then
 fi
 
 ## Set computer ID
-echo $1 > $FOLDER/computer-id
+echo $1 > $FOLDER/computer
 
 
 

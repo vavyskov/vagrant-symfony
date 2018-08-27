@@ -3,7 +3,7 @@
 FOLDER="/vagrant/database"
 
 ## Detect computer ID
-if [ $(grep $1 $FOLDER/computer-id) ]; then
+if [ $(grep $1 $FOLDER/computer) ]; then
    echo -e "\nThe same computer detected => the database restoring SKIPPED!\n"
    exit
 fi
