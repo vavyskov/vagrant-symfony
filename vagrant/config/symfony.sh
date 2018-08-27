@@ -40,7 +40,6 @@ apt-get install -y curl zip unzip
 
 
 
-
 ## Vim
 apt-get install -y vim
 #cat << EOF > /etc/vim/vimrc.local
@@ -76,6 +75,7 @@ apt-get install -y mc
 
 
 ## Sudo
+apt-get install -y sudo
 sed -i 's/%sudo.*ALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
 
 ## IPv6
@@ -84,6 +84,17 @@ sysctl -p
 
 ## VMware
 apt-get install -y open-vm-tools
+
+## NTP
+apt-get install -y ntp
+sed -i 's/poll/#poll/' /etc/ntp.conf
+sed -i '/#poll 3/a\poll hodiny.ispovy.acr iburst' /etc/ntp.conf
+service ntp restart
+
+## SNMP
+apt-get install -y snmpd
+#sed -i 's/xyz/xyz/' /etc/snmp/snmpd.conf
+#service snmpd restart
 
 ## SSH
 sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
