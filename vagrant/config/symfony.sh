@@ -33,8 +33,8 @@ locale-gen cs_CZ.UTF-8
 apt-get install -y debconf-utils
 
 ## System tools
-apt-get install -y curl zip unzip
-#apt-get install -y wget nmon
+apt-get install -y wget curl zip unzip
+#apt-get install -y nmon
 
 
 
@@ -149,7 +149,7 @@ cp new-project.sh /home/
 
 ## PHP 7.2
 apt-get install -y apt-transport-https lsb-release ca-certificates
-wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+wget https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt-get update
 ## apt-cache search php7.2
@@ -167,8 +167,8 @@ cp php.ini /etc/php/7.2/apache2/conf.d/
 
 ## Only once
 FIRST_RUN=true
-if [ -d "/usr/lib/postgresql" ]; then
-#if [ -d "/var/lib/postgresql" ]; then
+if [[ -d "/usr/lib/postgresql" ]]; then
+#if [[ -d "/var/lib/postgresql" ]]; then
     FIRST_RUN=false
 fi
 
@@ -176,7 +176,7 @@ fi
 apt-get install -y postgresql php-pgsql
 
 ## Set PostgreSQL password
-if [ $FIRST_RUN == true ]; then
+if [[ $FIRST_RUN = true ]]; then
   sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
 fi
 
@@ -184,7 +184,7 @@ fi
 
 
 
-#if [ -f "/etc/postgresql/9.6/main/pg_hba.conf" ]; then 
+#if [[ -f "/etc/postgresql/9.6/main/pg_hba.conf" ]]; then
 
 ## Enable password-base authentication
 sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
@@ -234,8 +234,8 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 
 ## Adminer (latest)
 mkdir -p /usr/share/adminer/adminer
-wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php
-echo '50 2 5 * * /usr/bin/wget "http://www.adminer.org/latest.php" -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
+wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php
+echo '50 2 5 * * /usr/bin/wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
 
 ## Adminer - alias
 echo "Alias /adminer /usr/share/adminer/adminer" | sudo tee /etc/apache2/conf-available/adminer.conf
@@ -321,7 +321,7 @@ apt-get install -y ssmtp
 
 
 
-#if ! [ -L /var/www ]; then
+#if ! [[ -L /var/www ]]; then
 #  rm -rf /var/www
 #  ln -fs /vagrant /var/www
 #fi
