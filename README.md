@@ -67,6 +67,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 8. Update box version
 
     Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
+    
     - check updates:
 
             vagrant box outdated
@@ -78,7 +79,6 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## FixMe
 
-- Force `vagrant box update` command automatically
 - Enable port 80 (Linux only)
 
 ## ToDo
