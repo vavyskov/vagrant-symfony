@@ -12,13 +12,13 @@ service ntp restart
 
 ## Apache
 #mkdir -p /home/vagrant/www/public
-cp /vagrant/config/apache-dev.conf /etc/apache2/sites-available/000-default.conf
+cp apache-dev.conf /etc/apache2/sites-available/000-default.conf
 
 ## -----------------------------------------------------------------------------
 
 ## PHP configuration
-#cp /vagrant/config/php-dev.ini /etc/php/7.0/apache2/conf.d/
-cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
+#cp php-dev.ini /etc/php/7.0/apache2/conf.d/
+cp php-dev.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
@@ -89,8 +89,8 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 ## -----------------------------------------------------------------------------
 
 ## E-mail
-#cp /vagrant/config/ssmtp-dev.conf /etc/ssmtp/ssmtp.conf
-#cp /vagrant/config/revaliases-dev /etc/ssmtp/revaliases
+#cp ssmtp-dev.conf /etc/ssmtp/ssmtp.conf
+#cp revaliases-dev /etc/ssmtp/revaliases
 
 #cat << EOF > /etc/ssmtp/ssmtp.conf
 #root=user@host.name

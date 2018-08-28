@@ -58,17 +58,17 @@ apt-get install -y vim
 
 ## MC ?????????????????????
 apt-get install -y mc
-#cp /vagrant/config/mc /etc/mc/
-#cp /vagrant/config/mc ~/.config/
+#cp mc /etc/mc/
+#cp mc ~/.config/
 
 ## use_internal_edit=1
 
-#cp /vagrant/config/mc/.mc.ini /home/vagrant/
+#cp mc/.mc.ini /home/vagrant/
 #chown vagrant:vagrant /home/vagrant/.mc.ini
 #chmod -R -x /home/vagrant/.mc.ini
 
 ## Edit=%var{EDITOR:editor} %f
-#cp -p /vagrant/config/mc/mc.ext /home/vagrant/.config/mc/
+#cp -p mc/mc.ext /home/vagrant/.config/mc/
 #chown vagrant:vagrant /home/vagrant/.config/mc/mc.ext
 # chmod -R -x /home/vagrant/.config/mc/mc.ext
 
@@ -139,7 +139,7 @@ a2enmod mpm_itk
 a2enmod rewrite expires
 
 ## New Project
-cp /vagrant/config/new-project.sh /home/
+cp new-project.sh /home/
 
 ## -----------------------------------------------------------------------------
 
@@ -156,8 +156,8 @@ apt-get update
 apt-get install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
 
 ## PHP configuration
-#cp /vagrant/config/php.ini /etc/php/7.0/apache2/conf.d/
-cp /vagrant/config/php.ini /etc/php/7.2/apache2/conf.d/
+#cp php.ini /etc/php/7.0/apache2/conf.d/
+cp php.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
@@ -284,7 +284,7 @@ service postgresql reload
 
 ## E-mail
 apt-get install -y ssmtp
-#cp /vagrant/config/ssmtp.conf /etc/ssmtp/
+#cp ssmtp.conf /etc/ssmtp/
 
 #cat << EOF > /etc/ssmtp/ssmtp.conf
 #root=user@host.name
