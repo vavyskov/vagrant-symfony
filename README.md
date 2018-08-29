@@ -79,10 +79,13 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## FixMe
 
+- Enable database restore
+- Disable database user access to another database
 - Enable port 80 (Linux only)
 
 ## ToDo
 
+- Test purge.sh script and add package trigger
 - Configure e-mail sending
 
 ## Note

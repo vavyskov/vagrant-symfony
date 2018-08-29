@@ -17,17 +17,31 @@ if [ "$1" = "" ]; then
   exit
 fi
 
+# Detect user
+if id "$1" >/dev/null 2>&1; then
+  echo -e "\nUser '$1' exists!\n"
+  exit
+fi
+
 ## Detect virtual host
 if [ -f "${VHOST_PATH}$1.conf" ]; then
   echo -e "\nVirtual host '$1' exists!\n"
   exit
 fi
 
-# Detect user
-if id "$1" >/dev/null 2>&1; then
-  echo -e "\nUser '$1' exists!\n"
+## Detect database
+if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw $1; then
+  echo -e "\nDatabase '$1' exists!\n"
   exit
-fi                    
+fi
+
+## Detect database user
+if sudo -u postgres psql -t -c '\du' | cut -d \| -f 1 | grep -qw $1; then
+  echo -e "\nDatabase user '$1' exists!\n"
+  exit
+fi
+
+## -----------------------------------------------------------------------------
 
 ## Set user password
 if [ "$2" = "" ]; then
@@ -74,5 +88,15 @@ cat << EOF > ${VHOST_PATH}$1.conf
 EOF
 a2ensite -q $1
 service apache2 reload
-echo -e "Virtual host '$1' created.\n"
+echo -e "Virtual host '$1' created."
 
+## Add database and database user
+sudo -u postgres createdb $1
+sudo -u postgres psql -c "
+    CREATE USER $1 WITH ENCRYPTED PASSWORD '$1';
+    GRANT ALL PRIVILEGES ON DATABASE $1 TO $1;
+"
+echo -e "Databese user '$1' with database password '${PASSWD}' created.\n"
+
+## Change database user password
+#sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"

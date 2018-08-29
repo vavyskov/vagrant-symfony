@@ -2,7 +2,7 @@
 set -eux
 
 ## Variables
-POSTGRES_ROOT_PASSWORD=postgres
+#POSTGRES_ROOT_PASSWORD=postgres
 #POSTGRES_DB=postgresql
 #POSTGRES_USER=postgresql
 #POSTGRES_PASSWORD=postgresql
@@ -58,17 +58,17 @@ apt-get install -y vim
 
 ## MC ?????????????????????
 apt-get install -y mc
-#cp mc /etc/mc/
-#cp mc ~/.config/
+#cp ./mc /etc/mc/
+#cp ./mc ~/.config/
 
 ## use_internal_edit=1
 
-#cp mc/.mc.ini /home/vagrant/
+#cp ./mc/.mc.ini /home/vagrant/
 #chown vagrant:vagrant /home/vagrant/.mc.ini
 #chmod -R -x /home/vagrant/.mc.ini
 
 ## Edit=%var{EDITOR:editor} %f
-#cp -p mc/mc.ext /home/vagrant/.config/mc/
+#cp -p ./mc/mc.ext /home/vagrant/.config/mc/
 #chown vagrant:vagrant /home/vagrant/.config/mc/mc.ext
 # chmod -R -x /home/vagrant/.config/mc/mc.ext
 
@@ -138,9 +138,6 @@ a2enmod mpm_itk
 ## Apache clean URL and caching
 a2enmod rewrite expires
 
-## New Project
-cp new-project.sh /home/
-
 ## -----------------------------------------------------------------------------
 
 ## PHP 7.0
@@ -156,29 +153,98 @@ apt-get update
 apt-get install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
 
 ## PHP configuration
-#cp php.ini /etc/php/7.0/apache2/conf.d/
-cp php.ini /etc/php/7.2/apache2/conf.d/
+#cat << EOF > /etc/php/7.0/apache2/conf.d/php.ini
+cat << EOF > /etc/php/7.2/apache2/conf.d/php.ini
+;; Time zone
+date.timezone = Europe/Prague
+
+;; Error reporting
+;log_errors = On
+;error_log = php_error.log
+error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+display_errors = Off
+;display_startup_errors = Off
+;track_errors = Off
+;mysqlnd.collect_memory_statistics = Off
+;zend.assertions = -1
+;opcache.huge_code_pages = 1
+
+;; Upload files
+post_max_size = 64M
+upload_max_filesize = 32M
+
+;; Performance
+memory_limit = 256M
+max_execution_time = 120
+max_input_time  =  60
+
+;; OPcode extension
+opcache.memory_consumption = 128
+opcache.interned_strings_buffer = 8
+opcache.max_accelerated_files = 4000
+opcache.revalidate_freq = 60
+opcache.fast_shutdown = 1
+opcache.enable_cli = 1
+
+;; Drupal Commerce Kickstart
+;mbstring.http_input = pass
+;mbstring.http_output = pass
+
+;; MongoDB
+;extension = mongo.so
+;extension = mongodb.so
+
+;; E-mail
+;sendmail_path = /usr/sbin/ssmtp -t
+;sendmail_path = /usr/sbin/sendmail -t
+EOF
 
 ## -----------------------------------------------------------------------------
+
+## PostgreSQL
+apt-get install -y postgresql php-pgsql
+
+## Add database
+sudo -u postgres createdb postgresql
+
+## Add user (role)
+## CREATE USER xyz (alias: CREATE ROLE xyz LOGIN)
+sudo -u postgres psql -c "
+    CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
+    GRANT ALL PRIVILEGES ON DATABASE postgresql TO postgresql;
+"
+
+## Enable password-base authentication
+sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+
+
+
+
+
+## Enable postgres password-base authentication
+#sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
+#sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+
+
+
+
 
 ## Share PostgreSQL data
 #chown -R postgres:postgres /var/lib/postgresql
 #chown -R postgres:postgres /etc/postgresql/9.6
 
 ## Only once
-FIRST_RUN=true
-if [[ -d "/usr/lib/postgresql" ]]; then
+#FIRST_RUN=true
+#if [[ -d "/usr/lib/postgresql" ]]; then
 #if [[ -d "/var/lib/postgresql" ]]; then
-    FIRST_RUN=false
-fi
+#    FIRST_RUN=false
+#fi
 
-## PostgreSQL
-apt-get install -y postgresql php-pgsql
 
 ## Set PostgreSQL password
-if [[ $FIRST_RUN = true ]]; then
-  sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
-fi
+#if [[ $FIRST_RUN = true ]]; then
+#  sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
+#fi
 
 
 
@@ -186,9 +252,6 @@ fi
 
 #if [[ -f "/etc/postgresql/9.6/main/pg_hba.conf" ]]; then
 
-## Enable password-base authentication
-sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
-sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
 
 #fi
 
@@ -284,7 +347,7 @@ service postgresql reload
 
 ## E-mail
 apt-get install -y ssmtp
-#cp ssmtp.conf /etc/ssmtp/
+#cp ./ssmtp.conf /etc/ssmtp/
 
 #cat << EOF > /etc/ssmtp/ssmtp.conf
 #root=user@host.name

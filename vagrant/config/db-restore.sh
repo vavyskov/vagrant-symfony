@@ -38,6 +38,7 @@ fi
 
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
-    gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres PGPASSWORD=postgres psql postgres
-    success postgresql
+#    gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres psql postgres
+    #gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres PGPASSWORD=postgres psql postgres
+#    success postgresql
 fi

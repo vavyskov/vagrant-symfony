@@ -25,7 +25,8 @@ fi
 
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
-    PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
+    PGUSER=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
+    #PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
     success postgresql
 fi
 
