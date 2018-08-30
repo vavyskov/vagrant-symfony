@@ -1,12 +1,6 @@
 #!/bin/sh
 set -eux
 
-## Variables
-#POSTGRES_ROOT_PASSWORD=postgres
-#POSTGRES_DB=postgresql
-#POSTGRES_USER=postgresql
-#POSTGRES_PASSWORD=postgresql
-
 ## E-mail
 #MX_RECORD=mail.website.cz
 #EMAIL_DOMAIN=website.cz
@@ -38,8 +32,6 @@ apt-get install -y wget curl zip unzip
 
 
 
-
-
 ## Vim
 apt-get install -y vim
 #cat << EOF > /etc/vim/vimrc.local
@@ -54,9 +46,7 @@ apt-get install -y vim
 
 
 
-
-
-## MC ?????????????????????
+## MC
 apt-get install -y mc
 #cp ./mc /etc/mc/
 #cp ./mc ~/.config/
@@ -204,18 +194,33 @@ EOF
 ## PostgreSQL
 apt-get install -y postgresql php-pgsql
 
-## Add database
-sudo -u postgres createdb postgresql
-
-## Add user (role)
-## CREATE USER xyz (alias: CREATE ROLE xyz LOGIN)
-sudo -u postgres psql -c "
-    CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
-    GRANT ALL PRIVILEGES ON DATABASE postgresql TO postgresql;
-"
-
 ## Enable password-base authentication
+sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\ttrust/' /etc/postgresql/9.6/main/pg_hba.conf
 sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
+
+
+
+## Permission - all new databases are created from "template1" by default
+## Schema - https://wiki.hackzine.org/sysadmin/postgresql-change-default-schema.html
+## Public - https://blog.dbi-services.com/avoiding-access-to-the-public-schema-in-postgresql/
+#sudo -u postgres psql template1 -c "
+#    REVOKE ALL ON SCHEMA public FROM PUBLIC;
+#    GRANT ALL ON SCHEMA public TO PUBLIC;
+#"
+
+#CREATE SCHEMA private;
+#SET search_path TO private;
+#ALTER ROLE <role_name> IN DATABASE <db_name> SET search_path TO schema1,schema2;
+#GRANT USAGE ON SCHEMA private TO new_user;
+
+#REVOKE ALL ON SCHEMA public FROM PUBLIC;
+
+#ALTER SCHEMA private OWNER TO { new_owner | CURRENT_USER | SESSION_USER };
+#ALTER DEFAULT PRIVILEGES FOR ROLE xyz REVOKE EXECUTE ON FUNCTIONS FROM PUBLIC;
+
+
+
+
 
 
 
@@ -276,7 +281,7 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 #sudo -u postgres createuser $POSTGRES_USER
 #sudo -u postgres psql -c "
 #  ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';
-#  GRANT ALL PRIVILEGES ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;
+#  GRANT ALL ON DATABASE $POSTGRES_DB TO $POSTGRES_USER;
 #"
 
 ## Notes:

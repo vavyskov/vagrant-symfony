@@ -63,6 +63,34 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 ## -----------------------------------------------------------------------------
 
 ## PostgreSQL
+
+## Add database
+sudo -u postgres createdb postgresql
+
+## Add user (role)
+## CREATE USER xyz (alias: CREATE ROLE xyz LOGIN)
+sudo -u postgres psql -c "
+    CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
+    GRANT ALL ON DATABASE postgresql TO postgresql;
+    REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
+"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ##
 ## https://www.pgbarman.org/
 ##
@@ -110,3 +138,4 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 
 ## Services
 service apache2 reload
+service postgresql reload

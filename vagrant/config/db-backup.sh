@@ -2,12 +2,15 @@
 
 FOLDER="/vagrant/database"
 
-## Info function
+## Set computer ID
+echo $1 > $FOLDER/computer
+
+## Information
 success() {
     echo -e "\nThe database $1 has been BACKUPED!\n"
 }
 
-## Backup function (MySQL, Mariadb)
+## Backup (MySQL, Mariadb)
 backup() {
     sudo tar -czf $FOLDER/$1.tar.gz -C /var/lib/$1 .
     success $1
@@ -26,12 +29,9 @@ fi
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
     PGUSER=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
-    #PGUSER=postgres PGPASSWORD=postgres pg_dumpall | gzip > $FOLDER/postgres.sql.gz
     success postgresql
 fi
 
-## Set computer ID
-echo $1 > $FOLDER/computer
 
 
 

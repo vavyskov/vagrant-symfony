@@ -1,5 +1,4 @@
 #!/bin/bash
-##!/bin/su root
 
 DOMAIN=$(hostname --domain)
 VHOST_PATH="/etc/apache2/sites-available/"
@@ -94,7 +93,8 @@ echo -e "Virtual host '$1' created."
 sudo -u postgres createdb $1
 sudo -u postgres psql -c "
     CREATE USER $1 WITH ENCRYPTED PASSWORD '$1';
-    GRANT ALL PRIVILEGES ON DATABASE $1 TO $1;
+    GRANT ALL ON DATABASE $1 TO $1;
+    REVOKE ALL ON DATABASE $1 FROM PUBLIC;
 "
 echo -e "Databese user '$1' with database password '${PASSWD}' created.\n"
 

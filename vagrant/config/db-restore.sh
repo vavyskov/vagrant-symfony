@@ -8,12 +8,12 @@ if [ $(grep $1 $FOLDER/computer) ]; then
    exit
 fi
 
-## Info function
+## Information
 success() {
     echo -e "\nThe database $1 has been RESTORED!\n"
 }
 
-## Restore function (MySQL, Mariadb)
+## Restore (MySQL, Mariadb)
 restore() {
     echo "Stopping service $1"
     service $1 stop
@@ -38,7 +38,6 @@ fi
 
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
-#    gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres psql postgres
-    #gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres PGPASSWORD=postgres psql postgres
-#    success postgresql
+    gunzip < $FOLDER/postgres.sql.gz | PGUSER=postgres psql postgres
+    success postgresql
 fi
