@@ -24,14 +24,39 @@ EOF
 apt-get update
 apt-get upgrade -y
 
-## Certificates
-apt-get install -y ca-certificates openssl
-
 ## Language
 apt-get install -y locales
 sed -i "s/# cs_CZ.UTF-8/cs_CZ.UTF-8/" /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
 update-locale LANG=cs_CZ.UTF-8
+
+## NTP
+apt-get install -y ntp
+sed -i 's/poll/#poll/' /etc/ntp.conf
+sed -i '/#poll 3/a\poll hodiny.ispovy.acr iburst' /etc/ntp.conf
+service ntp restart
+timedatectl set-timezone Europe/Prague
+
+## VMware
+apt-get install -y open-vm-tools
+
+## Sudo
+apt-get install -y sudo
+sed -i 's/%sudo.*ALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
+
+## IPv6
+echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.d/ipv6.conf
+sysctl -p
+
+## SNMP
+apt-get install -y snmpd
+#sed -i 's/xyz/xyz/' /etc/snmp/snmpd.conf
+#service snmpd restart
+
+## -----------------------------------------------------------------------------
+
+## Certificates
+apt-get install -y ca-certificates openssl
 
 ## Configuration
 apt-get install -y debconf-utils
@@ -73,29 +98,6 @@ apt-get install -y mc
 # chmod -R -x /home/vagrant/.config/mc/mc.ext
 
 
-
-## Sudo
-apt-get install -y sudo
-sed -i 's/%sudo.*ALL=(ALL:ALL) ALL/%sudo\tALL=(ALL:ALL) NOPASSWD:ALL/' /etc/sudoers
-
-## IPv6
-echo "net.ipv6.conf.all.disable_ipv6=1" > /etc/sysctl.d/ipv6.conf
-sysctl -p
-
-## VMware
-apt-get install -y open-vm-tools
-
-## NTP
-apt-get install -y ntp
-sed -i 's/poll/#poll/' /etc/ntp.conf
-sed -i '/#poll 3/a\poll hodiny.ispovy.acr iburst' /etc/ntp.conf
-service ntp restart
-timedatectl set-timezone Europe/Prague
-
-## SNMP
-apt-get install -y snmpd
-#sed -i 's/xyz/xyz/' /etc/snmp/snmpd.conf
-#service snmpd restart
 
 ## SSH
 sed -i 's/#PasswordAuthentication/PasswordAuthentication/' /etc/ssh/sshd_config
