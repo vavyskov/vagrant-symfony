@@ -22,14 +22,16 @@ EOF
 
 ## Sources
 apt-get update
-#apt-get upgrade -y
+apt-get upgrade -y
 
 ## Certificates
 apt-get install -y ca-certificates openssl
 
 ## Language
 apt-get install -y locales
-locale-gen cs_CZ.UTF-8
+sed -i "s/# cs_CZ.UTF-8/cs_CZ.UTF-8/" /etc/locale.gen
+dpkg-reconfigure --frontend=noninteractive locales
+update-locale LANG=cs_CZ.UTF-8
 
 ## Configuration
 apt-get install -y debconf-utils
@@ -88,6 +90,7 @@ apt-get install -y ntp
 sed -i 's/poll/#poll/' /etc/ntp.conf
 sed -i '/#poll 3/a\poll hodiny.ispovy.acr iburst' /etc/ntp.conf
 service ntp restart
+timedatectl set-timezone Europe/Prague
 
 ## SNMP
 apt-get install -y snmpd
