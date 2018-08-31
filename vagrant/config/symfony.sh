@@ -12,6 +12,14 @@ set -eux
 
 ## -----------------------------------------------------------------------------
 
+## Apt configuration
+cat << EOF > /etc/apt/apt.conf.d/99minimal
+Apt::Install-Recommends false;
+Apt::Install-Suggests false;
+Apt::AutoRemove::RecommendsImportant false;
+Apt::AutoRemove::SuggestsImportant false;
+EOF
+
 ## Sources
 apt-get update
 #apt-get upgrade -y
