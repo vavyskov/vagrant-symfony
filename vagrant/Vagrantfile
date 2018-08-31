@@ -73,7 +73,7 @@ Vagrant.configure("2") do |config|
   ## Package purge
   config.trigger.before [:package] do |package|
     package.info = "Package purge is in progress..."
-    package.run_remote = {inline: "/vagrant/config/purge.sh}
+    package.run_remote = {inline: "/vagrant/config/purge.sh"}
   end
 
   ## WinNFSd
