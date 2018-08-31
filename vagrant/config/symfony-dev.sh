@@ -72,6 +72,7 @@ sudo -u postgres createdb postgresql
 sudo -u postgres psql -c "
     CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
     GRANT ALL ON DATABASE postgresql TO postgresql;
+    ALTER DATABASE postgresql OWNER TO postgresql;
     REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
 "
 

@@ -12,7 +12,8 @@ fi
 
 ## Detect first parameter
 if [ "$1" = "" ]; then
-  echo -e "\nType project 'name' as the first parameter (optional 'password' as the second parameter)!\n"
+  echo -e "\nType project 'name' as the first parameter,"
+  echo -e "optionally second parameter as user 'password' and third parameter as database 'password'.\n"
   exit
 fi
 
@@ -43,10 +44,10 @@ fi
 ## -----------------------------------------------------------------------------
 
 ## Set user password
-if [ "$2" = "" ]; then
-  PASSWD=$1
+if [ "$2" ]; then
+  USER_PASSWD=$2
 else
-  PASSWD=$2
+  USER_PASSWD=$1
 fi
 
 ## Show user UID and GID
@@ -54,11 +55,11 @@ fi
 # id -G username
 
 ## Add user
-useradd $1 -p ${PASSWD} -m -s /bin/bash
+useradd $1 -p ${USER_PASSWD} -m -s /bin/bash
 mkdir -p /home/$1/www/public
 mkdir -p /home/$1/www/private
 chown -R $1:$1 /home/$1/www
-echo -e "\nUser '$1' with password '${PASSWD}' created."
+echo -e "\nUser '$1' with password '${USER_PASSWD}' created."
 
 ## Add virtual host
 cat << EOF > ${VHOST_PATH}$1.conf
@@ -86,17 +87,30 @@ cat << EOF > ${VHOST_PATH}$1.conf
 </VirtualHost>
 EOF
 a2ensite -q $1
-service apache2 reload
 echo -e "Virtual host '$1' created."
+
+## Set database password
+if [ "$3" ]; then
+  DB_PASSWD=$3
+else
+  DB_PASSWD=$1
+fi
 
 ## Add database and database user
 sudo -u postgres createdb $1
 sudo -u postgres psql -c "
-    CREATE USER $1 WITH ENCRYPTED PASSWORD '$1';
+    CREATE USER $1 WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
     GRANT ALL ON DATABASE $1 TO $1;
+    ALTER DATABASE $1 OWNER TO $1;
     REVOKE ALL ON DATABASE $1 FROM PUBLIC;
 "
-echo -e "Databese user '$1' with database password '${PASSWD}' created.\n"
+echo -e "Databese user '$1' with database password '${DB_PASSWD}' created.\n"
 
 ## Change database user password
 #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
+
+## -----------------------------------------------------------------------------
+
+## Services
+service apache2 reload
+service postgresql reload

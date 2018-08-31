@@ -79,14 +79,15 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## FixMe
 
-- Enable database restore
-- Disable database user access to another database
 - Enable port 80 (Linux only)
+- Fix the need to Halt and Up VM immediately after crated from base box
+- Fix Apache error after created new project
 
 ## ToDo
 
 - Test purge.sh script and add package trigger
 - Configure e-mail sending
+- Disable access to PostgreSQL system databases (postgres, template0, template1)
 
 ## Note
 
