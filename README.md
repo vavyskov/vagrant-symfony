@@ -39,9 +39,9 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
     - URL: `localhost/adminer` or `192.168.33.10/adminer`
 	- System: `PostgreSQL`
     - Server: `localhost`
-	- User: `postgres`
-	- Password: `postgres`
-	- Database: `postgres`
+	- User: `postgresql`
+	- Password: `postgresql`
+	- Database: `postgresql`
 
 5. Optional configure your system `hosts` file:
 
