@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set -eux
 
 ## Variables
+PHP_VERSION=7.2
 
 ## -----------------------------------------------------------------------------
 
@@ -9,7 +10,7 @@ set -eux
 apt-get update
 
 ## SQLite
-apt install -y php-sqlite3
+apt-get install -y php${PHP_VERSION}-sqlite3
 
 ## -----------------------------------------------------------------------------
 

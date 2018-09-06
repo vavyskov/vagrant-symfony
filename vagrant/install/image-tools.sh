@@ -1,7 +1,8 @@
-#!/bin/sh
+#!/bin/bash
 set -eux
 
 ## Variables
+PHP_VERSION=7.2
 
 ## -----------------------------------------------------------------------------
 
@@ -9,7 +10,7 @@ set -eux
 apt-get update
 
 ## Image tools
-apt install -y libjpeg-progs optipng gifsicle php-imagick
+apt-get install -y libjpeg-progs optipng gifsicle php${PHP_VERSION}-imagick
 
 ## -----------------------------------------------------------------------------
 

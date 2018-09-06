@@ -79,12 +79,15 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## FixMe
 
-- Enable port 80 (Linux only)
-- Fix the need to Halt and Up VM immediately after crated from base box
+- Fix the need to Halt and Up or Reload VM immediately after crated from base box
 - Fix Apache error after created new project
+- Enable port 80 (Linux only)
+- ImageMagick with PHP 7.2 (image-tools.sh)
 
 ## ToDo
 
+- PhpMyAdmin storage (phpmyadmin.sh)
+- Detect installed software PHP Extensions
 - Better purge.sh script
 - Configure e-mail sending
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
