@@ -13,7 +13,8 @@ fi
 ## Detect first parameter
 if [ "$1" = "" ]; then
   echo -e "\nType project 'name' as the first parameter,"
-  echo -e "optionally second parameter as user 'password' and third parameter as database 'password'.\n"
+  echo -e "optionally user 'password' as second parameter and"
+  echo -e "optionally database 'password' as third parameter.\n"
   exit
 fi
 

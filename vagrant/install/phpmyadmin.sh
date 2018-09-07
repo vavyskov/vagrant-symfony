@@ -70,16 +70,17 @@ mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
     GRANT ALL PRIVILEGES ON phpmyadmin.* TO pma@localhost IDENTIFIED BY 'pmapass' WITH GRANT OPTION;
     FLUSH PRIVILEGES;
 "
-## PhpMyAdmin storage - user used to manipulate with storage
 
 
 
-## ???
+
+## ToDo: config.inc.php
+cp /etc/phpmyadmin/config.inc.php /etc/phpmyadmin/config.inc-original.php
 #sed -i "s/\/\/ $cfg['Servers'][$i]['controlhost']/$cfg['Servers'][$i]['controlhost']/" /etc/phpmyadmin/config.inc.php
 ## ???
 
 
-
+## PhpMyAdmin storage - user used to manipulate with storage
 #sed -i "s|// $cfg['Servers'][$i]['controlhost']|$cfg['Servers'][$i]['controlhost']|" /etc/phpmyadmin/config.inc.php
 #sed -i "s|// $cfg['Servers'][$i]['controlport']|$cfg['Servers'][$i]['controlport']|" /etc/phpmyadmin/config.inc.php
 #sed -i "s|// $cfg['Servers'][$i]['controluser']|$cfg['Servers'][$i]['controluser']|" /etc/phpmyadmin/config.inc.php
