@@ -1,7 +1,8 @@
 #!/bin/bash
 set -eux
 
-## Variables
+## Environment variables
+#source "../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 

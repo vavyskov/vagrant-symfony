@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eux
 
-## Variables
-PHP_VERSION=7.2
+## Environment variables
+source "../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
