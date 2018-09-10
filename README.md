@@ -86,8 +86,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## ToDo
 
-- PhpMyAdmin storage (phpmyadmin.sh)
-- Detect installed software PHP Extensions
+- Detect installed software - PHP Extensions
 - Better purge.sh script
 - Configure e-mail sending
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
