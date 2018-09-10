@@ -86,9 +86,10 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## ToDo
 
+- Configure e-mail sending
+- PHP version variable
 - Detect installed software - PHP Extensions
 - Better purge.sh script
-- Configure e-mail sending
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 
 ## Note

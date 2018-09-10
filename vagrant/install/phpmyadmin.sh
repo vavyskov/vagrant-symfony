@@ -1,11 +1,6 @@
 #!/bin/bash
 set -eux
 
-## Variables
-PHPMYADMIN_PASSWORD=phpmyadmin
-
-## -----------------------------------------------------------------------------
-
 ##There are a couple of ways how to execute the script:
 #SCRIPT_PATH="/path/to/script.sh"
 #$SCRIPT_PATH"
