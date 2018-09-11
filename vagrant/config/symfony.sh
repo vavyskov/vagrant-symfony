@@ -10,6 +10,19 @@ set -eux
 #EMAIL_USERNAME = user@centrum.cz
 #EMAIL_PASSWORD = password
 
+
+
+
+## Environment variables
+#source "env.sh"
+
+#mydir="$(dirname "${0}")"
+#source "${mydir}/env.sh"
+
+##https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within
+#DIR="$( cd "$( echo "${BASH_SOURCE[0]%/*}/" )"; pwd )"
+#source "${DIR}/env.sh"
+
 ## -----------------------------------------------------------------------------
 
 ## Apt configuration
@@ -198,8 +211,8 @@ opcache.enable_cli=1
 ;extension=mongodb.so
 
 ;; E-mail
+sendmail_path=/usr/sbin/sendmail -t -i
 ;sendmail_path=/usr/sbin/ssmtp -t
-;sendmail_path=/usr/sbin/sendmail -t
 EOF
 
 ## -----------------------------------------------------------------------------
@@ -356,15 +369,29 @@ apt-get install -y swapspace
 
 ## -----------------------------------------------------------------------------
 
-## Services
-service apache2 reload
-service postgresql reload
-#service swapspace status
-
-## -----------------------------------------------------------------------------
-
 ## E-mail
-apt-get install -y ssmtp
+
+## Postfix
+sudo debconf-set-selections <<< "postfix postfix/mailname string ${HOSTNAME}"
+sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
+apt-get install -y postfix
+sed -i "s/inet_interfaces = all/inet_interfaces = loopback-only/" /etc/postfix/main.cf
+
+
+
+## /etc/postfix/main.cf
+##mydestination = $myhostname, localhost.$mydomain, $mydomain
+
+
+
+##php.ini
+#sendmail_path = /usr/bin/env catchmail -f devel@example.com
+
+
+
+
+## SSMTP
+#apt-get install -y ssmtp
 #cp ./ssmtp.conf /etc/ssmtp/
 
 #cat << EOF > /etc/ssmtp/ssmtp.conf
@@ -383,7 +410,21 @@ apt-get install -y ssmtp
 #sed -i 's/#rewriteDomain=/rewriteDomain=example.com/' /etc/ssmtp/ssmtp.conf
 #sed -i 's/#FromLineOverride=YES/FromLineOverride=YES/' /etc/ssmtp/ssmtp.conf
 
+
+
+
+
+
+
 #apt-get install -y sendmail
+
+## -----------------------------------------------------------------------------
+
+## Services
+service apache2 reload
+service postgresql reload
+#service postfix restart
+#service swapspace status
 
 ## -----------------------------------------------------------------------------
 

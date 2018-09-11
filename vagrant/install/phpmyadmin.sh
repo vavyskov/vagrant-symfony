@@ -1,28 +1,6 @@
 #!/bin/bash
 set -eux
 
-##There are a couple of ways how to execute the script:
-#SCRIPT_PATH="/path/to/script.sh"
-#$SCRIPT_PATH"
-## or
-#. "$SCRIPT_PATH"
-## or
-#source "$SCRIPT_PATH"
-## or
-#bash "$SCRIPT_PATH"
-## or
-#eval '"$SCRIPT_PATH"'
-## or
-#OUTPUT=$("$SCRIPT_PATH")
-#echo $OUTPUT
-## or
-#OUTPUT=`"$SCRIPT_PATH"`
-#echo $OUTPUT
-## or
-#("$SCRIPT_PATH")
-## or
-#(exec "$SCRIPT_PATH")
-
 ## Install MariaDB
 source "mariadb.sh"
 
