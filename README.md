@@ -86,6 +86,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 - Apple detection do not work - port forwarding (triggers)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
+- Fix (Drupal) file permission on macOS
 
 ## ToDo
 
