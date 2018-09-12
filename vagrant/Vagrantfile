@@ -27,29 +27,100 @@ Vagrant.configure("2") do |config|
   ## Hostname
   config.vm.hostname = "devel.example.com"
 
+
+
   ## Guest hostname with prefix from the host computer
   ## https://stackoverflow.com/questions/25213786/vagrant-get-name-of-host-os
   #config.vm.hostname = "#{`hostname`[0..-2]}".sub(/\..*$/,'')+".example.com"
 
+  ## Public network (allows access on network)
+  #config.vm.network "public_network", type: "dhcp", bridge: 'en0: Wi-Fi (AirPort)'
 
 
 
-
-  ## Most operating systems (Linux, macOS) restrict ports <= 1024 to only privileged process
-  ## (typically processes running as an administrative user).
-  ## Port forwarding with ports <= 1024 may not work.
-
-  ## You can config port forwarding into VirtualBox:
-  ## Your VM -> Settings -> Network -> Advanced -> ports forwarding
-  ## Here you can add ports that you need.
-
-  ## Network
+  ## IP
   config.vm.network "private_network", ip: "192.168.33.10"
-  ## HTTP
-  config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
+
   ## MailCatcher
   config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 1025, host: 1025, host_ip: "127.0.0.1"
+
+
+
+
+
+  ## Port forwarding with ports <= 1024 may not work.
+  ## Unix-based hosts (e.g. Linux, Solaris, Mac OS X) restrict ports <= 1024 to only privileged process
+  ## (typically processes running as an administrative user).
+
+  ## The VirtualBox Manual says this about NAT mode limitation:
+  ## Forwarding host ports < 1024 impossible
+  ## On Unix-based hosts (e.g. Linux, Solaris, Mac OS X) it is not possible to bind to ports below 1024
+  ## from applications that are not run by root. As a result, if you try to configure such a port forwarding,
+  ## the VM will refuse to start.
+
+  ## You can config port forwarding into VirtualBox:
+  ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
+
+  ## HTTP and HTTPS
+  if Vagrant::Util::Platform.windows? then
+    config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+
+    #myHomeDir = ENV["USERPROFILE"]
+
+  else
+    config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 443, host: 4443, host_ip: "127.0.0.1"
+
+    #myHomeDir = "~"
+
+  end
+
+  ## Linux
+  if Vagrant::Util::Platform.linux? then
+
+    ## Port forwarding ???
+
+  end
+
+  ## Apple
+  if Vagrant::Util::Platform.platform =~ /darwin/ then
+  #if Vagrant::Util::Platform.darwin? then
+
+    ## Enable port forwarding on startup
+    config.trigger.after [:provision, :up, :reload] do |portup|
+      portup.info = "Enable port forwarding on startup..."
+      portup.run = {inline: "echo '
+        rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 80 -> 127.0.0.1 port 8080
+        rdr pass on lo0 inet proto tcp from any to 127.0.0.1 port 443 -> 127.0.0.1 port 4443
+      ' | sudo pfctl -ef - > /dev/null 2>&1"}
+    end
+
+    # Disable port forwarding on shutdown
+    config.trigger.before [:halt, :destroy] do |portdown|
+      portdown.info = "Disable port forwarding on shutdown..."
+      portdown.run = {inline: "sudo pfctl -df /etc/pf.conf > /dev/null 2>&1"}
+    end
+
+  end
+
+
+
+
+
+
+
+
+
+
+  ## Launch apache on startup
+  config.vm.provision "shell", inline: "service apache2 restart", run: "always"
+
+
+
+
+
 
 
 
