@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#set -eu
+
 ## Remove APT cache
 echo -e "\nRemoving APT cache...\n"
 apt-get clean -y

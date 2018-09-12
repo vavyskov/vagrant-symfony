@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#set -eu
+
 ## Environment variables
 
 HOSTNAME=$(hostname -d)

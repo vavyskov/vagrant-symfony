@@ -79,14 +79,16 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## FixMe
 
+- chmod u+x *.sh (!!! update box !!!)
 - Fix the need to Halt and Up or Reload VM immediately after crated from base box
 - Fix Apache error after created new project
 - Enable port 80 (Linux only)
 - ImageMagick with PHP 7.2 (image-tools.sh)
+- Restore MongoDB - check if the MongoDB is installed
 
 ## ToDo
 
-- Description e-mail sending configuration
+- Description e-mail sending configuration (php send-mail.php)
 - PHP version variable (env.sh)
 - Detect installed software - PHP Extensions
 - Better purge.sh script

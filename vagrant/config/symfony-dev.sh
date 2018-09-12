@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 ## New Project
 cp /vagrant/config/new-project.sh /home/

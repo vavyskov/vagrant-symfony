@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#set -eu
+
 FOLDER="/vagrant/database"
 
 ## Detect computer ID

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -eux
+set -eu
 
 ## E-mail
 #MX_RECORD=mail.website.cz

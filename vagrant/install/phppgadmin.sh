@@ -1,5 +1,11 @@
 #!/bin/bash
-set -eux
+set -eu
+
+## Detect permission
+if [ $(id -u) != 0 ]; then
+   echo -e "\nThis script must be run as root or with sudo prefix!\n"
+   exit
+fi
 
 ## Environment variables
 #source "../config/env.sh"
