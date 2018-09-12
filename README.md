@@ -83,6 +83,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 - Fix the need to Halt and Up or Reload VM immediately after crated from base box
 - Fix Apache error after created new project
 - Enable port 80 (Linux only)
+- Apple detection do not work - port forwarding (triggers)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
 

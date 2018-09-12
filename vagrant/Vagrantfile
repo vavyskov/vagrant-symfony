@@ -84,9 +84,9 @@ Vagrant.configure("2") do |config|
 
   end
 
-  ## Apple
-  if Vagrant::Util::Platform.platform =~ /darwin/ then
-  #if Vagrant::Util::Platform.darwin? then
+  ## FixMe: Apple detection do not work
+  #if Vagrant::Util::Platform.platform =~ /darwin/ then
+  if Vagrant::Util::Platform.darwin? then
 
     ## Enable port forwarding on startup
     config.trigger.after [:provision, :up, :reload] do |portup|

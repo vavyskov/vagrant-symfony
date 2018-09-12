@@ -13,7 +13,7 @@
 
     // Headers
     $headers = "MIME-Version: 1.0\r\n";
-    $headers .= "From: Development Team \r\n";
+    $headers .= "From: devel@example.com \r\n";
     $headers .= "To: $to\r\n";
     $headers .= "Content-Type: multipart/alternative;boundary=$boundary\r\n";
     $message = "This is a MIME encoded message.";
