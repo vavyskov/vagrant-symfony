@@ -115,9 +115,14 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
-            <td class="text-right">SSH ???</td>
+            <td>SSH</td>
             <td>
-                <?php echo(exec('ssh -V') ? exec('ssh -V') : $na); ?>
+                <?php
+                if (exec('ssh -V 2>&1')) {
+                    $ssh_version = explode(" ", exec('ssh -V 2>&1'));
+                }
+                echo($ssh_version ? $ssh_version[0] : $na);
+                ?>
             </td>
         </tr>
 
@@ -143,6 +148,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
                 } else {
                     echo($na);
                 }
+                //echo(exec("composer --version"));
                 //echo ($composer_version ? $composer_version[2] : $na);
                 ?>
             </td>
