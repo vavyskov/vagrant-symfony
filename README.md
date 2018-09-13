@@ -94,8 +94,11 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 - PHP version variable (env.sh)
 - Detect installed software - PHP Extensions
 - Better purge.sh script
+- Plugin vagrant-vbguest
+- Plugin vagrant-hostsupdater (vagrant-hostmanager)
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 
 ## Note
 
+- https://github.com/benjaminkott/bootstrap_package_box/blob/master/Vagrantfile
 - https://www.jhipster.tech/configuring-a-corporate-proxy/

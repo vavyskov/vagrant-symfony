@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
-  
+
   ## Sources (not required for vagrantup.com)
   #config.vm.box_url = "http://files.vagrantup.com/customBox.box"
   #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
