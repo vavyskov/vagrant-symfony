@@ -109,7 +109,7 @@ The folder "vagrant/install" contains several installation scripts:
 
 - Fix the need to Halt and Up or Reload VM immediately after crated from base box
 - Fix Apache error after created new project
-- Enable port 80 (Linux only)
+- Enable port 80 (Linux)
 - Apple detection do not work - port forwarding (triggers)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
@@ -118,11 +118,11 @@ The folder "vagrant/install" contains several installation scripts:
 ## ToDo
 
 - PHP version variable (env.sh)
-- Detect installed software - PHP Extensions
 - Better purge.sh script
 - Plugin vagrant-vbguest
 - Plugin vagrant-hostsupdater (vagrant-hostmanager)
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
+- Memcached
 
 ## Note
 

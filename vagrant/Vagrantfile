@@ -77,6 +77,11 @@ Vagrant.configure("2") do |config|
 
   end
 
+
+
+
+
+
   ## Linux
   if Vagrant::Util::Platform.linux? then
 
@@ -88,6 +93,19 @@ Vagrant.configure("2") do |config|
   #if Vagrant::Util::Platform.platform =~ /darwin/ then
   if Vagrant::Util::Platform.darwin? then
 
+  end
+
+
+
+
+
+
+
+  ## Detect host operation system
+  host = RbConfig::CONFIG['host_os']
+
+  ## Apple
+  if host =~ /darwin/
     ## Enable port forwarding on startup
     config.trigger.after [:provision, :up, :reload] do |portup|
       portup.info = "Enable port forwarding on startup..."
@@ -103,6 +121,12 @@ Vagrant.configure("2") do |config|
       portdown.run = {inline: "sudo pfctl -df /etc/pf.conf > /dev/null 2>&1"}
     end
 
+  ## Linux
+  elsif host =~ /linux/
+
+  # Windows
+  elsif host =~ /mswin|mingw|cygwin/
+
   end
 
 
@@ -114,8 +138,13 @@ Vagrant.configure("2") do |config|
 
 
 
+
+
+
+
   ## Launch apache on startup
-  config.vm.provision "shell", inline: "service apache2 restart", run: "always"
+#  config.vm.provision "shell", inline: "sudo service apache2 restart", run: "always"
+#  config.vm.provision "shell", inline: "/usr/sbin/service apache2 restart", run: "always"
 
 
 

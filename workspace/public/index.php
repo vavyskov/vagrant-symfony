@@ -108,13 +108,6 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
-            <td>Xdebug</td>
-            <td>
-                <?php echo(phpversion('xdebug') ? phpversion('xdebug') : $na); ?>
-            </td>
-        </tr>
-
-        <tr>
             <td>SSH</td>
             <td>
                 <?php
@@ -139,17 +132,16 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
-            <td class="text-right">Composer ???</td>
+            <td>Composer</td>
             <td>
                 <?php
+                putenv("COMPOSER_HOME=/home/vagrant/.composer");
                 if (exec('composer --version')) {
-                    echo $composer_version = exec('composer --version');
-                    //$composer_version = explode(" ", exec('composer --version'));
+                    $composer_version = explode(" ", exec('composer --version'));
+                    echo($composer_version[2]);
                 } else {
                     echo($na);
                 }
-                //echo(exec("composer --version"));
-                //echo ($composer_version ? $composer_version[2] : $na);
                 ?>
             </td>
         </tr>
@@ -172,6 +164,13 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>MongoDB</td>
             <td>
                 <?php echo(exec('mongod --version') ? exec('mongod --version') : $na); ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Xdebug</td>
+            <td>
+                <?php echo(phpversion('xdebug') ? phpversion('xdebug') : $na); ?>
             </td>
         </tr>
 
@@ -200,15 +199,6 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
                 ?>
             </td>
         </tr>
-
-        <tr>
-            <td class="text-right">OPcache</td>
-            <td>
-                <?php
-                echo("Fix extension detect");
-                ?>
-            </td>
-        </tr>
     </table>
 
     <h2>PHP Extensions</h2>
@@ -218,7 +208,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             "SQLite3" => "sqlite3",
             "GD" => "gd",
             "Multibyte String" => "mbstring",
-            "??? OPcache" => "opcache",
+            "OPcache" => "Zend OPcache",
             "XML" => "xml",
             "cURL" => "curl",
             "Zip" => "zip",
