@@ -13,7 +13,7 @@ if ! [ $? -eq 0 ] || echo $prompt | grep -q '^sudo:'; then
 fi
 
 ## Detect first parameter
-if [ "$1" = "" ]; then
+if [ $1 = "" ]; then
   echo -e "\nType project 'name' as the first parameter,"
   echo -e "optionally user 'password' as second parameter and"
   echo -e "optionally database 'password' as third parameter.\n"
@@ -21,7 +21,7 @@ if [ "$1" = "" ]; then
 fi
 
 # Detect user
-if id "$1" >/dev/null 2>&1; then
+if id $1 >/dev/null 2>&1; then
   echo -e "\nUser '$1' exists!\n"
   exit
 fi
@@ -47,7 +47,7 @@ fi
 ## -----------------------------------------------------------------------------
 
 ## Set user password
-if [ "$2" ]; then
+if [ $2 ]; then
   USER_PASSWD=$2
 else
   USER_PASSWD=$1
