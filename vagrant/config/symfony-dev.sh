@@ -3,6 +3,10 @@ set -eu
 
 ## New Project
 cp /vagrant/config/new-project.sh /home/
+chmod u+x /home/new-project.sh
+
+## Enable execute install scripts
+chmod u+x /vagrant/install/*.sh
 
 ## -----------------------------------------------------------------------------
 

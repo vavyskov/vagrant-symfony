@@ -77,9 +77,36 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
             vagrant destroy
             vagrant box update
 
+## Instalation scripts
+
+The folder "vagrant/install" contains several installation scripts:
+
+- **MailCatcher** displays sent emails on URL: `localhost:1080` or `192.168.33.10:1080`
+
+      cd /vagrant/install/
+      sudo ./mailcatcher.sh
+      
+    You can send a test e-mail using the command:
+    
+      php /vagrant/test/send-mail.php 
+
+- **SQLite** stores the entire database as a single cross-platform file
+
+      cd /vagrant/install/
+      sudo ./sqlite.sh
+
+- **MariaDB** is enhanced replacement for MySQL
+
+      cd /vagrant/install/
+      sudo ./mariadb.sh
+
+- **PhpMyAdmin** allows MySQL administration over the web
+
+      cd /vagrant/install/
+      sudo ./phpmyadmin.sh
+
 ## FixMe
 
-- chmod u+x *.sh (!!! update box !!!)
 - Fix the need to Halt and Up or Reload VM immediately after crated from base box
 - Fix Apache error after created new project
 - Enable port 80 (Linux only)
@@ -90,7 +117,6 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 ## ToDo
 
-- Description e-mail sending configuration (php send-mail.php)
 - PHP version variable (env.sh)
 - Detect installed software - PHP Extensions
 - Better purge.sh script

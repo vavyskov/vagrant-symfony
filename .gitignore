@@ -9,3 +9,4 @@
 .idea/
 
 # Ignore configuration files that may contain sensitive information
+vagrant/database/
