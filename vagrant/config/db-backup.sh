@@ -2,10 +2,10 @@
 
 #set -eu
 
-PATH="/vagrant/database"
+DB_PATH="/vagrant/database"
 
 ## Set computer ID
-echo $1 > $PATH/computer
+echo $1 > $DB_PATH/computer
 
 ## Information
 success() {
@@ -14,7 +14,7 @@ success() {
 
 ## Backup (MySQL, Mariadb)
 backup() {
-    sudo tar -czf $PATH/$1.tar.gz -C /var/lib/$1 .
+    sudo tar -czf $DB_PATH/$1.tar.gz -C /var/lib/$1 .
     success $1
 }
 
@@ -30,7 +30,7 @@ fi
 
 ## PostgreSQL
 if [ -d "/var/lib/postgresql" ]; then
-    PGUSER=postgres pg_dumpall | gzip > $PATH/postgres.sql.gz
+    PGUSER=postgres pg_dumpall | gzip > $DB_PATH/postgres.sql.gz
     success postgresql
 fi
 
