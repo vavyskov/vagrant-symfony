@@ -107,17 +107,16 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## FixMe
 
-- Fix the need to Halt and Up or Reload VM immediately after crated from base box
-- Fix Apache error after created new project
-- Enable port 80 (Linux)
-- Apple detection do not work - port forwarding (triggers)
+- Fix the need to Halt and Up or Reload VM immediately after crated from base box (Windows)
+- Fix Apache error after created new project (Windows)
+- Enable port 80 forwarding triggers (Linux)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
 - Fix (Drupal) file permission on macOS
 
 ## ToDo
 
-- PHP version variable (env.sh)
+- PHP version variable (env.sh) for symfony.sh (detect current path)
 - Better purge.sh script
 - Plugin vagrant-vbguest
 - Plugin vagrant-hostsupdater (vagrant-hostmanager)
