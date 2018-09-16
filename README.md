@@ -81,10 +81,10 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 The folder "vagrant/install" contains several installation scripts:
 
-- **MailCatcher** displays sent emails on URL: `localhost:1080` or `192.168.33.10:1080`
+- **MailDev** displays sent emails on URL: `localhost:1080` or `192.168.33.10:1080`
 
       cd /vagrant/install/
-      sudo ./mailcatcher.sh
+      sudo ./maildev.sh
       
     You can send a test e-mail using the command:
     
@@ -113,6 +113,7 @@ The folder "vagrant/install" contains several installation scripts:
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
 - Fix (Drupal) file permission on macOS
+- MailCatcher "From" is not the same as "Source From" (**MailDev**, MailHog)
 
 ## ToDo
 

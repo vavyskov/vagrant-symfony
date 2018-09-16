@@ -29,6 +29,12 @@ gem install mailcatcher --no-ri --no-rdoc
 echo "@reboot root mailcatcher --ip=0.0.0.0" >> /etc/crontab
 update-rc.d cron defaults
 
+## php.ini
+cat << EOF > /etc/php/${PHP_VERSION}/apache2/conf.d/php-mailcatcher.ini
+;; E-mail
+sendmail_path = /usr/bin/env catchmail -f devel@example.com
+EOF
+
 ## Make php use it to send mail
 echo "sendmail_path = /usr/bin/env catchmail -f 'devel@example.com'" >> /etc/php/${PHP_VERSION}/mods-available/mailcatcher.ini
 
@@ -42,3 +48,13 @@ mailcatcher --ip 0.0.0.0
 
 ## Services
 service apache2 reload
+
+
+
+
+
+## Uninstall ???
+#apt-get remove -y build-essential libsqlite3-dev ruby-dev
+#gem uninstall mailcatcher
+#phpdismod mailcatcher
+#service apache2 reload
