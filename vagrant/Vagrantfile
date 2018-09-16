@@ -82,14 +82,13 @@ Vagrant.configure("2") do |config|
 
 
 
-  ## Linux
+  ## FixMe: Linux port forwarding
   if Vagrant::Util::Platform.linux? then
 
     ## Port forwarding ???
 
   end
 
-  ## FixMe: Apple detection do not work
   #if Vagrant::Util::Platform.platform =~ /darwin/ then
   if Vagrant::Util::Platform.darwin? then
 
@@ -150,28 +149,40 @@ Vagrant.configure("2") do |config|
 
 
 
+## Version A
+#config.vm.synced_folder "../workspace/", "/home/vagrant/www", owner: "vagrant", group: "www-data", mount_options: ["dmode=775","fmode=664"]
 
+## Version B
+#config.vm.synced_folder "../workspace/", "/home/vagrant/www", mount_options: ["dmode=775","fmode=664"]
+## Add vagrant user to the default Apache group
+#config.vm.provision "shell", inline: "usermod -aG vagrant www-data"
+#config.vm.provision "shell", inline: "service apache2 reload"
 
+## Version C
+## Or modify 000-default.conf (vagrant vagrant)
+#config.vm.synced_folder "../workspace/", "/home/vagrant/www"
 
+## Version D
   ## Share folder  
   config.vm.synced_folder "../workspace", "/var/nfs",
     id:"default",
-    type:"nfs", 
-    mount_options:['rw','vers=3','tcp'],
+    type:"nfs",
+    mount_options:['rw', 'vers=3', 'tcp'],
     linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async'],
     bsd__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
-
   config.nfs.map_uid = Process.uid
   config.nfs.map_gid = Process.gid
-  
   config.bindfs.bind_folder "/var/nfs", "/home/vagrant/www"
   
-  #config.bindfs.bind_folder "/vagrant-after-provision", "another/guest/mount/point", after: :provision
+  ##config.bindfs.bind_folder "/vagrant-after-provision", "another/guest/mount/point", after: :provision
 
 
+## FixMe: Temporary with "Version D" since create new package box
+config.vm.provision "shell", inline: "cp /vagrant/config/apache-dev.conf /etc/apache2/sites-available/000-default.conf"
+config.vm.provision "shell", inline: "service apache2 reload"
 
 
-
+## Note
 #:bsd__nfs_options => ["-maproot=0:0"]
 #bsd__nfs_options: ["alldirs","async","nolock"]
 
@@ -179,7 +190,7 @@ Vagrant.configure("2") do |config|
 
 
 
-
+## ToDo: Check hostname function in Windows and Linux?
   ## Backup database
   config.trigger.before [:halt, :suspend, :destroy] do |backup|
     backup.info = "The database backup is in progress..."
