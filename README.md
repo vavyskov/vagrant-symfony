@@ -118,8 +118,7 @@ The folder "vagrant/install" contains several installation scripts:
 
 - PHP version variable (env.sh) for symfony.sh (detect current path)
 - Better purge.sh script
-- Plugin vagrant-vbguest
-- Plugin vagrant-hostsupdater (vagrant-hostmanager)
+- Plugin: vagrant-vbguest, vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
 
