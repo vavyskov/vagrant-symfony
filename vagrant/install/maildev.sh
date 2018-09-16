@@ -9,10 +9,6 @@ fi
 
 
 
-## https://fostermade.co/blog/email-testing-for-development-using-mailcatcher
-
-
-
 ## Environment variables
 #source "../config/env.sh"
 
@@ -22,7 +18,7 @@ fi
 apt-get update
 
 ## MailDev
-npm install -g maildev
+npm install -g maildev forever
 
 
 
@@ -32,9 +28,6 @@ npm install -g maildev
 #smtp_port = 1025
 
 
-
-## postfix
-sed -i "s/relayhost = /relayhost = 127.0.0.1:1025/" /etc/postfix/main.cf
 
 ## Set port (default 1025)
 #maildev -s 25
@@ -46,15 +39,19 @@ sed -i "s/relayhost = /relayhost = 127.0.0.1:1025/" /etc/postfix/main.cf
 #maildev
 
 ## Run MailDev as service
-npm install -g forever
-forever start /usr/bin/maildev
+forever start $(which maildev)
 
 ## Another forever commands
 #forever list
-#forever stop /usr/bin/maildev
+#forever stop $(which maildev)
 #forever stopall
 
-#forever start --minUptime 1 --spinSleepTime 1000 -w /usr/bin/maildev
+#forever start --minUptime 1 --spinSleepTime 1000 -w $(which maildev)
+
+
+
+## postfix
+sed -i "s/relayhost = /relayhost = 127.0.0.1:1025/" /etc/postfix/main.cf
 
 ## -----------------------------------------------------------------------------
 
