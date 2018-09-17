@@ -31,17 +31,24 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 4. Open the web browser:
 
-    Web:
+    **Web**:
     - URL: `localhost` or `192.168.33.10`
     - Edit the directory `workspace` as you needed
 
-    Adminer:
+    **Adminer**:
     - URL: `localhost/adminer` or `192.168.33.10/adminer`
 	- System: `PostgreSQL`
     - Server: `localhost`
 	- User: `postgresql`
 	- Password: `postgresql`
 	- Database: `postgresql`
+	
+	**MailDev** displays sent emails:
+	- URL: `localhost:1080` or `192.168.33.10:1080`
+    - Open the terminal, navigate to the directory containing the file Vagrantfile and send a test e-mail:
+        
+          vagrant ssh
+          php /vagrant/test/send-mail.php 
 
 5. Optional configure your system `hosts` file:
 
@@ -81,15 +88,6 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer)
 
 The folder "vagrant/install" contains several installation scripts:
 
-- **MailDev** displays sent emails on URL: `localhost:1080` or `192.168.33.10:1080`
-
-      cd /vagrant/install/
-      sudo ./maildev.sh
-      
-    You can send a test e-mail using the command:
-    
-      php /vagrant/test/send-mail.php 
-
 - **SQLite** stores the entire database as a single cross-platform file
 
       cd /vagrant/install/
@@ -122,6 +120,7 @@ The folder "vagrant/install" contains several installation scripts:
 - Plugin: vagrant-vbguest, vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
+- MailDev UI - Czech date and time format
 
 ## Note
 

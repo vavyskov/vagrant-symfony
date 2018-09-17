@@ -25,7 +25,7 @@ apt-get update
 apt-get install -y build-essential libsqlite3-dev ruby-dev
 gem install mailcatcher --no-ri --no-rdoc
 
-## Make it start on boot
+## Make MailCatcher start on boot
 echo "@reboot root mailcatcher --ip=0.0.0.0" >> /etc/crontab
 update-rc.d cron defaults
 
