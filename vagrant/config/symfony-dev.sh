@@ -37,19 +37,21 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 ## -----------------------------------------------------------------------------
 
 ## XDebug (version A)
-#apt-get install -y php-xdebug
-#cp /vagrant/config/xdebug-docker.ini /usr/local/etc/php/conf.d/
-#echo "zend_extension = '$(find / -name xdebug.so 2> /dev/null)'\n$(cat /usr/local/etc/php/conf.d/xdebug-docker.ini)" > /usr/local/etc/php/conf.d/xdebug-docker.ini
-#cp /usr/local/etc/php/conf.d/xdebug-docker.ini /etc/php5/cli/conf.d/
+apt-get install -y php-xdebug
+#cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 
 ## XDebug (version B)
 #apt-get install -y php-pear php-dev xdebug
-#echo "
-#[xdebug]
-#zend_extension=/usr/lib/php/20170718/xdebug.so
-#xdebug.remote_enable=1
-#xdebug.remote_host=192.168.33.1
-#xdebug.remote_port=9000">>/etc/php/7.2/apache2/php.ini
+#cat << EOF >> /etc/php/7.2/apache2/conf.d/php-dev.ini
+#[Xdebug]
+#xdebug.remote_enable = 1
+#xdebug.profiler_enable_trigger = 1
+#xdebug.profiler_enable = 0
+#xdebug.profiler_output_dir = "/tmp"
+#;zend_extension=/usr/lib/php/20170718/xdebug.so
+#;xdebug.remote_host=localhost
+#;xdebug.remote_port=9000
+#EOF
 
 ## XDebug (version C)
 #echo "-- Installing Xdebug --"
@@ -63,6 +65,12 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 #xdebug.remote_port=9001
 #xdebug.idekey=PHP_STORM
 #END
+
+## XDebug (version D)
+##apt-get install -y php-xdebug
+#cp /vagrant/config/xdebug-docker.ini /usr/local/etc/php/conf.d/
+#echo "zend_extension = '$(find / -name xdebug.so 2> /dev/null)'\n$(cat /usr/local/etc/php/conf.d/xdebug-docker.ini)" > /usr/local/etc/php/conf.d/xdebug-docker.ini
+#cp /usr/local/etc/php/conf.d/xdebug-docker.ini /etc/php5/cli/conf.d/
 
 ## -----------------------------------------------------------------------------
 
