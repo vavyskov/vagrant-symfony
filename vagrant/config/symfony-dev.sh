@@ -36,44 +36,6 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
-## XDebug (version A)
-apt-get install -y php-xdebug
-#cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
-
-## XDebug (version B)
-#apt-get install -y php-pear php-dev xdebug
-#cat << EOF >> /etc/php/7.2/apache2/conf.d/php-dev.ini
-#[Xdebug]
-#xdebug.remote_enable = 1
-#xdebug.profiler_enable_trigger = 1
-#xdebug.profiler_enable = 0
-#xdebug.profiler_output_dir = "/tmp"
-#;zend_extension=/usr/lib/php/20170718/xdebug.so
-#;xdebug.remote_host=localhost
-#;xdebug.remote_port=9000
-#EOF
-
-## XDebug (version C)
-#echo "-- Installing Xdebug --"
-#sudo aptitude install -y php-xdebug >> /vagrant/build.log 2>&1
-#echo "-- Installing libpng-dev (required for some node package) --"
-#sudo aptitude install -y libpng-dev >> /vagrant/build.log 2>&1
-#echo "-- Configure xDebug (idekey = PHP_STORM) --"
-#sudo tee -a /etc/php/7.1/mods-available/xdebug.ini << END
-#xdebug.remote_enable=1
-#xdebug.remote_connect_back=1
-#xdebug.remote_port=9001
-#xdebug.idekey=PHP_STORM
-#END
-
-## XDebug (version D)
-##apt-get install -y php-xdebug
-#cp /vagrant/config/xdebug-docker.ini /usr/local/etc/php/conf.d/
-#echo "zend_extension = '$(find / -name xdebug.so 2> /dev/null)'\n$(cat /usr/local/etc/php/conf.d/xdebug-docker.ini)" > /usr/local/etc/php/conf.d/xdebug-docker.ini
-#cp /usr/local/etc/php/conf.d/xdebug-docker.ini /etc/php5/cli/conf.d/
-
-## -----------------------------------------------------------------------------
-
 ## PostgreSQL
 
 ## Add database
