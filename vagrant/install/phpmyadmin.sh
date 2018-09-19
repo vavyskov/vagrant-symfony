@@ -7,8 +7,11 @@ if [ $(id -u) != 0 ]; then
    exit
 fi
 
+## Current script directory path
+CURRENT_DIRECTORY=$(dirname $0)
+
 ## Install MariaDB
-source "mariadb.sh"
+source "$CURRENT_DIRECTORY/mariadb.sh"
 
 ## Show if MySQL or Mariadb is installed
 #dpkg -l | grep -e mysql -e mariadb

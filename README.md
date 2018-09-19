@@ -90,18 +90,15 @@ The folder "vagrant/install" contains several installation scripts:
 
 - **SQLite** stores the entire database as a single cross-platform file
 
-      cd /vagrant/install/
-      sudo ./sqlite.sh
+      sudo /vagrant/install/sqlite.sh
 
 - **MariaDB** is enhanced replacement for MySQL
 
-      cd /vagrant/install/
-      sudo ./mariadb.sh
+      sudo /vagrant/install/mariadb.sh
 
 - **PhpMyAdmin** allows MySQL administration over the web
 
-      cd /vagrant/install/
-      sudo ./phpmyadmin.sh
+      sudo /vagrant/install/phpmyadmin.sh
 
 ## FixMe
 
@@ -115,12 +112,13 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## ToDo
 
-- PHP version variable (env.sh) for symfony.sh (detect current path)
+- Convert Debian settings, Apache, PHP and PostgreSQL into install scripts
 - Better purge.sh script
 - Plugin: vagrant-vbguest, vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
 - MailDev UI - Czech date and time format
+- Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 
 ## Note
 

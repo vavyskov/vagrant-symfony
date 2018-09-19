@@ -7,8 +7,11 @@ if [ $(id -u) != 0 ]; then
    exit
 fi
 
+## Current script directory path
+CURRENT_DIRECTORY=$(dirname $0)
+
 ## Environment variables
-#source "../config/env.sh"
+source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 

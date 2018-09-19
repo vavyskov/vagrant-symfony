@@ -1,27 +1,16 @@
 #!/bin/bash
-set -eu
+#set -eu
+set -e
 
-## E-mail
-#MX_RECORD=mail.website.cz
-#EMAIL_DOMAIN=website.cz
-#HOSTNAME=example.com
-
-#EMAIL_SMTP = smtp.centrum.cz
-#EMAIL_USERNAME = user@centrum.cz
-#EMAIL_PASSWORD = password
-
-
-
+## Current script directory path
+if [[ $1 = "vagrant" ]]; then
+  CURRENT_DIRECTORY="/vagrant/config"
+else
+  CURRENT_DIRECTORY=$(dirname $0)
+fi
 
 ## Environment variables
-#source "env.sh"
-
-#mydir="$(dirname "${0}")"
-#source "${mydir}/env.sh"
-
-##https://stackoverflow.com/questions/59895/getting-the-source-directory-of-a-bash-script-from-within
-#DIR="$( cd "$( echo "${BASH_SOURCE[0]%/*}/" )"; pwd )"
-#source "${DIR}/env.sh"
+source "$CURRENT_DIRECTORY/env.sh"
 
 ## -----------------------------------------------------------------------------
 
@@ -156,21 +145,21 @@ a2enmod rewrite expires
 
 ## -----------------------------------------------------------------------------
 
-## PHP 7.0
-#apt-get install -y php php-gd php-mbstring php-opcache php-xml php-curl php-zip php-ldap
-##apt-get install -y php-cli php-xdebug libpng-dev
+## PHP 7.0 as default source
 
-## PHP 7.2
+## PHP 7.2 source
 apt-get install -y apt-transport-https lsb-release ca-certificates
 wget https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php.gpg
 sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
 apt-get update
 ## apt-cache search php7.2
-apt-get install -y php7.2 php7.2-gd php7.2-mbstring php7.2-opcache php7.2-xml php7.2-curl php7.2-zip php7.2-ldap
+
+## PHP installation
+apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring php$PHP_VERSION-opcache php$PHP_VERSION-xml php$PHP_VERSION-curl php$PHP_VERSION-zip php$PHP_VERSION-ldap
+#apt-get install -y php$PHP_VERSION-cli libpng$PHP_VERSION-dev
 
 ## PHP configuration
-#cat << EOF > /etc/php/7.0/apache2/conf.d/php-default.ini
-cat << EOF > /etc/php/7.2/apache2/conf.d/php-default.ini
+cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini
 ;; Time zone
 date.timezone=Europe/Prague
 

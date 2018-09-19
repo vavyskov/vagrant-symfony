@@ -1,6 +1,6 @@
 #!/bin/bash
-
 #set -eu
+set -e
 
 DOMAIN=$(hostname --domain)
 VHOST_PATH="/etc/apache2/sites-available/"

@@ -1,5 +1,18 @@
 #!/bin/bash
-set -eu
+#set -eu
+set -e
+
+## Current script directory path
+if [[ $1 = "vagrant" ]]; then
+  CURRENT_DIRECTORY="/vagrant/config"
+else
+  CURRENT_DIRECTORY=$(dirname $0)
+fi
+
+## Environment variables
+source "$CURRENT_DIRECTORY/env.sh"
+
+## -----------------------------------------------------------------------------
 
 ## New Project
 cp /vagrant/config/new-project.sh /home/
@@ -24,8 +37,7 @@ cp /vagrant/config/apache-dev.conf /etc/apache2/sites-available/000-default.conf
 ## -----------------------------------------------------------------------------
 
 ## PHP configuration
-#cp /vagrant/config/php-dev.ini /etc/php/7.0/apache2/conf.d/
-cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
+cp /vagrant/config/php-dev.ini /etc/php/$PHP_VERSION/apache2/conf.d/
 
 ## -----------------------------------------------------------------------------
 
@@ -39,18 +51,29 @@ cp /vagrant/config/php-dev.ini /etc/php/7.2/apache2/conf.d/
 ## PostgreSQL
 
 ## Add database
-sudo -u postgres createdb postgresql
+#sudo -u postgres createdb postgresql
+
+## Add database if does not exist
+sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'postgresql'" | grep -q 1 || sudo -u postgres psql -c "
+    CREATE DATABASE postgresql
+"
 
 ## Add user (role)
 ## CREATE USER xyz (alias: CREATE ROLE xyz LOGIN)
-sudo -u postgres psql -c "
+#sudo -u postgres psql -c "
+#    CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
+#    GRANT ALL ON DATABASE postgresql TO postgresql;
+#    ALTER DATABASE postgresql OWNER TO postgresql;
+#    REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
+#"
+
+## Add user (role) if does not exist
+sudo -u postgres psql -tc "SELECT 1 FROM pg_user WHERE usename = 'postgresql'" | grep -q 1 || sudo -u postgres psql -c "
     CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
     GRANT ALL ON DATABASE postgresql TO postgresql;
     ALTER DATABASE postgresql OWNER TO postgresql;
     REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
 "
-
-
 
 
 
@@ -114,3 +137,9 @@ sudo -u postgres psql -c "
 ## Services
 service apache2 reload
 service postgresql reload
+
+## -----------------------------------------------------------------------------
+
+## Install
+bash "$CURRENT_DIRECTORY/../install/maildev.sh"
+bash "$CURRENT_DIRECTORY/../install/xdebug.sh"
