@@ -55,7 +55,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>Linux</td>
             <td>
                 <?php
-                echo(exec('lsb_release -d') ? ltrim(strstr(exec('lsb_release -d'), ":"), ":") : $na);
+                echo(`lsb_release -d 2>&1` ? ltrim(strstr(`lsb_release -d`, ":"), ":") : $na);
                 ?>
             </td>
         </tr>
@@ -85,8 +85,8 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>MySQL</td>
             <td>
                 <?php
-                if (exec('mysql -V')) {
-                    $mysql_version = explode(" ", exec('mysql -V'));
+                if (`mysql -V 2>/dev/null`) {
+                    $mysql_version = explode(" ", `mysql -V`);
                     echo(substr($mysql_version[5], 0, -1));
                 } else {
                     echo($na);
@@ -99,10 +99,12 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>PostgreSQL</td>
             <td>
                 <?php
-                if (exec('psql -V')) {
-                    $pg_version = explode(" ", exec('psql -V'));
+                if (`psql -V 2>&1`) {
+                    $pg_version = explode(" ", `psql -V`);
+                    echo($pg_version[2]);
+                } else {
+                    echo($na);
                 }
-                echo($pg_version ? $pg_version[2] : $na);
                 ?>
             </td>
         </tr>
@@ -111,10 +113,12 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>SSH</td>
             <td>
                 <?php
-                if (exec('ssh -V 2>&1')) {
-                    $ssh_version = explode(" ", exec('ssh -V 2>&1'));
+                if (`ssh -V 2>&1`) {
+                    $ssh_version = explode(" ", `ssh -V 2>&1`);
+                    echo($ssh_version[0]);
+                } else {
+                    echo($na);
                 }
-                echo($ssh_version ? $ssh_version[0] : $na);
                 ?>
             </td>
         </tr>
@@ -123,10 +127,12 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>Git</td>
             <td>
                 <?php
-                if (exec('git --version')) {
-                    $git_version = explode(" ", exec('git --version'));
+                if (`git --version 2>&1`) {
+                    $git_version = explode(" ", `git --version`);
+                    echo($git_version[2]);
+                } else {
+                    echo($na);
                 }
-                echo($git_version ? $git_version[2] : $na);
                 ?>
             </td>
         </tr>
@@ -136,8 +142,8 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>
                 <?php
                 putenv("COMPOSER_HOME=/home/vagrant/.composer");
-                if (exec('composer --version')) {
-                    $composer_version = explode(" ", exec('composer --version'));
+                if (`composer --version 2>&1`) {
+                    $composer_version = explode(" ", `composer --version`);
                     echo($composer_version[2]);
                 } else {
                     echo($na);
@@ -149,21 +155,47 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         <tr>
             <td>Node.js</td>
             <td>
-                <?php echo(exec('nodejs -v') ? ltrim(exec('nodejs -v'), 'v') : $na); ?>
+                <?php echo(`nodejs -v 2>&1` ? ltrim(`nodejs -v`, 'v') : $na); ?>
             </td>
         </tr>
 
         <tr>
             <td>Yarn</td>
             <td>
-                <?php echo(exec('yarn -v') ? exec('yarn -v') : $na); ?>
+                <?php echo(`yarn -v 2>&1` ? `yarn -v` : $na); ?>
             </td>
         </tr>
 
         <tr>
             <td>MongoDB</td>
             <td>
-                <?php echo(exec('mongod --version') ? exec('mongod --version') : $na); ?>
+                <?php
+                if (`mongod --version 2>/dev/null`) {
+                    $mongodb_version = explode(" ", `mongo --version`);
+                    echo($mongodb_version[3]);
+                } else {
+                    echo($na);
+                }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>SQLite</td>
+            <td>
+                <?php
+                if (`sqlite3 --version 2>/dev/null`) {
+                    $sqlite3_version = explode(" ", `sqlite3 --version`);
+                    echo($sqlite3[0]);
+                } else if (class_exists('SQLite3')) {
+                    $sql_db = new PDO('sqlite::memory:');
+                    print_r($sql_db->query('select sqlite_version()')->fetch()[0]);
+                    $sql_db = null;
+                } else {
+                    //throw new Exception('SQLite not installed');
+                    echo($na);
+                }
+                ?>
             </td>
         </tr>
 
@@ -178,8 +210,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td class="text-right">Image Magick ???</td>
             <td>
                 <?php
-                //echo (exec('convert -showversion') ? exec('convert -showversion') : 'N/A');
-                echo(exec('convert -version') ? exec('convert -version') : $na);
+                echo(`convert -version 2>/dev/null` ? `convert -version` : $na);
                 ?>
             </td>
         </tr>
@@ -205,7 +236,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
     <table class='table table-striped border-bottom mb-5'>
         <?php
         $php_extension = array(
-            "SQLite3" => "sqlite3",
+            "SQLite (PDO)" => "sqlite3",
             "GD" => "gd",
             "Multibyte String" => "mbstring",
             "OPcache" => "Zend OPcache",

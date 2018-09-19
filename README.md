@@ -102,8 +102,6 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## FixMe
 
-- Fix the need to Halt and Up or Reload VM immediately after crated from base box (Windows)
-- Fix Apache error after created new project (Windows)
 - Enable port 80 forwarding triggers (Linux)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed

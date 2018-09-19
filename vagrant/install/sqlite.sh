@@ -19,6 +19,7 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 apt-get update
 
 ## SQLite
+#apt-get install -y sqlite3
 apt-get install -y php${PHP_VERSION}-sqlite3
 
 ## -----------------------------------------------------------------------------
