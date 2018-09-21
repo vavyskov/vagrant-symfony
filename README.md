@@ -33,7 +33,7 @@ Symfony stack (Debian, Apache, PHP, XDebug, PostgreSQL, Node.js, Yarn, Adminer, 
 
     **Web**:
     - URL: `localhost` or `192.168.33.10`
-    - Edit the directory `workspace` as you needed
+    - Edit the local directory `www` as you needed
 
     **Adminer**:
     - URL: `localhost/adminer` or `192.168.33.10/adminer`

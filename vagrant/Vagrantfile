@@ -148,7 +148,7 @@ Vagrant.configure("2") do |config|
 
 
   ## Share folder  
-  config.vm.synced_folder "../workspace", "/var/nfs",
+  config.vm.synced_folder "../www", "/var/nfs",
     id:"default",
     type:"nfs",
     mount_options:['rw', 'vers=3', 'tcp'],
