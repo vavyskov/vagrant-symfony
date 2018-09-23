@@ -18,8 +18,6 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 ## Sources
 apt-get update
 
-
-
 ## Set root password (Secure)
 debconf-set-selections <<< "mysql-server mysql-server/root_password password '$MARIADB_ROOT_PASSWORD'"
 debconf-set-selections <<< "mysql-server mysql-server/root_password_again password '$MARIADB_ROOT_PASSWORD'"
@@ -29,8 +27,25 @@ debconf-set-selections <<< "mysql-server mysql-server/root_password_again passwo
 
 
 
-## Mariadb
-apt install -y mysql-server php${PHP_VERSION}-mysql
+
+
+## Mariadb (old)
+apt-get install -y mysql-server php${PHP_VERSION}-mysql
+
+## Mariadb (10.3) - UPGRADE ONLY - DO NOT WORK ALONE WITHOUT "old" Mariadb (10.1) installation :(
+apt-get install -y software-properties-common dirmngr
+apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xF1656F24C74CD1D8
+## ToDo: Latest version link?
+add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://mirror.vpsfree.cz/mariadb/repo/10.3/debian stretch main'
+apt-get update
+apt-get install -y mariadb-server php${PHP_VERSION}-mysql
+## ToDo: File 50-server.cnf does not exist without "old" Mariadb (10.1) installation...
+sed -i '/\[mysqld\]/a\plugin-load-add = auth_socket.so' /etc/mysql/mariadb.conf.d/50-server.cnf
+systemctl restart mariadb.service
+
+
+
+
 
 ## Mariadb - set all permissions for root user (Optional)
 ## Enable e.g. access from PhpMyAdmin

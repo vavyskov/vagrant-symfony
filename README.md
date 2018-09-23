@@ -1,6 +1,6 @@
 # vagrant-symfony
 
-Symfony stack (Debian, Apache, PHP, XDebug, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
+Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
 
 ## Requirements
 1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
@@ -64,6 +64,7 @@ Symfony stack (Debian, Apache, PHP, XDebug, PostgreSQL, Node.js, Yarn, Adminer, 
         vagrant ssh
         rm -r www/*
         composer create-project symfony/website-skeleton www
+        composer remove symfony/web-server-bundle
 
 7. The database is automatically restore and backup by using the triggers:
 
@@ -88,6 +89,10 @@ Symfony stack (Debian, Apache, PHP, XDebug, PostgreSQL, Node.js, Yarn, Adminer, 
 
 The folder "vagrant/install" contains several installation scripts:
 
+- **XDebug** debugger and profiler tool for PHP
+
+      sudo /vagrant/install/xdebug.sh
+
 - **SQLite** stores the entire database as a single cross-platform file
 
       sudo /vagrant/install/sqlite.sh
@@ -105,8 +110,6 @@ The folder "vagrant/install" contains several installation scripts:
 - Enable port 80 forwarding triggers (Linux)
 - ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
-- Fix (Drupal) file permission on macOS
-- MailCatcher "From" is not the same as "Source From" (**MailDev**, MailHog)
 
 ## ToDo
 
@@ -117,8 +120,12 @@ The folder "vagrant/install" contains several installation scripts:
 - Memcached
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
+- MariaDB (latest only)
+- PhpMyAdmin (latest only) configure storage permission
+- PhpMyAdmin cron auto update
 
 ## Note
 
+- MailCatcher "From" is not the same as "Source From" (**MailDev**, MailHog)
 - https://github.com/benjaminkott/bootstrap_package_box/blob/master/Vagrantfile
 - https://www.jhipster.tech/configuring-a-corporate-proxy/

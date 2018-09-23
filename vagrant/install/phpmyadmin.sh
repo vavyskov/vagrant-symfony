@@ -10,11 +10,22 @@ fi
 ## Current script directory path
 CURRENT_DIRECTORY=$(dirname $0)
 
-## Install MariaDB
-source "$CURRENT_DIRECTORY/mariadb.sh"
+## Environment variables
+source "$CURRENT_DIRECTORY/../config/env.sh"
 
-## Show if MySQL or Mariadb is installed
-#dpkg -l | grep -e mysql -e mariadb
+
+
+
+
+## Dependency detection
+if ! [ -d "/var/lib/mysql" ]; then
+    ## Install MariaDB
+    source "$CURRENT_DIRECTORY/mariadb.sh"
+fi
+
+
+
+
 
 ## -----------------------------------------------------------------------------
 
@@ -28,16 +39,37 @@ sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver mul
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $PHPMYADMIN_PASSWORD"
 sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PHPMYADMIN_PASSWORD"
 
-## PhpMyAdmin - installation
-sudo apt-get -y install phpmyadmin
 
+
+
+
+## PhpMyAdmin (old)
+sudo apt-get -y install phpmyadmin
 ## PhpMyAdmin - security
 chown vagrant:vagrant /var/lib/phpmyadmin/blowfish_secret.inc.php
+## PhpMyAdmin - storage permission
+cp /vagrant/config/phpmyadmin-debian.inc.php /etc/phpmyadmin/config.inc.php
+
+## PhpMyAdmin (latest) - UPGRADE ONLY - "storage permission" DO NOT WORK ALONE WITHOUT "old" PhpMyAdmin installation :(
+curl -fSL "https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz" -o /tmp/phpmyadmin.tar.gz
+rm -fr /usr/share/phpmyadmin
+mkdir /usr/share/phpmyadmin
+tar -xz --strip-components=1 -f /tmp/phpmyadmin.tar.gz -C /usr/share/phpmyadmin
+rm /tmp/phpmyadmin.tar.gz
+## Alias
+echo "Alias /phpmyadmin /usr/share/phpmyadmin" | sudo tee /etc/apache2/conf-available/phpmyadmin.conf
+a2enconf phpmyadmin.conf
+service apache2 reload
+## ToDo: Cron auto update
+## PhpMyAdmin - storage permission
+cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
+## PhpMyAdmin - security
+mkdir /usr/share/phpmyadmin/tmp
+chown vagrant:vagrant /usr/share/phpmyadmin/tmp
+RANDOMBLOWFISHSECRET=`openssl rand -base64 32`
+sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RANDOMBLOWFISHSECRET'/" /usr/share/phpmyadmin/config.inc.php
 
 
-
-#randomBlowfishSecret=`openssl rand -base64 32`;
-#sed -e "s|cfg\['blowfish_secret'\] = ''|cfg['blowfish_secret'] = '$randomBlowfishSecret'|" config.sample.inc.php > config.inc.php
 
 
 
@@ -46,7 +78,6 @@ mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
     GRANT ALL PRIVILEGES ON phpmyadmin.* TO phpmyadmin@localhost IDENTIFIED BY '$PHPMYADMIN_PASSWORD' WITH GRANT OPTION;
     FLUSH PRIVILEGES;
 "
-cp /vagrant/config/phpmyadmin-config.inc.php /etc/phpmyadmin/config.inc.php
 
 ## -----------------------------------------------------------------------------
 
