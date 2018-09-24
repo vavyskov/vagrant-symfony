@@ -3,192 +3,229 @@
 
 Vagrant.configure("2") do |config|
 
-  ## Sources (not required for vagrantup.com)
-  #config.vm.box_url = "http://files.vagrantup.com/customBox.box"
-  #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
-  #config.vm.box_url = "file:///opt/vagrant/boxes/customBox.box"
+    ## Sources (not required for vagrantup.com)
+    #config.vm.box_url = "http://files.vagrantup.com/customBox.box"
+    #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
+    #config.vm.box_url = "file:///opt/vagrant/boxes/customBox.box"
   
   
   
   
   
-  ## Box (required) - Template
-  config.vm.box = "vavyskov/symfony"
+    ## Box (required) - Template
+    config.vm.box = "vavyskov/symfony"
+
+    ## Enable when do not use "Template"
+#   config.vm.box = "debian/contrib-stretch64"
+#   config.vm.provision :shell, path: "config/symfony.sh", :args => ["vagrant"]
+#   config.vm.provision :shell, path: "config/symfony-dev.sh", :args => ["vagrant"]
+
+
+
+
+
+    ## Hostname
+    config.vm.hostname = "devel.example.com"
+
+
+
+    ## Guest hostname with prefix from the host computer
+    ## https://stackoverflow.com/questions/25213786/vagrant-get-name-of-host-os
+    #config.vm.hostname = "#{`hostname`[0..-2]}".sub(/\..*$/,'')+".example.com"
+
+    ## Public network (allows access on network)
+    #config.vm.network "public_network", type: "dhcp", bridge: 'en0: Wi-Fi (AirPort)'
+
+
+
+    ## IP
+    config.vm.network "private_network", ip: "192.168.33.10"
+
+    ## MailDev
+    config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 1025, host: 1025, host_ip: "127.0.0.1"
+
+
+
+
+
+    ## Port forwarding with ports <= 1024 may not work.
+    ## Unix-based hosts (e.g. Linux, Solaris, Mac OS X) restrict ports <= 1024 to only privileged process
+    ## (typically processes running as an administrative user).
+
+    ## The VirtualBox Manual says this about NAT mode limitation:
+    ## Forwarding host ports < 1024 impossible
+    ## On Unix-based hosts (e.g. Linux, Solaris, Mac OS X) it is not possible to bind to ports below 1024
+    ## from applications that are not run by root. As a result, if you try to configure such a port forwarding,
+    ## the VM will refuse to start.
+
+    ## You can config port forwarding into VirtualBox:
+    ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
+
+    ## HTTP and HTTPS
+    if Vagrant::Util::Platform.windows? then
+        config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
+        config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+
+        #myHomeDir = ENV["USERPROFILE"]
+
+    else
+        config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+        config.vm.network "forwarded_port", guest: 443, host: 4443, host_ip: "127.0.0.1"
+
+        #myHomeDir = "~"
+
+    end
+
+
+
+
+    if Vagrant::Util::Platform.windows? then
+#       if Vagrant.has_plugin?("vagrant-winnfsd")
+#           config.winnfsd.logging = "on"
+#           config.winnfsd.uid = 1
+#           config.winnfsd.gid = 1
+#       end
+
+#        unless Vagrant.has_plugin?("vagrant-winnfsd")
+#            system("vagrant plugin install vagrant-winnfsd") || exit!
+#            exit system("vagrant")
+#        end
+
+#        config.vagrant.plugins = ["vagrant-winnfsd"]
+    end
+
+    ## FixMe: Linux port forwarding
+    if Vagrant::Util::Platform.linux? then
+
+        ## Port forwarding ???
+
+    end
+
+    #if Vagrant::Util::Platform.platform =~ /darwin/ then
+     if Vagrant::Util::Platform.darwin? then
+
+        ## Enable port forwarding on startup
+        config.trigger.after [:provision, :up, :reload] do |portup|
+            portup.info = "Enable port forwarding on startup..."
+            portup.run = {inline: "config/os-apple.sh portup"}
+        end
+
+        ## Disable port forwarding when shutting down
+        config.trigger.before [:halt, :destroy] do |portdown|
+            portdown.info = "Disable port forwarding on shutdown..."
+            portdown.run = {inline: "config/os-apple.sh portdown"}
+        end
+
+    end
+
+
+
+
+
+
+
+    ## Detect host operation system (Ruby)
+    host = RbConfig::CONFIG['host_os']
+
+    ## Apple
+    if host =~ /darwin/
+
+    ## Linux
+    elsif host =~ /linux/
+
+    # Windows
+    elsif host =~ /mswin|mingw|cygwin/
+
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ## Launch apache on startup
+#   config.vm.provision "shell", inline: "sudo service apache2 restart", run: "always"
+#   config.vm.provision "shell", inline: "/usr/sbin/service apache2 restart", run: "always"
+
+
+
+
+
+    ## Share folder
+    config.vm.synced_folder "../www", "/var/nfs",
+        id:"default",
+        ## 2:32, 2:32, 2:40
+        type:"nfs",
+        ## 2:27, 2:29, 2:33, 2:35
+        mount_options: ['nolock'],
+
+        ## 2:29
+#        mount_options: ['nolock', 'rw', 'async'],
+        ## 2:31
+#        mount_options: ['vers=3'],
+        ## 2:32
+#        mount_options: ['nolock', 'vers=3'],
+        ## 2:34
+#        mount_options: ['rw'],
+        ## 2:36
+#        mount_options: ['async'],
+        ## 3:24
+#        mount_options: ['actimeo=2'],
+
+        ## 3:13 Dismount shared folder problem on Windows!!!
+#        mount_options:['rw', 'vers=3', 'tcp'],
+
+#        bsd__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async'],
+
+        linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
+    config.nfs.map_uid = Process.uid
+    config.nfs.map_gid = Process.gid
+    config.bindfs.bind_folder "/var/nfs", "/home/vagrant/www"
+
+    ##config.bindfs.bind_folder "/vagrant-after-provision", "another/guest/mount/point", after: :provision
+
+
+
+
+
+
+    ## Note
+    #:bsd__nfs_options => ["-maproot=0:0"]
+    #bsd__nfs_options: ["alldirs","async","nolock"]
+    #:linux__nfs_options => ["no_root_squash"]
+
+
+
+    ## Backup database
+    config.trigger.before [:halt, :suspend, :destroy] do |backup|
+        backup.info = "The database backup is in progress..."
+        backup.run_remote = {inline: "/vagrant/config/db-backup.sh #{`hostname`}"}
+    end
   
-  ## Enable when do not use "Template"
-#  config.vm.box = "debian/contrib-stretch64"
-#  config.vm.provision :shell, path: "config/symfony.sh", :args => ["vagrant"]
-#  config.vm.provision :shell, path: "config/symfony-dev.sh", :args => ["vagrant"]
+    ## Restore database
+    config.trigger.after [:up, :resume, :reload] do |restore|
+        restore.info = "The database restore is in progress..."
+        restore.run_remote = {inline: "/vagrant/config/db-restore.sh #{`hostname`}"}
+    end
 
+    ## Package purge
+    config.trigger.before [:package] do |package|
+        package.info = "Package purge is in progress..."
+        package.run_remote = {inline: "/vagrant/config/purge.sh"}
+    end
 
 
 
-
-  ## Hostname
-  config.vm.hostname = "devel.example.com"
-
-
-
-  ## Guest hostname with prefix from the host computer
-  ## https://stackoverflow.com/questions/25213786/vagrant-get-name-of-host-os
-  #config.vm.hostname = "#{`hostname`[0..-2]}".sub(/\..*$/,'')+".example.com"
-
-  ## Public network (allows access on network)
-  #config.vm.network "public_network", type: "dhcp", bridge: 'en0: Wi-Fi (AirPort)'
-
-
-
-  ## IP
-  config.vm.network "private_network", ip: "192.168.33.10"
-
-  ## MailDev
-  config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
-  config.vm.network "forwarded_port", guest: 1025, host: 1025, host_ip: "127.0.0.1"
-
-
-
-
-
-  ## Port forwarding with ports <= 1024 may not work.
-  ## Unix-based hosts (e.g. Linux, Solaris, Mac OS X) restrict ports <= 1024 to only privileged process
-  ## (typically processes running as an administrative user).
-
-  ## The VirtualBox Manual says this about NAT mode limitation:
-  ## Forwarding host ports < 1024 impossible
-  ## On Unix-based hosts (e.g. Linux, Solaris, Mac OS X) it is not possible to bind to ports below 1024
-  ## from applications that are not run by root. As a result, if you try to configure such a port forwarding,
-  ## the VM will refuse to start.
-
-  ## You can config port forwarding into VirtualBox:
-  ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
-
-  ## HTTP and HTTPS
-  if Vagrant::Util::Platform.windows? then
-    config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
-    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
-
-    #myHomeDir = ENV["USERPROFILE"]
-
-  else
-    config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-    config.vm.network "forwarded_port", guest: 443, host: 4443, host_ip: "127.0.0.1"
-
-    #myHomeDir = "~"
-
-  end
-
-
-
-
-
-
-  ## FixMe: Linux port forwarding
-  if Vagrant::Util::Platform.linux? then
-
-    ## Port forwarding ???
-
-  end
-
-  #if Vagrant::Util::Platform.platform =~ /darwin/ then
-  if Vagrant::Util::Platform.darwin? then
-
-      ## Enable port forwarding on startup
-      config.trigger.after [:provision, :up, :reload] do |portup|
-        portup.info = "Enable port forwarding on startup..."
-        portup.run = {inline: "config/os-apple.sh portup"}
-      end
-
-      ## Disable port forwarding when shutting down
-      config.trigger.before [:halt, :destroy] do |portdown|
-        portdown.info = "Disable port forwarding on shutdown..."
-        portdown.run = {inline: "config/os-apple.sh portdown"}
-      end
-
-  end
-
-
-
-
-
-
-
-  ## Detect host operation system (Ruby)
-  host = RbConfig::CONFIG['host_os']
-
-  ## Apple
-  if host =~ /darwin/
-
-  ## Linux
-  elsif host =~ /linux/
-
-  # Windows
-  elsif host =~ /mswin|mingw|cygwin/
-
-  end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  ## Launch apache on startup
-#  config.vm.provision "shell", inline: "sudo service apache2 restart", run: "always"
-#  config.vm.provision "shell", inline: "/usr/sbin/service apache2 restart", run: "always"
-
-
-
-
-
-  ## Share folder  
-  config.vm.synced_folder "../www", "/var/nfs",
-    id:"default",
-    type:"nfs",
-    mount_options:['rw', 'vers=3', 'tcp'],
-    linux__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async'],
-    bsd__nfs_options:['rw', 'no_subtree_check', 'all_squash', 'async']
-  config.nfs.map_uid = Process.uid
-  config.nfs.map_gid = Process.gid
-  config.bindfs.bind_folder "/var/nfs", "/home/vagrant/www"
-
-  ##config.bindfs.bind_folder "/vagrant-after-provision", "another/guest/mount/point", after: :provision
-
-
-## Note
-#:bsd__nfs_options => ["-maproot=0:0"]
-#bsd__nfs_options: ["alldirs","async","nolock"]
-#:linux__nfs_options => ["no_root_squash"]
-
-
-
-  ## Backup database
-  config.trigger.before [:halt, :suspend, :destroy] do |backup|
-    backup.info = "The database backup is in progress..."
-    backup.run_remote = {inline: "/vagrant/config/db-backup.sh #{`hostname`}"}
-  end
-  
-  ## Restore database
-  config.trigger.after [:up, :resume, :reload] do |restore|
-    restore.info = "The database restore is in progress..."
-    restore.run_remote = {inline: "/vagrant/config/db-restore.sh #{`hostname`}"}
-  end
-
-  ## Package purge
-  config.trigger.before [:package] do |package|
-    package.info = "Package purge is in progress..."
-    package.run_remote = {inline: "/vagrant/config/purge.sh"}
-  end
-
-
-
-  config.vm.post_up_message = <<MSG
+    config.vm.post_up_message = <<MSG
 ------------------------------------------------------
 Local development, accessible at 127.0.0.1
 
@@ -203,19 +240,19 @@ MSG
 
 
 
-  ## VirtualBox
-  config.vm.provider "virtualbox" do |vb|
-    vb.name = "symfony"
-    vb.cpus = 1
-    vb.memory = 2048
-    ## HDD cache off !!!
-    vb.customize [
-      "storagectl", :id, 
-      "--name", "SATA Controller", 
-      "--hostiocache", "off"
-    ]
-    ## Fix slow DNS lookups
-    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-  end
+    ## VirtualBox
+    config.vm.provider "virtualbox" do |vb|
+        vb.name = "symfony"
+        vb.cpus = 1
+        vb.memory = 2048
+        ## HDD cache off !!!
+        vb.customize [
+            "storagectl", :id,
+            "--name", "SATA Controller",
+            "--hostiocache", "off"
+        ]
+        ## Fix slow DNS lookups
+        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    end
 
 end

@@ -82,6 +82,25 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
+            <td>SQLite</td>
+            <td>
+                <?php
+                if (`sqlite3 --version 2>/dev/null`) {
+                    $sqlite3_version = explode(" ", `sqlite3 --version`);
+                    echo($sqlite3[0]);
+                } else if (class_exists('SQLite3')) {
+                    $sql_db = new PDO('sqlite::memory:');
+                    print_r($sql_db->query('select sqlite_version()')->fetch()[0]);
+                    $sql_db = null;
+                } else {
+                    //throw new Exception('SQLite not installed');
+                    echo($na);
+                }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
             <td>MySQL</td>
             <td>
                 <?php
@@ -102,6 +121,20 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
                 if (`psql -V 2>&1`) {
                     $pg_version = explode(" ", `psql -V`);
                     echo($pg_version[2]);
+                } else {
+                    echo($na);
+                }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>MongoDB</td>
+            <td>
+                <?php
+                if (`mongod --version 2>/dev/null`) {
+                    $mongodb_version = explode(" ", `mongo --version`);
+                    echo($mongodb_version[3]);
                 } else {
                     echo($na);
                 }
@@ -167,39 +200,6 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
-            <td>MongoDB</td>
-            <td>
-                <?php
-                if (`mongod --version 2>/dev/null`) {
-                    $mongodb_version = explode(" ", `mongo --version`);
-                    echo($mongodb_version[3]);
-                } else {
-                    echo($na);
-                }
-                ?>
-            </td>
-        </tr>
-
-        <tr>
-            <td>SQLite</td>
-            <td>
-                <?php
-                if (`sqlite3 --version 2>/dev/null`) {
-                    $sqlite3_version = explode(" ", `sqlite3 --version`);
-                    echo($sqlite3[0]);
-                } else if (class_exists('SQLite3')) {
-                    $sql_db = new PDO('sqlite::memory:');
-                    print_r($sql_db->query('select sqlite_version()')->fetch()[0]);
-                    $sql_db = null;
-                } else {
-                    //throw new Exception('SQLite not installed');
-                    echo($na);
-                }
-                ?>
-            </td>
-        </tr>
-
-        <tr>
             <td>Xdebug</td>
             <td>
                 <?php echo(phpversion('xdebug') ? phpversion('xdebug') : $na); ?>
@@ -215,6 +215,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             </td>
         </tr>
 
+        <!--
         <tr>
             <td class="text-right">Memcached</td>
             <td>
@@ -226,17 +227,20 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
                 } else {
                     echo($memcache->getVersion());
                 }*/
-                echo("ToDo");
                 ?>
             </td>
         </tr>
+        -->
+
     </table>
 
     <h2>PHP Extensions</h2>
     <table class='table table-striped border-bottom mb-5'>
         <?php
         $php_extension = array(
-            "SQLite (PDO)" => "sqlite3",
+            //"SQLite (PDO)" => "sqlite3",
+            //"MySQL (PDO)" => "mysqli",
+            //"PostgreSQL (PDO)" => "pgsql",
             "GD" => "gd",
             "Multibyte String" => "mbstring",
             "OPcache" => "Zend OPcache",
@@ -244,8 +248,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             "cURL" => "curl",
             "Zip" => "zip",
             "LDAP" => "ldap",
-            "Mcrypt" => "mcrypt",
-            "Memcache" => "memcache",
+            //"Memcache" => "memcache",
         );
         foreach ($php_extension as $key => $value) {
             (extension_loaded($value) ? $state = 'check' : $state = 'times');
