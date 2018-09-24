@@ -19,6 +19,6 @@ PHPMYADMIN_PASSWORD=phpmyadmin
 #EMAIL_DOMAIN=website.cz
 #HOSTNAME=example.com
 
-#EMAIL_SMTP = smtp.centrum.cz
-#EMAIL_USERNAME = user@centrum.cz
-#EMAIL_PASSWORD = password
+#EMAIL_SMTP=smtp.centrum.cz
+#EMAIL_USERNAME=user@centrum.cz
+#EMAIL_PASSWORD=password

@@ -42,7 +42,7 @@ apt-get install -y mariadb-server php${PHP_VERSION}-mysql
 ## ToDo: File 50-server.cnf does not exist without "old" Mariadb (10.1) installation...
 sed -i '/\[mysqld\]/a\plugin-load-add = auth_socket.so' /etc/mysql/mariadb.conf.d/50-server.cnf
 systemctl restart mariadb.service
-
+mysql_upgrade
 
 
 

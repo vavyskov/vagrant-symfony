@@ -44,30 +44,27 @@ sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm pass
 
 
 ## PhpMyAdmin (old)
-sudo apt-get -y install phpmyadmin
-## PhpMyAdmin - security
-chown vagrant:vagrant /var/lib/phpmyadmin/blowfish_secret.inc.php
-## PhpMyAdmin - storage permission
-cp /vagrant/config/phpmyadmin-debian.inc.php /etc/phpmyadmin/config.inc.php
+#sudo apt-get -y install phpmyadmin
+#chown vagrant:vagrant /var/lib/phpmyadmin/blowfish_secret.inc.php
+#cp /vagrant/config/phpmyadmin-debian.inc.php /etc/phpmyadmin/config.inc.php
 
-## PhpMyAdmin (latest) - UPGRADE ONLY - "storage permission" DO NOT WORK ALONE WITHOUT "old" PhpMyAdmin installation :(
+## PhpMyAdmin (latest)
 curl -fSL "https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz" -o /tmp/phpmyadmin.tar.gz
 rm -fr /usr/share/phpmyadmin
 mkdir /usr/share/phpmyadmin
 tar -xz --strip-components=1 -f /tmp/phpmyadmin.tar.gz -C /usr/share/phpmyadmin
 rm /tmp/phpmyadmin.tar.gz
-## Alias
 echo "Alias /phpmyadmin /usr/share/phpmyadmin" | sudo tee /etc/apache2/conf-available/phpmyadmin.conf
-a2enconf phpmyadmin.conf
-service apache2 reload
-## ToDo: Cron auto update
-## PhpMyAdmin - storage permission
-cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
-## PhpMyAdmin - security
+#a2enconf phpmyadmin
+#service apache2 reload
 mkdir /usr/share/phpmyadmin/tmp
 chown vagrant:vagrant /usr/share/phpmyadmin/tmp
-RANDOMBLOWFISHSECRET=`openssl rand -base64 32`
-sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RANDOMBLOWFISHSECRET'/" /usr/share/phpmyadmin/config.inc.php
+mysql -u root -e "CREATE DATABASE IF NOT EXISTS phpmyadmin;"
+mysql -u root phpmyadmin < /usr/share/phpmyadmin/sql/create_tables.sql
+cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
+RANDOM_BLOWFISH_SECRET=`openssl rand -base64 32`
+sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '${RANDOM_BLOWFISH_SECRET}'/" /usr/share/phpmyadmin/config.inc.php
+## ToDo: Cron auto update
 
 
 

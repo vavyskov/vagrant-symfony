@@ -121,7 +121,6 @@ The folder "vagrant/install" contains several installation scripts:
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - MariaDB (latest only)
-- PhpMyAdmin (latest only) configure storage permission
 - PhpMyAdmin cron auto update
 
 ## Note
