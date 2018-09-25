@@ -122,6 +122,7 @@ The folder "vagrant/install" contains several installation scripts:
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - PhpMyAdmin cron auto update
+- Vagrant config.yaml
 
 ## Note
 
