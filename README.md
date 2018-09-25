@@ -108,19 +108,19 @@ The folder "vagrant/install" contains several installation scripts:
 ## FixMe
 
 - Enable port 80 forwarding triggers (Linux)
-- ImageMagick with PHP 7.2 (image-tools.sh)
 - Restore MongoDB - check if the MongoDB is installed
 
 ## ToDo
 
 - Convert Debian settings, Apache, PHP and PostgreSQL into install scripts
+- MariaDB (latest only)
 - Better purge.sh script
+- Vagrant plugins "auto installation"
 - Plugin: vagrant-vbguest, vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
-- MariaDB (latest only)
 - PhpMyAdmin cron auto update
 
 ## Note

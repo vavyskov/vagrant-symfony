@@ -148,7 +148,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
                 <?php
                 if (`ssh -V 2>&1`) {
                     $ssh_version = explode(" ", `ssh -V 2>&1`);
-                    echo($ssh_version[0]);
+                    echo(ltrim($ssh_version[0], "OpenSSH_"));
                 } else {
                     echo($na);
                 }
@@ -207,15 +207,48 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         </tr>
 
         <tr>
-            <td class="text-right">Image Magick ???</td>
+            <td>Image Magick</td>
             <td>
                 <?php
-                echo(`convert -version 2>/dev/null` ? `convert -version` : $na);
+                if (`convert --version 2>&1`) {
+                    $convert_version = explode(" ", `convert --version`);
+                    echo($convert_version[2]);
+                } else {
+                    echo($na);
+                }
                 ?>
             </td>
         </tr>
 
         <!--
+        <tr>
+            <td>OptiPNG</td>
+            <td>
+                <?php
+                if (`optipng --version 2>&1`) {
+                    $optipng_version = explode(" ", `optipng --version`);
+                    echo(rtrim($optipng_version[2], "Copyright"));
+                } else {
+                    echo($na);
+                }
+                ?>
+            </td>
+        </tr>
+
+        <tr>
+            <td>GIFsicle</td>
+            <td>
+                <?php
+                if (`gifsicle --version 2>&1`) {
+                    $gifsicle_version = explode(" ", `gifsicle --version`);
+                    echo(rtrim($gifsicle_version[2], "Copyright"));
+                } else {
+                    echo($na);
+                }
+                ?>
+            </td>
+        </tr>
+
         <tr>
             <td class="text-right">Memcached</td>
             <td>
@@ -238,16 +271,17 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
     <table class='table table-striped border-bottom mb-5'>
         <?php
         $php_extension = array(
-            //"SQLite (PDO)" => "sqlite3",
-            //"MySQL (PDO)" => "mysqli",
-            //"PostgreSQL (PDO)" => "pgsql",
-            "GD" => "gd",
+            "Graphics Drawing library" => "gd",
+            "Image Magick" => "imagick",
             "Multibyte String" => "mbstring",
             "OPcache" => "Zend OPcache",
             "XML" => "xml",
             "cURL" => "curl",
             "Zip" => "zip",
             "LDAP" => "ldap",
+            "SQLite (PDO)" => "sqlite3",
+            "MySQL (PDO)" => "mysqli",
+            "PostgreSQL (PDO)" => "pgsql",
             //"Memcache" => "memcache",
         );
         foreach ($php_extension as $key => $value) {

@@ -8,10 +8,10 @@ if [ $(id -u) != 0 ]; then
 fi
 
 ## Current script directory path
-CURRENT_DIRECTORY=$(dirname $0)
+#CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
-source "$CURRENT_DIRECTORY/../config/env.sh"
+#source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
@@ -19,7 +19,13 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 apt-get update
 
 ## Image tools
-#apt-get install -y libjpeg-progs optipng gifsicle php${PHP_VERSION}-imagick
+apt-get install -y php-imagick
+#apt-get install -y optipng gifsicle
+#apt-get install -y imagemagick
+
+#apt-get install -y libjpeg-progs
+#cjpeg -version
+#djpeg -version
 
 ## -----------------------------------------------------------------------------
 
