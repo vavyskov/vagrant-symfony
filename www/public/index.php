@@ -271,7 +271,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
     <table class='table table-striped border-bottom mb-5'>
         <?php
         $php_extension = array(
-            "Graphics Drawing library" => "gd",
+            "Graphics Drawing (GD)" => "gd",
             "Image Magick" => "imagick",
             "Multibyte String" => "mbstring",
             "OPcache" => "Zend OPcache",
