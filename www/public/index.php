@@ -210,7 +210,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>Image Magick</td>
             <td>
                 <?php
-                if (`convert --version 2>&1`) {
+                if (`convert --version 2>/dev/null`) {
                     $convert_version = explode(" ", `convert --version`);
                     echo($convert_version[2]);
                 } else {
