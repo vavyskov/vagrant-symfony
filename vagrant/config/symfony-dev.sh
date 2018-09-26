@@ -142,4 +142,4 @@ service postgresql reload
 
 ## Install
 bash "$CURRENT_DIRECTORY/../install/maildev.sh"
-#bash "$CURRENT_DIRECTORY/../install/xdebug.sh"
+bash "$CURRENT_DIRECTORY/../install/xdebug.sh"

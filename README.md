@@ -1,6 +1,6 @@
 # vagrant-symfony
 
-Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
+Symfony stack (Debian, Apache, PHP, XDebug, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
 
 ## Requirements
 1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
@@ -89,7 +89,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
 
 The folder "vagrant/install" contains several installation scripts:
 
-- **XDebug** is debugger and profiler tool for PHP
+- **XDebug** is debugger and profiler tool for PHP (enabled by default)
 
       sudo /vagrant/install/xdebug.sh
 
