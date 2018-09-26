@@ -278,6 +278,8 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             "XML" => "xml",
             "cURL" => "curl",
             "Zip" => "zip",
+            "APCu" => "apcu",
+            "PECL upload progress" => "uploadprogress",
             "LDAP" => "ldap",
             "SQLite (PDO)" => "sqlite3",
             "MySQL (PDO)" => "mysqli",

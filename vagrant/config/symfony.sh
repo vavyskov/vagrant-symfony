@@ -145,7 +145,7 @@ a2enmod rewrite expires
 
 ## -----------------------------------------------------------------------------
 
-## PHP 7.0 as default source
+## PHP 7.0 source (default)
 
 ## PHP 7.2 source
 apt-get install -y apt-transport-https lsb-release ca-certificates
@@ -155,8 +155,9 @@ apt-get update
 ## apt-cache search php7.2
 
 ## PHP installation
-apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring php$PHP_VERSION-opcache php$PHP_VERSION-xml php$PHP_VERSION-curl php$PHP_VERSION-zip php$PHP_VERSION-ldap
-#apt-get install -y php$PHP_VERSION-cli libpng$PHP_VERSION-dev
+apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring php$PHP_VERSION-opcache php$PHP_VERSION-xml \
+    php$PHP_VERSION-curl php$PHP_VERSION-zip php-uploadprogress php-apcu php$PHP_VERSION-ldap
+#apt-get install -y php$PHP_VERSION-cli libpng$PHP_VERSION-dev php$PHP_VERSION-fpm php$PHP_VERSION-bz2 php$PHP_VERSION-imap
 
 ## PHP configuration
 cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini

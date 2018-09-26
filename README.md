@@ -89,7 +89,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
 
 The folder "vagrant/install" contains several installation scripts:
 
-- **XDebug** debugger and profiler tool for PHP
+- **XDebug** is debugger and profiler tool for PHP
 
       sudo /vagrant/install/xdebug.sh
 

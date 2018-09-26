@@ -19,9 +19,8 @@ fi
 apt-get update
 
 ## Image tools
-apt-get install -y php-imagick
+apt-get install -y imagemagick php-imagick
 #apt-get install -y optipng gifsicle
-#apt-get install -y imagemagick
 
 #apt-get install -y libjpeg-progs
 #cjpeg -version
