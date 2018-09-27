@@ -287,9 +287,9 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             //"Memcache" => "memcache",
         );
         foreach ($php_extension as $key => $value) {
-            (extension_loaded($value) ? $state = 'check' : $state = 'times');
+            (extension_loaded($value) ? $state = ['check', 'OK'] : $state = ['times', 'N/A']);
             echo "<tr><td>$key</td><td>";
-            echo "<img src='asset/$state.svg' alt='N/A' height='16' width='16' class='align-middle'>";
+            echo "<img src='asset/$state[0].svg' alt='$state[1]' height='16' width='16' class='align-middle'>";
             echo "</td></tr>";
         }
         ?>
