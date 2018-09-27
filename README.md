@@ -64,6 +64,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
         vagrant ssh
         rm -r www/*
         composer create-project symfony/website-skeleton www
+        cd www
         composer remove symfony/web-server-bundle
 
 7. The database is automatically restore and backup by using the triggers:
