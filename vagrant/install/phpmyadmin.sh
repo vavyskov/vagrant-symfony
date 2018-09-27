@@ -55,8 +55,8 @@ mkdir /usr/share/phpmyadmin
 tar -xz --strip-components=1 -f /tmp/phpmyadmin.tar.gz -C /usr/share/phpmyadmin
 rm /tmp/phpmyadmin.tar.gz
 echo "Alias /phpmyadmin /usr/share/phpmyadmin" | sudo tee /etc/apache2/conf-available/phpmyadmin.conf
-#a2enconf phpmyadmin
-#service apache2 reload
+a2enconf phpmyadmin
+service apache2 reload
 mkdir /usr/share/phpmyadmin/tmp
 chown vagrant:vagrant /usr/share/phpmyadmin/tmp
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS phpmyadmin;"
