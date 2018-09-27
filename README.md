@@ -59,7 +59,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
 	- macOX: `/private/etc/hosts`
 	- Windows: `C:\Windows\System32\drivers\etc\hosts`
 
-6. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
+6. Open the terminal, navigate to the directory containing the file `Vagrantfile` and for new Symfony project run commands:
 
         vagrant ssh
         rm -r www/*
@@ -67,6 +67,21 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
         cd www
         composer remove symfony/web-server-bundle
         composer require symfony/apache-pack
+        
+    Setup new **Git** repository:
+    
+        git init
+        git add .
+        git commit -m "Initial commit"
+        
+    or existing **Git** repository:
+        
+        git clone ...
+        composer install
+    
+    Security (optional):
+    
+        composer require sensiolabs/security-checker --dev
 
 7. The database is automatically restore and backup by using the triggers:
 
