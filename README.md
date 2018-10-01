@@ -139,8 +139,9 @@ The folder "vagrant/install" contains several installation scripts:
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - PhpMyAdmin cron auto update
 - Vagrant config.yaml
-- Convert "Info page" index.php into MVC
+- Convert "Info page" index.php into MVC (check PHP availability)
 - DB backup/restore (project DB as extra file)
+- Nginx server (php.sh, adminer.sh)
 
 ## Note
 

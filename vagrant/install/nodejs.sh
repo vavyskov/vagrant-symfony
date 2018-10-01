@@ -18,15 +18,23 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 ## Sources
 apt-get update
 
-## Image tools
-apt-get install -y imagemagick php-imagick
-#apt-get install -y optipng gifsicle
 
-#apt-get install -y libjpeg-progs
-#cjpeg -version
-#djpeg -version
+
+## Node.js (latest)
+#curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+
+## Node.js (LTS)
+curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+
+## Node.js
+apt-get install -y nodejs
+
+
+
+## Node.js - Yarn (a node module manager)
+npm install yarn -g
 
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
+#service apache2 reload

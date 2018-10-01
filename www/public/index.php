@@ -118,7 +118,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>PostgreSQL</td>
             <td>
                 <?php
-                if (`psql -V 2>&1`) {
+                if (`psql -V 2>/dev/null`) {
                     $pg_version = explode(" ", `psql -V`);
                     echo($pg_version[2]);
                 } else {
@@ -188,14 +188,14 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         <tr>
             <td>Node.js</td>
             <td>
-                <?php echo(`nodejs -v 2>&1` ? ltrim(`nodejs -v`, 'v') : $na); ?>
+                <?php echo(`nodejs -v 2>/dev/null` ? ltrim(`nodejs -v`, 'v') : $na); ?>
             </td>
         </tr>
 
         <tr>
             <td>Yarn</td>
             <td>
-                <?php echo(`yarn -v 2>&1` ? `yarn -v` : $na); ?>
+                <?php echo(`yarn -v 2>/dev/null` ? `yarn -v` : $na); ?>
             </td>
         </tr>
 
