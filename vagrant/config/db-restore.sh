@@ -5,7 +5,7 @@
 DB_PATH="/vagrant/database"
 
 ## Detect computer ID
-if [ -f "$DB_PATH/computer" ] && [ $(grep $1 $DB_PATH/computer) ]; then
+if [ $1 ] && [ -f "$DB_PATH/computer" ] && [ $(grep $1 $DB_PATH/computer) ]; then
    echo -e "\nThe same computer detected => the database restoring SKIPPED!\n"
    exit
 fi

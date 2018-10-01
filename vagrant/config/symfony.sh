@@ -159,6 +159,8 @@ apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring p
     php$PHP_VERSION-curl php$PHP_VERSION-zip php-uploadprogress php-apcu php$PHP_VERSION-ldap
 #apt-get install -y php$PHP_VERSION-cli libpng$PHP_VERSION-dev php$PHP_VERSION-fpm php$PHP_VERSION-bz2 php$PHP_VERSION-imap
 
+## https://github.com/krakjoe/apcu/blob/master/apc.php (APCu info page)
+
 ## PHP configuration
 cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini
 ;; Time zone

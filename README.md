@@ -125,7 +125,6 @@ The folder "vagrant/install" contains several installation scripts:
 ## FixMe
 
 - Enable port 80 forwarding triggers (Linux)
-- Restore MongoDB - check if the MongoDB is installed
 
 ## ToDo
 
@@ -140,6 +139,8 @@ The folder "vagrant/install" contains several installation scripts:
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - PhpMyAdmin cron auto update
 - Vagrant config.yaml
+- Convert "Info page" index.php into MVC
+- DB backup/restore (project DB as extra file)
 
 ## Note
 
