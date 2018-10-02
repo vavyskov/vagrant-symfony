@@ -39,10 +39,12 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
 <header class="bg-dark text-white mb-5 pt-4 pb-3 sticky-top">
     <div class="container">
         <div class="media">
-            <i class="far fa-lightbulb fa-6x"></i>
+            <img src='asset/lightbulb.svg' alt='lightbulb' width='72' height='96' class='align-middle'>
             <div class="media-body pl-3">
                 <h1>Vagrant (public folder) works!</h1>
-                <p class="lead">The Virtual Machine is up and running! <i class="fas fa-smile-wink align-middle"></i>
+                <p class="lead">
+                    The Virtual Machine is up and running!
+                    <img src='asset/smile-wink.svg' alt='smile-wink' width='20' height='21' class='align-middle'>
                 </p>
             </div>
         </div>

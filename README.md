@@ -128,7 +128,7 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## ToDo
 
-- Convert Debian settings, Apache, PHP and PostgreSQL into install scripts
+- PHP versions (7.0, 7.2)
 - MariaDB (latest only)
 - Better purge.sh script
 - Vagrant plugins "auto installation"
