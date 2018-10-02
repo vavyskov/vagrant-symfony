@@ -15,8 +15,10 @@ source "$CURRENT_DIRECTORY/env.sh"
 
 ## -----------------------------------------------------------------------------
 
-## Install
-bash "$CURRENT_DIRECTORY/../install/debian.sh"
+## Configuration
+bash "$CURRENT_DIRECTORY/debian.sh"
+
+## Installation
 bash "$CURRENT_DIRECTORY/../install/apache.sh"
 bash "$CURRENT_DIRECTORY/../install/php.sh"
 bash "$CURRENT_DIRECTORY/../install/postgresql.sh"

@@ -142,6 +142,7 @@ The folder "vagrant/install" contains several installation scripts:
 - Convert "Info page" index.php into MVC (check PHP availability)
 - DB backup/restore (project DB as extra file)
 - Nginx server (php.sh, adminer.sh)
+- PhpPgAdmin (latest version)
 
 ## Note
 

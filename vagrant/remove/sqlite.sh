@@ -15,15 +15,16 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
-## Sources
-apt-get update
+## Remove SQLite
+#apt-get purge -y sqlite3
+apt-get purge -y php${PHP_VERSION}-sqlite3
 
-## MongoDB (default port is 27017)
-apt-get install -y mongodb php${PHP_VERSION}-mongodb
-#apt-get install -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
+## -----------------------------------------------------------------------------
+
+## Purge
+bash "$CURRENT_DIRECTORY/../config/purge.sh"
 
 ## -----------------------------------------------------------------------------
 
 ## Services
 service apache2 reload
-service mongodb start

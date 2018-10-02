@@ -15,15 +15,20 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
-## Sources
-apt-get update
+## Remove Image tools
+apt-get purge -y imagemagick php-imagick
+#apt-get purge -y optipng gifsicle
 
-## MongoDB (default port is 27017)
-apt-get install -y mongodb php${PHP_VERSION}-mongodb
-#apt-get install -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
+#apt-get purge -y libjpeg-progs
+#cjpeg -version
+#djpeg -version
+
+## -----------------------------------------------------------------------------
+
+## Purge
+bash "$CURRENT_DIRECTORY/../config/purge.sh"
 
 ## -----------------------------------------------------------------------------
 
 ## Services
 service apache2 reload
-service mongodb start

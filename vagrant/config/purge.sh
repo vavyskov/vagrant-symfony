@@ -10,8 +10,9 @@ apt-get autoremove -y
 rm -r /var/lib/apt/lists/*
 
 ## Fix disk fragmentation (increases compression efficiency)
-echo -e "\nFixing disk fragmentation...\n"
-dd if=/dev/zero of=/EMPTY bs=1M
+echo -e "\nFixing disk fragmentation (wait please)...\n"
+#dd if=/dev/zero of=/EMPTY bs=1M status=progress
+dd if=/dev/zero of=/EMPTY bs=1M 2>/dev/null
 rm -f /EMPTY
 
 ## -----------------------------------------------------------------------------

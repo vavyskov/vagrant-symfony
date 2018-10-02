@@ -15,15 +15,16 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
-## Sources
-apt-get update
+## Remove MongoDB
+apt-get purge -y mongodb php${PHP_VERSION}-mongodb
+#apt-get purge -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
 
-## MongoDB (default port is 27017)
-apt-get install -y mongodb php${PHP_VERSION}-mongodb
-#apt-get install -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
+## -----------------------------------------------------------------------------
+
+## Purge
+bash "$CURRENT_DIRECTORY/../config/purge.sh"
 
 ## -----------------------------------------------------------------------------
 
 ## Services
 service apache2 reload
-service mongodb start
