@@ -12,6 +12,7 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
+PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
 
@@ -23,7 +24,7 @@ apt-get update
 
 
 ## PostgreSQL
-apt-get install -y postgresql php-pgsql
+apt-get install -y postgresql php${PHP_VERSION}-pgsql
 
 ## Enable password-base authentication
 sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\ttrust/' /etc/postgresql/9.6/main/pg_hba.conf

@@ -56,20 +56,14 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
         <tr>
             <td>Linux</td>
             <td>
-                <?php
-                echo(`lsb_release -d 2>&1` ? ltrim(strstr(`lsb_release -d`, ":"), ":") : $na);
-                ?>
+                <?php echo(`lsb_release -d 2>&1` ? `lsb_release -d | cut -d":" -f2 | cut -d" " -f1,3,4` : $na); ?>
             </td>
         </tr>
 
         <tr>
             <td>Apache</td>
             <td>
-                <?php
-                $apache_version = explode('/', apache_get_version());
-                //echo $apache_version[1];
-                echo substr($apache_version[1], 0, strrpos($apache_version[1], " "));
-                ?>
+                <?php echo(`apache2 -v 2>&1` ? `apache2 -v | head -1 | cut -d"/" -f2 | cut -d" " -f1` : $na); ?>
             </td>
         </tr>
 
@@ -77,8 +71,7 @@ $na = "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-
             <td>PHP</td>
             <td>
                 <?php
-                $php_version = explode(".", phpversion());
-                echo "$php_version[0].$php_version[1]";
+                echo(`php -v 2>&1` ? `php -v | head -1 | cut -d" " -f2 | cut -d"-" -f1` : $na);
                 ?>
             </td>
         </tr>

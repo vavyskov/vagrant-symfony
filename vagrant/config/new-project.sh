@@ -13,7 +13,7 @@ if ! [ $? -eq 0 ] || echo $prompt | grep -q '^sudo:'; then
 fi
 
 ## Detect first parameter
-if [ $1 = "" ]; then
+if [[ $1 = "" ]]; then
   echo -e "\nType project 'name' as the first parameter,"
   echo -e "optionally user 'password' as second parameter and"
   echo -e "optionally database 'password' as third parameter.\n"

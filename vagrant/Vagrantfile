@@ -1,6 +1,39 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+
+
+## Customization
+vm_name = 'symfony'
+vm_ip = '192.168.33.10'
+vm_port = 80
+
+require 'getoptlong'
+
+opts = GetoptLong.new(
+    [ '--name', GetoptLong::REQUIRED_ARGUMENT ],
+    [ '--ip', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--port', GetoptLong::OPTIONAL_ARGUMENT ],
+)
+
+opts.each do |opt, arg|
+    case opt
+        when '--name'
+            vm_name = arg
+        when '--ip'
+            vm_ip = arg
+        when '--port'
+            vm_port = arg
+    end
+end
+
+
+
+
+
+
+
+
 Vagrant.configure("2") do |config|
 
     ## Sources (not required for vagrantup.com)
@@ -42,7 +75,7 @@ Vagrant.configure("2") do |config|
 
 
     ## IP
-    config.vm.network "private_network", ip: "192.168.33.10"
+    config.vm.network "private_network", ip: vm_ip
 
     ## MailDev
     config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
@@ -65,20 +98,32 @@ Vagrant.configure("2") do |config|
     ## You can config port forwarding into VirtualBox:
     ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
 
-    ## HTTP and HTTPS
-    if Vagrant::Util::Platform.windows? then
-        config.vm.network "forwarded_port", guest: 80, host: 80, host_ip: "127.0.0.1"
-        config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+    ## HTTP
+    if vm_port == 80
+        if Vagrant::Util::Platform.windows? then
+            config.vm.network "forwarded_port", guest: 80, host: vm_port, host_ip: "127.0.0.1"
 
-        #myHomeDir = ENV["USERPROFILE"]
+            #myHomeDir = ENV["USERPROFILE"]
+        else
+            config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
 
+            #myHomeDir = "~"
+
+            #currentDir = basename $(pwd)
+            #parentDir = dirname $(pwd)
+            #parentDir = dirname $PWD
+            #parentDir2nd = dirname $(dirname $PWD)
+            #parentDir3rd = dirname $(dirname $(dirname $PWD))
+            #export MYVAR = "$(dirname "$(dirname "$(dirname $PWD)")")"
+        end
     else
-        config.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-        config.vm.network "forwarded_port", guest: 443, host: 4443, host_ip: "127.0.0.1"
-
-        #myHomeDir = "~"
-
+        config.vm.network "forwarded_port", guest: 80, host: vm_port, host_ip: "127.0.0.1"
     end
+
+    ## HTTPS
+    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+
+
 
 
 
@@ -245,7 +290,7 @@ MSG
 
     ## VirtualBox
     config.vm.provider "virtualbox" do |vb|
-        vb.name = "symfony"
+        vb.name = vm_name
         vb.cpus = 1
         vb.memory = 2048
         ## HDD cache off !!!

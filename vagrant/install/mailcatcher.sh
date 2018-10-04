@@ -18,6 +18,7 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
+PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
 

@@ -1,11 +1,29 @@
 #!/bin/bash
-set -eu
+#set -eu
+set -e
 
 ## Detect permission
 if [ $(id -u) != 0 ]; then
    echo -e "\nThis script must be run as root or with sudo prefix!\n"
    exit
 fi
+
+## Detect first parameter
+if [[ $1 = "5.6" ]]; then
+    PHP_VERSION=5.6
+elif [[ $1 = "7.0" ]]; then
+    PHP_VERSION=7.0
+elif [[ $1 = "7.1" ]]; then
+    PHP_VERSION=7.1
+elif [[ $1 = "7.3" ]]; then
+    PHP_VERSION=7.3
+else
+    PHP_VERSION=7.2
+fi
+
+
+
+
 
 ## Current script directory path
 CURRENT_DIRECTORY=$(dirname $0)
@@ -22,6 +40,8 @@ if ! [ -d "/etc/apache2" ]; then
     ## ToDo: Install Apache or Nginx
     source "$CURRENT_DIRECTORY/apache.sh"
 fi
+
+
 
 
 
@@ -129,6 +149,24 @@ apt-get install -y swapspace
 
 ## -----------------------------------------------------------------------------
 
+## Set PHP version
+update-alternatives --set php /usr/bin/php$PHP_VERSION
+#update-alternatives --set phar /usr/bin/phar$PHP_VERSION
+#update-alternatives --set phar.phar /usr/bin/phar.phar$PHP_VERSION
+#update-alternatives --set phpize /usr/bin/phpize$PHP_VERSION
+#update-alternatives --set php-config /usr/bin/php-config$PHP_VERSION
+
+## -----------------------------------------------------------------------------
+
 ## Services
 service apache2 reload
 #service swapspace status
+
+
+
+
+## Show PHP Major.Minor version
+#PHP_TEST=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
+## Sho PHP Major.Minor.Patch version
+#PHP_TEST=$(php -v | head -1 | cut -d" " -f2 | cut -d"-" -f1)
+#echo "Current PHP version: $PHP_TEST"
