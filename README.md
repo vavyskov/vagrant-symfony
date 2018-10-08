@@ -34,7 +34,7 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
         vagrant --name=project up
         vagrant --name=project --port=8080 --ip=192.168.33.10 up
 
-   Note: the parameters need to be specified before `up` command.
+   Note: the custom parameters need to be specified before `up` command.
 
 1. Open the web browser:
 

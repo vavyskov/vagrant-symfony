@@ -9,13 +9,13 @@ if [ $(id -u) != 0 ]; then
 fi
 
 ## Detect first parameter
-if [[ $1 = 5.6 ]]; then
+if [[ $1 = "5.6" ]]; then
     PHP_VERSION=5.6
-elif [[ $1 = 7.0 ]]; then
+elif [[ $1 = "7.0" ]]; then
     PHP_VERSION=7.0
-elif [[ $1 = 7.1 ]]; then
+elif [[ $1 = "7.1" ]]; then
     PHP_VERSION=7.1
-elif [[ $1 = 7.3 ]]; then
+elif [[ $1 = "7.3" ]]; then
     PHP_VERSION=7.3
 else
     PHP_VERSION=7.2
@@ -43,17 +43,16 @@ fi
 
 ## -----------------------------------------------------------------------------
 
-## Sources
-apt-get update
-
 ## Add sources for PHP > 7.0
-if ! [[ $PHP_VERSION = 5.6 || $PHP_VERSION = 7.0 ]]; then
+if ! [[ $PHP_VERSION = "5.6" || $PHP_VERSION = "7.0" ]]; then
     apt-get install -y apt-transport-https lsb-release ca-certificates
     wget https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php.gpg
     sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
-    apt-get update
     ## apt-cache search php7.2
 fi
+
+## Sources
+apt-get update
 
 ## PHP installation
 apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring php$PHP_VERSION-opcache php$PHP_VERSION-xml \
