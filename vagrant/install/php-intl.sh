@@ -40,9 +40,8 @@ chmod +x /tmp/icu-install/icu-install.sh
 /tmp/icu-install/icu-install.sh install 62.1
 touch /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini' && sudo touch /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini'
 /etc/init.d/apache2 restart
-
-#apt-get purge --auto-remove -y php7.0-dev
-#rm -rf /tmp/icu-install
+apt-get purge --auto-remove -y php$PHP_VERSION-dev
+rm -rf /tmp/icu-install
 
 #php -i | grep "ICU version"
 #icu-config --version
