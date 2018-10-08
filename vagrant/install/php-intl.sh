@@ -38,7 +38,7 @@ git -C /tmp clone https://gist.github.com/siffash/76676186de0ffc6eb6cbf89abc7a5e
 chmod +x /tmp/icu-install/icu-install.sh
 #/tmp/icu-install/icu-install.sh versions
 /tmp/icu-install/icu-install.sh install 62.1
-touch /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini' && sudo touch /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini'
+sudo touch /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini' && sudo touch /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini && sudo bash -c 'echo "extension=intl.so" > /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini'
 /etc/init.d/apache2 restart
 apt-get purge --auto-remove -y php$PHP_VERSION-dev
 rm -rf /tmp/icu-install
