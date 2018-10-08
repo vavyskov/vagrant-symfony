@@ -17,8 +17,7 @@ PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 ## -----------------------------------------------------------------------------
 
 ## Remove SQLite
-#apt-get purge -y sqlite3
-apt-get purge -y php${PHP_VERSION}-sqlite3
+apt-get purge -y sqlite3 php${PHP_VERSION}-sqlite3
 
 ## -----------------------------------------------------------------------------
 

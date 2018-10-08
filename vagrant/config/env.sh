@@ -3,7 +3,10 @@ set -eu
 
 ## Environment variables
 
-HOSTNAME=$(hostname -d)
+#POSTGRESQL_ROOT_PASSWORD=root
+POSTGRESQL_DB=postgresql
+POSTGRESQL_USER=postgresql
+POSTGRESQL_PASSWORD=postgresql
 
 MARIADB_ROOT_PASSWORD=root
 MARIADB_DB=mariadb

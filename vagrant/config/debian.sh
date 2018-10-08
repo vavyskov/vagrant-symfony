@@ -117,7 +117,7 @@ apt-get install -y git
 ## E-mail
 
 ## Postfix
-sudo debconf-set-selections <<< "postfix postfix/mailname string ${HOSTNAME}"
+sudo debconf-set-selections <<< "postfix postfix/mailname string $(hostname -d)"
 sudo debconf-set-selections <<< "postfix postfix/main_mailer_type string 'Internet Site'"
 apt-get install -y postfix
 sed -i "s/inet_interfaces = all/inet_interfaces = loopback-only/" /etc/postfix/main.cf

@@ -157,7 +157,7 @@ The folder "vagrant/install" contains several installation scripts:
 - Vagrant config.yaml
 - Convert "Info page" index.php into MVC (check PHP availability)
 - DB backup/restore (project DB as extra file)
-- Nginx server (php.sh, adminer.sh)
+- Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - PhpPgAdmin (latest version)
 
 ## Note

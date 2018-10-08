@@ -47,7 +47,7 @@ fi
 #pg_dumpall > /tmp/pgalldump_$today.dump.out
 
 
-
+#HOSTNAME=$(hostname -d)
 #$TODAY=`date --iso-8601`
 #$BACKDIR=/backup
 #pg_dump [options] > $BACKDIR/$HOSTNAME-$TODAY

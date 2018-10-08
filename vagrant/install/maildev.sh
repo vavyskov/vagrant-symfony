@@ -13,18 +13,10 @@ CURRENT_DIRECTORY=$(dirname $0)
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
 
-
-
-
-
 ## Dependency detection
 if ! [[ $(npm -v 2>/dev/null) ]]; then
     bash "$CURRENT_DIRECTORY/../install/nodejs.sh"
 fi
-
-
-
-
 
 ## -----------------------------------------------------------------------------
 
@@ -33,11 +25,9 @@ apt-get update
 
 
 
-## MailDev
 
-## -----------------------------------------------------------------------------
 
-## Detect Vagrant
+## Development only
 if [ -d "/vagrant" ]; then
     npm install -g maildev
 

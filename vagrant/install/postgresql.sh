@@ -12,6 +12,12 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
+
+## Dependency detection
+if ! [ -d "/etc/php" ]; then
+    ## Install PHP
+    source "$CURRENT_DIRECTORY/php.sh"
+fi
 PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
@@ -55,7 +61,7 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 
 
 ## Enable postgres password-base authentication
-#sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
+#sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRESQL_ROOT_PASSWORD'"
 #sed -i 's/local.*all.*postgres.*peer/local\tall\t\tpostgres\t\t\t\tmd5/' /etc/postgresql/9.6/main/pg_hba.conf
 
 
@@ -76,7 +82,7 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 
 ## Set PostgreSQL password
 #if [[ $FIRST_RUN = true ]]; then
-#  sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRES_ROOT_PASSWORD'"
+#  sudo -u postgres psql -c "ALTER ROLE postgres WITH PASSWORD '$POSTGRESQL_ROOT_PASSWORD'"
 #fi
 
 
@@ -119,28 +125,28 @@ sed -i 's/local.*all.*all.*peer/local\tall\t\tall\t\t\t\t\tmd5/' /etc/postgresql
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then
     ## Add database
-    #sudo -u postgres createdb postgresql
+    #sudo -u postgres createdb $POSTGRESQL_DB
 
     ## Add database if does not exist
-    sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = 'postgresql'" | grep -q 1 || sudo -u postgres psql -c "
-        CREATE DATABASE postgresql
+    sudo -u postgres psql -tc "SELECT 1 FROM pg_database WHERE datname = '$POSTGRESQL_DB'" | grep -q 1 || sudo -u postgres psql -c "
+        CREATE DATABASE $POSTGRESQL_DB
     "
 
     ## Add user (role)
     ## CREATE USER xyz (alias: CREATE ROLE xyz LOGIN)
     #sudo -u postgres psql -c "
-    #    CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
-    #    GRANT ALL ON DATABASE postgresql TO postgresql;
-    #    ALTER DATABASE postgresql OWNER TO postgresql;
-    #    REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
+    #    CREATE USER $POSTGRESQL_USER WITH ENCRYPTED PASSWORD '$POSTGRESQL_PASSWORD';
+    #    GRANT ALL ON DATABASE $POSTGRESQL_DB TO $POSTGRESQL_USER;
+    #    ALTER DATABASE $POSTGRESQL_DB OWNER TO $POSTGRESQL_USER;
+    #    REVOKE ALL ON DATABASE $POSTGRESQL_DB FROM PUBLIC;
     #"
 
     ## Add user (role) if does not exist
-    sudo -u postgres psql -tc "SELECT 1 FROM pg_user WHERE usename = 'postgresql'" | grep -q 1 || sudo -u postgres psql -c "
-        CREATE USER postgresql WITH ENCRYPTED PASSWORD 'postgresql';
-        GRANT ALL ON DATABASE postgresql TO postgresql;
-        ALTER DATABASE postgresql OWNER TO postgresql;
-        REVOKE ALL ON DATABASE postgresql FROM PUBLIC;
+    sudo -u postgres psql -tc "SELECT 1 FROM pg_user WHERE usename = '$POSTGRESQL_USER'" | grep -q 1 || sudo -u postgres psql -c "
+        CREATE USER $POSTGRESQL_USER WITH ENCRYPTED PASSWORD '$POSTGRESQL_PASSWORD';
+        GRANT ALL ON DATABASE $POSTGRESQL_DB TO $POSTGRESQL_USER;
+        ALTER DATABASE $POSTGRESQL_DB OWNER TO $POSTGRESQL_USER;
+        REVOKE ALL ON DATABASE $POSTGRESQL_DB FROM PUBLIC;
     "
 
 

@@ -13,19 +13,11 @@ CURRENT_DIRECTORY=$(dirname $0)
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
 
-
-
-
-
 ## Dependency detection
 if ! [ -d "/var/lib/mysql" ]; then
     ## Install MariaDB
     source "$CURRENT_DIRECTORY/mariadb.sh"
 fi
-
-
-
-
 
 ## -----------------------------------------------------------------------------
 

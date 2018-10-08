@@ -12,6 +12,12 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
+
+## Dependency detection
+if ! [ -d "/etc/php" ]; then
+    ## Install PHP
+    source "$CURRENT_DIRECTORY/php.sh"
+fi
 PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
@@ -20,8 +26,7 @@ PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 apt-get update
 
 ## SQLite
-#apt-get install -y sqlite3
-apt-get install -y php${PHP_VERSION}-sqlite3
+apt-get install -y sqlite3 php${PHP_VERSION}-sqlite3
 
 ## -----------------------------------------------------------------------------
 

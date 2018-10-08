@@ -13,24 +13,11 @@ CURRENT_DIRECTORY=$(dirname $0)
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
 
-
-
-
-
 ## Dependency detection
-if ! [ -d "/etc/apache2" ]; then
-    ## ToDo: Install Apache or Nginx (+ Adminer alias)
-    source "$CURRENT_DIRECTORY/apache.sh"
-fi
-
 if ! [ -d "/etc/php" ]; then
     ## Install PHP
     source "$CURRENT_DIRECTORY/php.sh"
 fi
-
-
-
-
 
 ## -----------------------------------------------------------------------------
 
@@ -48,9 +35,13 @@ wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php
 echo '50 2 5 * * /usr/bin/wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
 
 ## Adminer - alias
-echo "Alias /adminer /usr/share/adminer/adminer" | sudo tee /etc/apache2/conf-available/adminer.conf
-a2enconf adminer.conf
-service apache2 restart
+## ToDo: Detect Apache or Nginx
+if [ -d "/etc/apache2" ]; then
+    echo "Alias /adminer /usr/share/adminer/adminer" | sudo tee /etc/apache2/conf-available/adminer.conf
+    a2enconf adminer.conf
+    service apache2 restart
+fi
+
 
 ## -----------------------------------------------------------------------------
 
