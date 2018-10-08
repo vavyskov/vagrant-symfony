@@ -17,13 +17,14 @@ PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 ## -----------------------------------------------------------------------------
 
 ## Remove MongoDB
-apt-get purge -y mongodb php${PHP_VERSION}-mongodb
-#apt-get purge -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
+apt-get purge --auto-remove -y mongodb php${PHP_VERSION}-mongodb
+#apt-get purge --auto-remove -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
 
 ## -----------------------------------------------------------------------------
 
 ## Purge
-bash "$CURRENT_DIRECTORY/../config/purge.sh"
+#apt-get autoremove -y
+#bash "$CURRENT_DIRECTORY/../config/purge.sh"
 
 ## -----------------------------------------------------------------------------
 

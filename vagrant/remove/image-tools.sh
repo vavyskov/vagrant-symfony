@@ -17,17 +17,18 @@ PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 ## -----------------------------------------------------------------------------
 
 ## Remove Image tools
-apt-get purge -y imagemagick php-imagick
-#apt-get purge -y optipng gifsicle
+apt-get purge --auto-remove -y imagemagick php-imagick
+#apt-get purge --auto-remove -y optipng gifsicle
 
-#apt-get purge -y libjpeg-progs
+#apt-get purge --auto-remove -y libjpeg-progs
 #cjpeg -version
 #djpeg -version
 
 ## -----------------------------------------------------------------------------
 
 ## Purge
-bash "$CURRENT_DIRECTORY/../config/purge.sh"
+#apt-get autoremove -y
+#bash "$CURRENT_DIRECTORY/../config/purge.sh"
 
 ## -----------------------------------------------------------------------------
 

@@ -21,6 +21,7 @@ bash "$CURRENT_DIRECTORY/debian.sh"
 ## Installation
 bash "$CURRENT_DIRECTORY/../install/apache.sh"
 bash "$CURRENT_DIRECTORY/../install/php.sh" 7.2
+bash "$CURRENT_DIRECTORY/../install/php-intl.sh"
 bash "$CURRENT_DIRECTORY/../install/postgresql.sh"
 bash "$CURRENT_DIRECTORY/../install/adminer.sh"
 bash "$CURRENT_DIRECTORY/../install/nodejs.sh"
