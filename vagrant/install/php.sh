@@ -4,7 +4,7 @@ set -e
 
 ## Detect permission
 if [ $(id -u) != 0 ]; then
-   echo -e "\nThis script must be run as root or with sudo prefix!\n"
+   echo -e "\nYou have to run this script as root or with sudo prefix!\n"
    exit
 fi
 
@@ -43,8 +43,9 @@ fi
 
 ## -----------------------------------------------------------------------------
 
-## Add sources for PHP > 7.0
-if ! [[ $PHP_VERSION = "5.6" || $PHP_VERSION = "7.0" ]]; then
+## Add sources only for PHP > 7.0
+#if ! [[ $PHP_VERSION = "5.6" || $PHP_VERSION = "7.0" ]]; then
+dpkg --compare-versions $PHP_VERSION gt 7.0; if [ $? -eq "0" ]; then
     apt-get install -y apt-transport-https lsb-release ca-certificates
     wget https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php.gpg
     sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
@@ -67,8 +68,8 @@ cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini
 date.timezone=Europe/Prague
 
 [Error reporting]
-;log_errors=On
-;error_log=php_error.log
+log_errors=On
+error_log=php_error.log
 error_reporting=E_ALL & ~E_DEPRECATED & ~E_STRICT
 display_errors=Off
 ;display_startup_errors=Off

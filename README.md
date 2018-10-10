@@ -121,6 +121,10 @@ The folder "vagrant/install" contains several installation scripts:
       sudo /vagrant/install/php.sh 7.2 (default)
       sudo /vagrant/install/php.sh 7.3
 
+- **PHP Intl** upgrades ICU in php-intl (it takes some time)
+
+      sudo /vagrant/install/php-intl.sh
+
 - **XDebug** is debugger and profiler tool for PHP
 
       sudo /vagrant/install/xdebug.sh
@@ -162,6 +166,7 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## Note
 
+- Skype (Windows): Go to Tools → Options → Advanced → Connections and uncheck the box use port 80 and 443 as alternative.
 - MailCatcher "From" is not the same as "Source From" (**MailDev**, MailHog)
 - https://github.com/benjaminkott/bootstrap_package_box/blob/master/Vagrantfile
 - https://www.jhipster.tech/configuring-a-corporate-proxy/
