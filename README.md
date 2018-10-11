@@ -148,6 +148,7 @@ The folder "vagrant/install" contains several installation scripts:
 ## ToDo
 
 - Check PHP versions 7.0 (and others) with other software (MariaDB, PosgreSQL etc.)
+- Alternative software detection if exec() is disabled (phpinfo() to array)
 - VM name as "parent directory"
 - MariaDB (latest only)
 - Better purge.sh script

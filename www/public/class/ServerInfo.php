@@ -68,6 +68,9 @@ class ServerInfo
             'PHP' => [
                 'version' => 'php -v 2>&1 | head -1 | cut -d" " -f2 | cut -d- -f1',
             ],
+            'ICU (php-intl)' => [
+                'version' => 'php -i | grep "ICU version" | cut -d" " -f4',
+            ],
             'SQLite' => [
                 'version' => 'sqlite3 --version 2>/dev/null | cut -d" " -f1',
                 'alternative' => $this->sqlite(),
