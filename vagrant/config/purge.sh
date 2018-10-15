@@ -20,9 +20,9 @@ echo -e "\nCleaning temporary directory...\n"
 rm -rf /tmp/*
 #rm -fr /tmp/.* 2> /dev/null
 rm -rf /var/tmp/*
-rm -rf /var/spool/*
+#rm -rf /var/spool/*
 rm -rf /usr/src/linux-headers*
-rm -rf /usr/src/virtualbox-guest* /usr/src/vboxguest* /usr/src/virtualbox-ose-guest*
+#rm -rf /usr/src/virtualbox-guest* /usr/src/vboxguest* /usr/src/virtualbox-ose-guest*
 
 ## Cleanup log files "content" only
 echo -e "Cleanup log files\n"
