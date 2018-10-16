@@ -20,8 +20,9 @@ echo -e "\nCleaning temporary directory...\n"
 rm -rf /tmp/*
 #rm -fr /tmp/.* 2> /dev/null
 rm -rf /var/tmp/*
-#rm -rf /var/spool/*
-rm -rf /usr/src/linux-headers*
+rm -rf /var/spool/*
+rm -rf /usr/src/*
+#rm -rf /usr/src/linux-headers*
 #rm -rf /usr/src/virtualbox-guest* /usr/src/vboxguest* /usr/src/virtualbox-ose-guest*
 
 ## Cleanup log files "content" only
@@ -31,6 +32,9 @@ for logs in `find /var/log -type f`; do > $logs; done
 find /var/log/ -type f -regex '.*\.[0-9]+\.gz$' -delete
 
 ## -----------------------------------------------------------------------------
+
+# Unmount project
+#umount /vagrant
 
 ## Remove unused locales (edit for your needs, this keeps only en* and cs*)
 #echo -e "\nRemoving unused locales...\n"

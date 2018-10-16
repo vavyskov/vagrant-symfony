@@ -32,29 +32,21 @@ end
 
 
 
-
-
-
-
-
 Vagrant.configure("2") do |config|
 
     ## Sources (not required for vagrantup.com)
-    #config.vm.box_url = "http://files.vagrantup.com/customBox.box"
-    #config.vm.box_url = "file:///C:/path/to/vagrant/customBox.box"
-    #config.vm.box_url = "file:///opt/vagrant/boxes/customBox.box"
-  
-  
-  
+    #config.vm.box_url = "http://files.vagrantup.com/package.box"
+    #config.vm.box_url = "file:///opt/vagrant/boxes/package.box"
+    #config.vm.box_url = "file:///C:/path/to/vagrant/package.box"
+
   
   
     ## Box (required) - Template
     config.vm.box = "vavyskov/symfony"
 
     ## Enable when do not use "Template"
-#   config.vm.box = "debian/contrib-stretch64"
-#   config.vm.provision :shell, path: "config/symfony.sh"
-##   config.vm.provision :shell, path: "config/symfony-dev.sh"
+#    config.vm.box = "debian/contrib-stretch64"
+#    config.vm.provision :shell, path: "config/symfony.sh"
 
 ##   config.vm.provision :shell, path: "config/symfony.sh", :args => ["vagrant"]
 ##   config.vm.provision :shell, path: "config/symfony-dev.sh", :args => ["vagrant"]
