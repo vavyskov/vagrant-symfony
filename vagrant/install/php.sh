@@ -45,7 +45,7 @@ fi
 
 ## Add sources only for PHP > 7.0
 #if ! [[ $PHP_VERSION = "5.6" || $PHP_VERSION = "7.0" ]]; then
-dpkg --compare-versions $PHP_VERSION gt 7.0; if [ $? -eq "0" ]; then
+if $(dpkg --compare-versions $PHP_VERSION gt 7.0); then
     apt-get install -y apt-transport-https lsb-release ca-certificates
     wget https://packages.sury.org/php/apt.gpg -O /etc/apt/trusted.gpg.d/php.gpg
     sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list'
