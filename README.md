@@ -125,6 +125,12 @@ The folder "vagrant/install" contains several installation scripts:
 
       sudo /vagrant/install/php-intl.sh
 
+- **MariaDB** version
+
+      sudo /vagrant/install/mariadb.sh 10.1
+      sudo /vagrant/install/mariadb.sh 10.2
+      sudo /vagrant/install/mariadb.sh 10.3 (default)
+
 - **XDebug** is debugger and profiler tool for PHP
 
       sudo /vagrant/install/xdebug.sh
@@ -147,21 +153,19 @@ The folder "vagrant/install" contains several installation scripts:
 
 ## ToDo
 
-- Check PHP versions 7.0 (and others) with other software (MariaDB, PosgreSQL etc.)
 - Alternative software detection if exec() is disabled (phpinfo() to array)
+- DB backup/restore (project DB only as extra file)
+- MariaDB (latest only, check change version)
 - VM name as "parent directory"
-- MariaDB (latest only)
 - Better purge.sh script
 - Vagrant plugins "auto installation"
-- Plugin: vagrant-vbguest, vagrant-hostsupdater, vagrant-hostmanager
+- Plugin: vagrant-vbguest (optional), vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - PhpMyAdmin cron auto update
 - Vagrant config.yaml
-- Convert "Info page" index.php into MVC (check PHP availability)
-- DB backup/restore (project DB as extra file)
 - Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - PhpPgAdmin (latest version)
 
