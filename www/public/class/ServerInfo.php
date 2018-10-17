@@ -12,6 +12,15 @@ class ServerInfo
         return "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-middle'>";
     }
 
+    private function debian()
+    {
+        if (exec('cat /etc/os-release | head -1 | cut -d\" -f2')) {
+            return exec('cat /etc/os-release | head -1 | cut -d\" -f2');
+        } else {
+            return $this->notAvailable();
+        }
+    }
+
     /**
      * SQLite
      * @return string
@@ -61,6 +70,7 @@ class ServerInfo
         $sofware = array(
             'Linux' => [
                 'version' => 'lsb_release -d 2>&1 | cut -d: -f2 | cut -d" " -f1,3,4',
+                'alternative' => $this->debian(),
             ],
             'Apache' => [
                 'version' => 'apache2 -v 2>&1 | head -1 | cut -d/ -f2 | cut -d" " -f1',

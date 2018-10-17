@@ -67,7 +67,7 @@ apt-get install -y ca-certificates openssl
 apt-get install -y debconf-utils
 
 ## System tools
-apt-get install -y wget curl zip unzip
+apt-get install -y wget curl zip unzip lsb-release
 #apt-get install -y nmon
 
 

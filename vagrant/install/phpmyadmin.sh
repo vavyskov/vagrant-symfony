@@ -55,7 +55,7 @@ mysql -u root -e "CREATE DATABASE IF NOT EXISTS phpmyadmin;"
 mysql -u root phpmyadmin < /usr/share/phpmyadmin/sql/create_tables.sql
 cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
 RANDOM_BLOWFISH_SECRET=`openssl rand -base64 32`
-sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '${RANDOM_BLOWFISH_SECRET}'/" /usr/share/phpmyadmin/config.inc.php
+sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RANDOM_BLOWFISH_SECRET'/" /usr/share/phpmyadmin/config.inc.php
 ## ToDo: Cron auto update
 
 
