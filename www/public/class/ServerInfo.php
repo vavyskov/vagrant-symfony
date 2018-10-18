@@ -12,10 +12,14 @@ class ServerInfo
         return "<img src='asset/times.svg' alt='N/A' height='16' width='16' class='align-middle'>";
     }
 
+    /**
+     * Debian
+     * @return string
+     */
     private function debian()
     {
-        if (exec('cat /etc/os-release | head -1 | cut -d\" -f2')) {
-            return exec('cat /etc/os-release | head -1 | cut -d\" -f2');
+        if (exec('cat /etc/os-release')) {
+            return exec('cat /etc/os-release | head -1 | cut -d\" -f2 | cut -d" " -f1,3,4');
         } else {
             return $this->notAvailable();
         }
@@ -110,17 +114,17 @@ class ServerInfo
             'Yarn' => [
                 'version' => 'yarn -v 2>/dev/null',
             ],
-            'Xdebug' => [
-                'alternative' => $this->xdebug(),
-            ],
             'Image Magick' => [
                 'version' => 'convert --version 2>/dev/null | head -1 | cut -d" " -f3',
             ],
-            'OptiPNG' => [
+            /*'OptiPNG' => [
                 'version' => 'optipng --version 2>/dev/null | head -1 | cut -d" " -f3',
-            ],
-            'GIFsicle' => [
+            ],*/
+            /*'GIFsicle' => [
                 'version' => 'gifsicle --version 2>/dev/null | head -1 | cut -d" " -f3',
+            ],*/
+            'Xdebug' => [
+                'alternative' => $this->xdebug(),
             ],
             /*'Memcached' => [
                 'version' => 'memcached -V | cut -d" " -f2',
@@ -167,6 +171,10 @@ class ServerInfo
     /**
      * PHP Extensions
      * @return string
+     *
+     * php -m|grep gd
+     * php -m|grep imagick
+     * php -m|grep mbstring
      */
     function phpExtension() {
         $php_extension = array(
@@ -180,9 +188,12 @@ class ServerInfo
             "APCu" => "apcu",
             "PECL upload progress" => "uploadprogress",
             "LDAP" => "ldap",
-            "SQLite (PDO)" => "sqlite3",
-            "MySQL (PDO)" => "mysqli",
-            "PostgreSQL (PDO)" => "pgsql",
+            //"SQLite" => "sqlite3",
+            "SQLite (PDO)" => "pdo_sqlite",
+            //"MySQLi" => "mysqli",
+            "MySQL (PDO)" => "pdo_mysql",
+            //"PostgreSQL" => "pgsql",
+            "PostgreSQL (PDO)" => "pdo_pgsql",
             //"Memcache" => "memcache",
             //"Memcached" => "memcached",
         );
