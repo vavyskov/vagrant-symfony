@@ -25,10 +25,11 @@ opts.each do |opt, arg|
     case opt
         when '--dist'
             if arg == 'lamp'
-                vm_dist = arg
-                vm_name = arg
+                vm_dist = 'lamp'
+                vm_name = 'lamp'
             else
                 vm_dist = 'symfony'
+                vm_name = 'symfony'
             end
         when '--name'
             vm_name = arg
