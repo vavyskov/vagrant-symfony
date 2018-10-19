@@ -147,6 +147,16 @@ The folder "vagrant/install" contains several installation scripts:
 
       sudo /vagrant/install/phpmyadmin.sh
 
+## Package
+
+Create a re-usable box:
+
+    vagrant plugin install vagrant-vbguest (optional)
+    vagrant up
+    vagrant halt (it correctly upgrades the linux-headers, Virtualbox guest additions etc.)
+    vagrant up
+    vagrant package
+
 ## FixMe
 
 - Enable port 80 forwarding triggers (Linux)

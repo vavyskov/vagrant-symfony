@@ -25,11 +25,11 @@ fi
 apt-get update
 
 ## PhpMyAdmin - configuration
-sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
-sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password $MARIADB_ROOT_PASSWORD"
-sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2"
-sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $PHPMYADMIN_PASSWORD"
-sudo debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PHPMYADMIN_PASSWORD"
+debconf-set-selections <<< "phpmyadmin phpmyadmin/dbconfig-install boolean true"
+debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/admin-pass password $MARIADB_ROOT_PASSWORD"
+debconf-set-selections <<< "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2"
+debconf-set-selections <<< "phpmyadmin phpmyadmin/mysql/app-pass password $PHPMYADMIN_PASSWORD"
+debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password $PHPMYADMIN_PASSWORD"
 
 
 
@@ -54,8 +54,13 @@ chown vagrant:vagrant /usr/share/phpmyadmin/tmp
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS phpmyadmin;"
 mysql -u root phpmyadmin < /usr/share/phpmyadmin/sql/create_tables.sql
 cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
-RANDOM_BLOWFISH_SECRET=`openssl rand -base64 32`
-sed -i "s/cfg\['blowfish_secret'\] = ''/cfg\['blowfish_secret'\] = '$RANDOM_BLOWFISH_SECRET'/" /usr/share/phpmyadmin/config.inc.php
+RANDOM_BLOWFISH_SECRET=`openssl rand -base64 32 | tr -dc 'a-zA-Z0-9'`
+sed -i "s/\$cfg\['blowfish_secret'\] = ''/\$cfg\['blowfish_secret'\] = '$RANDOM_BLOWFISH_SECRET'/" /usr/share/phpmyadmin/config.inc.php
+
+
+
+
+
 ## ToDo: Cron auto update
 
 

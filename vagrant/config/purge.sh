@@ -23,7 +23,8 @@ rm -rf /var/tmp/*
 rm -rf /var/spool/*
 rm -rf /usr/src/*
 #rm -rf /usr/src/linux-headers*
-#rm -rf /usr/src/virtualbox-guest* /usr/src/vboxguest* /usr/src/virtualbox-ose-guest*
+#rm -rf /usr/src/virtualbox-guest* /usr/src/virtualbox-ose-guest*
+#rm -rf /usr/src/vboxguest*
 
 ## Cleanup log files "content" only
 echo -e "Cleanup log files\n"
