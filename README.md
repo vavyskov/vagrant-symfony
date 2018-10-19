@@ -36,6 +36,8 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
           vagrant --dist=lamp up
           vagrant --dist=lamp halt
        
+      Note: if you use `--dist` option at start up, you have to use `--dist` options on each vagrant command.
+    
     - Other examples:
    
           vagrant --name=project up
