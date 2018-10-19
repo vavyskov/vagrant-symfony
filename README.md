@@ -29,12 +29,19 @@ Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
         vagrant plugin install vagrant-bindfs
         vagrant up (reload, halt, destroy)
              
-   Customization:
+    Customization:
+        
+    - Distribution (only `symfony` or `lamp`):
+       
+          vagrant --dist=lamp up
+          vagrant --dist=lamp halt
+       
+    - Other examples:
    
-        vagrant --name=project up
-        vagrant --name=project --port=8080 --ip=192.168.33.10 up
+          vagrant --name=project up
+          vagrant --dist=symfony --name=project --port=8080 --ip=192.168.33.10 up
 
-   Note: the custom parameters need to be specified before `up` command.
+   Note: the custom options need to be specified before `up` command.
 
 1. Open the web browser:
 
