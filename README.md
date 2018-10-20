@@ -1,6 +1,37 @@
 # vagrant-symfony
 
-Symfony stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
+SYMFONY stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
+
+Operatin system:
+- **Debian**
+
+Web server:
+- **Apache**
+- **Node.js**
+
+Programming language:
+- **PHP**
+
+Database:
+- SQLite
+- MariaDB
+- **PostgreSQL**
+- MongoDB
+
+Database management:
+- **Adminer**
+- PhpMyAdmin
+- PhpPgAdmin
+
+Package manager:
+- **npm**
+- pnpm
+- **yarn**
+
+Development:
+- **Composer**
+- Drush
+- Drupal console
 
 ## Requirements
 1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
