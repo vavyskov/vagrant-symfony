@@ -188,6 +188,7 @@ Create a re-usable box:
 - Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - PhpPgAdmin (latest version)
 - Page localhost/db (phpMyAdmin, Adminer, pgAdmin)
+- Enable create "new database"
 
 ## Note
 
