@@ -29,10 +29,21 @@ curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
 ## Node.js
 apt-get install -y nodejs
 
+## -----------------------------------------------------------------------------
 
+##
+## JavaScript package management
+##
 
-## Node.js - Yarn (a node module manager)
-npm install yarn -g
+## NPM (included in Node.js)
+
+## YARN
+npm install -g yarn
+
+## PNPM
+npm install -g pnpm
+## PNPM upgrade
+#pnpm install -g pnpm
 
 ## -----------------------------------------------------------------------------
 
