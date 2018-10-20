@@ -1,6 +1,6 @@
 # vagrant-symfony
 
-SYMFONY stack (Debian, Apache, PHP, PostgreSQL, Node.js, Yarn, Adminer, MailDev)
+SYMFONY stack (Debian, Apache, PHP, PostgreSQL, Adminer, MailDev)
 
 Operatin system:
 - **Debian**
