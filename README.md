@@ -134,7 +134,7 @@ The folder "vagrant/install" contains several installation scripts:
 
       sudo /vagrant/install/php-intl.sh
 
-- **MariaDB** version
+- **MariaDB** is enhanced replacement for MySQL
 
       sudo /vagrant/install/mariadb.sh 10.1
       sudo /vagrant/install/mariadb.sh 10.2
@@ -147,10 +147,6 @@ The folder "vagrant/install" contains several installation scripts:
 - **SQLite** stores the entire database as a single cross-platform file
 
       sudo /vagrant/install/sqlite.sh
-
-- **MariaDB** is enhanced replacement for MySQL
-
-      sudo /vagrant/install/mariadb.sh
 
 - **PhpMyAdmin** allows MySQL administration over the web
 
