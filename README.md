@@ -33,6 +33,10 @@ Development:
 - Drush
 - Drupal console
 
+Email testing:
+- **MailDev**
+- MailCatcher
+
 ## Requirements
 1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
 1. [Vagrant](https://www.vagrantup.com/)
