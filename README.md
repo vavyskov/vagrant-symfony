@@ -23,7 +23,7 @@ Database management:
 - PhpMyAdmin
 - PhpPgAdmin
 
-Package manager:
+Package management:
 - **npm**
 - pnpm
 - **yarn**
