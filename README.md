@@ -24,12 +24,14 @@ Database management:
 - PhpPgAdmin
 
 Package management:
-- **npm**
-- pnpm
-- **yarn**
+- PHP
+  - **Composer**
+- JavaScript
+  - **npm**
+  - pnpm
+  - **yarn**
 
 Development:
-- **Composer**
 - Drush
 - Drupal console
 
