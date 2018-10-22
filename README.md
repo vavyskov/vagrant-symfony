@@ -40,15 +40,15 @@ Email testing:
 - MailCatcher
 
 ## Requirements
-1. [VirtualBox](https://www.virtualbox.org/) + Extension Pack
-1. [Vagrant](https://www.vagrantup.com/)
-    - `vagrant-winnfsd` plugin (Windows only)
-    - `vagrant-bindfs` plugin
-    - **Windows note**: If your account folder name (C:\Users\account-folder-name\) contains non ASCII characters, before Vagrant instalation set custom Vagrant home path e.g.:
+1. [Vagrant](https://www.vagrantup.com/?target=_blank)
+    - Windows note: If your account folder name (C:\Users\account-folder-name\) contains **non ASCII characters**, before Vagrant instalation set custom Vagrant home path e.g.:
         
           setx VAGRANT_HOME "X:\my\vagrant\home\path"
-        
-1. [Git](https://git-scm.com/) (optional)
+
+1. [VirtualBox](https://www.virtualbox.org/?target=_blank)
+    - VirtualBox Extension Pack (optional)
+
+1. [Git](https://git-scm.com/?target=_blank) (optional)
 
 ## Usage
 
@@ -56,15 +56,15 @@ Email testing:
 
     - Disable Hyper-V technology in operatin system (Windows only).
       
-1. Download and extract ZIP file or clone the repository:
-
-        git clone https://github.com/vavyskov/vagrant-symfony.git
+1. Clone or download and extract [vagrant-symfony](https://github.com/vavyskov/vagrant-symfony/archive/master.zip?target=_blank) repository:
+        
+       git clone https://github.com/vavyskov/vagrant-symfony.git
 
 1. Open the terminal, navigate to the directory containing the file `Vagrantfile` and run command:
 
-        vagrant plugin install vagrant-winnfsd (Windows only)
-        vagrant plugin install vagrant-bindfs
-        vagrant up (reload, halt, destroy)
+       vagrant plugin install vagrant-winnfsd (Windows only)
+       vagrant plugin install vagrant-bindfs
+       vagrant up (reload, halt, destroy)
              
     Customization:
         
@@ -86,7 +86,7 @@ Email testing:
 
     **Web**:
     - URL: `localhost` or `192.168.33.10`
-    - Edit the local directory `www` as you needed
+    - **Edit the local (host) directory** `www` as you needed
 
     **Adminer**:
     - URL: `localhost/adminer` or `192.168.33.10/adminer`
@@ -259,6 +259,7 @@ How to create your own reusable box:
 - PhpPgAdmin (latest version)
 - Page localhost/db (phpMyAdmin, Adminer, pgAdmin)
 - Enable create "new database"
+- Active "localhost" link in terminal (after running `vagrant up` command)
 
 ## Note
 
