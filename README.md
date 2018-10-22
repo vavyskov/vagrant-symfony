@@ -228,7 +228,7 @@ The folder `vagrant/install` contains several installation scripts:
 
 ## Package
 
-Create a re-usable box:
+How to create your own reusable box:
 
     vagrant plugin install vagrant-vbguest (optional)
     vagrant up
