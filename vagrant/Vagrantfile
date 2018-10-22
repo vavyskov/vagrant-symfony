@@ -40,8 +40,7 @@ opts.each do |opt, arg|
     end
 end
 
-
-
+## Configuration
 Vagrant.configure("2") do |config|
 
     ## Sources (not required for vagrantup.com)
@@ -58,11 +57,9 @@ Vagrant.configure("2") do |config|
 #    config.vm.box = "debian/contrib-stretch64"
 #    config.vm.provision :shell, path: "config/" + vm_dist ".sh"
 
-##   config.vm.provision :shell, path: "config/" + vm_dist ".sh", :args => ["vagrant"]
 
 
-
-
+    #config.vm.provision :shell, path: "config/" + vm_dist ".sh", :args => ["vagrant"]
 
     ## Hostname
     config.vm.hostname = "devel.example.com"
@@ -87,20 +84,21 @@ Vagrant.configure("2") do |config|
 
 
 
-
-
     ## Port forwarding with ports <= 1024 may not work.
     ## Unix-based hosts (e.g. Linux, Solaris, Mac OS X) restrict ports <= 1024 to only privileged process
     ## (typically processes running as an administrative user).
-
+    ##
     ## The VirtualBox Manual says this about NAT mode limitation:
     ## Forwarding host ports < 1024 impossible
     ## On Unix-based hosts (e.g. Linux, Solaris, Mac OS X) it is not possible to bind to ports below 1024
     ## from applications that are not run by root. As a result, if you try to configure such a port forwarding,
     ## the VM will refuse to start.
-
+    ##
     ## You can config port forwarding into VirtualBox:
     ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
+
+    ## HTTPS
+    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
 
     ## HTTP
     if vm_port == 80
@@ -124,36 +122,6 @@ Vagrant.configure("2") do |config|
         config.vm.network "forwarded_port", guest: 80, host: vm_port, host_ip: "127.0.0.1"
     end
 
-    ## HTTPS
-    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
-
-
-
-
-
-
-    if Vagrant::Util::Platform.windows? then
-#       if Vagrant.has_plugin?("vagrant-winnfsd")
-#           config.winnfsd.logging = "on"
-#           config.winnfsd.uid = 1
-#           config.winnfsd.gid = 1
-#       end
-
-#        unless Vagrant.has_plugin?("vagrant-winnfsd")
-#            system("vagrant plugin install vagrant-winnfsd") || exit!
-#            exit system("vagrant")
-#        end
-
-#        config.vagrant.plugins = ["vagrant-winnfsd"]
-    end
-
-    ## FixMe: Linux port forwarding
-    if Vagrant::Util::Platform.linux? then
-
-        ## Port forwarding ???
-
-    end
-
     #if Vagrant::Util::Platform.platform =~ /darwin/ then
      if Vagrant::Util::Platform.darwin? then
 
@@ -171,7 +139,31 @@ Vagrant.configure("2") do |config|
 
     end
 
+    ## FixMe: Linux port forwarding
+    if Vagrant::Util::Platform.linux? then
 
+        ## Port forwarding ???
+
+    end
+
+
+
+
+    ## Auto plugin installation
+    if Vagrant::Util::Platform.windows? then
+#       if Vagrant.has_plugin?("vagrant-winnfsd")
+#           config.winnfsd.logging = "on"
+#           config.winnfsd.uid = 1
+#           config.winnfsd.gid = 1
+#       end
+
+#       unless Vagrant.has_plugin?("vagrant-winnfsd")
+#           system("vagrant plugin install vagrant-winnfsd") || exit!
+#           exit system("vagrant")
+#       end
+
+#       config.vagrant.plugins = ["vagrant-winnfsd"]
+    end
 
 
 
@@ -190,15 +182,6 @@ Vagrant.configure("2") do |config|
     elsif host =~ /mswin|mingw|cygwin/
 
     end
-
-
-
-
-
-
-
-
-
 
 
 
@@ -249,11 +232,12 @@ Vagrant.configure("2") do |config|
 
 
 
-
     ## Note
     #:bsd__nfs_options => ["-maproot=0:0"]
     #bsd__nfs_options: ["alldirs","async","nolock"]
     #:linux__nfs_options => ["no_root_squash"]
+
+
 
 
 
@@ -275,22 +259,17 @@ Vagrant.configure("2") do |config|
         package.run_remote = {inline: "/vagrant/config/purge.sh"}
     end
 
-
-
+    ## Introduction
+    vm_port == 80 ? vm_port = '' : (vm_port = ':' + vm_port)
     config.vm.post_up_message = <<MSG
-------------------------------------------------------
-Local development, accessible at 127.0.0.1
+-------------------------------------------------------------------------------
+Local #{vm_dist.upcase} development, accessible at IP 127.0.0.1#{vm_port} or #{vm_ip}
 
-Web:             http://localhost
-Database:        http://localhost/adminer
-E-mail test UI:  http://localhost:1080
-------------------------------------------------------
+Web:                 http://localhost#{vm_port}
+Database management: http://localhost#{vm_port}/#{vm_dist == 'lamp' ? 'phpmyadmin' : 'adminer'}
+E-mail testing UI:   http://localhost:1080
+-------------------------------------------------------------------------------
 MSG
-
-
-
-
-
 
     ## VirtualBox
     config.vm.provider "virtualbox" do |vb|
