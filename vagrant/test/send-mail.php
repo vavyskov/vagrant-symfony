@@ -50,7 +50,7 @@
         echo("\n");
         if (!mail($to, $subject, $message, $headers))
             throw new Exception("The email can not be sent!");
-        echo("The email was sent. Did email arrive into mailbox?\n\n");
+        echo("The mail sent. Did mail arrive into mailbox?\n\n");
     }
     catch (Exception $e) {
         echo("Error: ". $e->getMessage() . "\n\n");
