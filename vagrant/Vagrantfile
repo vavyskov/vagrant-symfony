@@ -20,6 +20,7 @@ opts = GetoptLong.new(
     [ '-v', '--version', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '-h', '--help', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--provision', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--debug', GetoptLong::OPTIONAL_ARGUMENT ],
 )
 opts.each do |opt, arg|
     case opt
@@ -72,6 +73,11 @@ Vagrant.configure("2") do |config|
 
     ## Public network (allows access on network)
     #config.vm.network "public_network", type: "dhcp", bridge: 'en0: Wi-Fi (AirPort)'
+
+
+
+    ## Boot timeout
+    #config.vm.boot_timeout = 600
 
 
 
@@ -266,18 +272,20 @@ E-mail testing UI:   http://localhost:1080
 MSG
 
     ## VirtualBox
-    config.vm.provider "virtualbox" do |vb|
+    config.vm.provider 'virtualbox' do |vb|
         vb.name = vm_name
         vb.cpus = 1
         vb.memory = 2048
+        #vb.customize ['modifyvm', :id, '--cableconnected1', 'on']
+        #vb.customize ['modifyvm', :id, '--vrde', 'on']
         ## HDD cache off !!!
         vb.customize [
-            "storagectl", :id,
-            "--name", "SATA Controller",
-            "--hostiocache", "off"
+            'storagectl', :id,
+            '--name', 'SATA Controller',
+            '--hostiocache', 'off'
         ]
         ## Fix slow DNS lookups
-        vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+        vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     end
 
 end
