@@ -238,27 +238,27 @@ How to create your own reusable box:
 
 ## FixMe
 
-- Enable port 80 forwarding triggers (Linux)
+- Warning: Connection aborted. Retrying... (vagrant up)
 
 ## ToDo
 
 - Alternative software detection if exec() is disabled (phpinfo() to array)
+- Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - DB backup/restore (project DB only as extra file)
 - MariaDB (latest only, check change version)
 - VM name as "parent directory"
+- Info page link (phpMyAdmin, Adminer and pgAdmin) or localhost/db page
 - Better purge.sh script
 - Vagrant plugins "auto installation"
-- Plugin: vagrant-vbguest (optional), vagrant-hostsupdater, vagrant-hostmanager
+- Enable create "new database"
+- Plugin: vagrant-hostsupdater, vagrant-hostmanager
 - Disable access to PostgreSQL system databases (postgres, template0, template1)
 - Memcached
 - MailDev UI - Czech date and time format
 - Install script dependencies (PhpMyAdmin+PHP+MariaDB, XDebug+PHP, MailDev+Apache2)
 - PhpMyAdmin cron auto update
 - Vagrant config.yaml
-- Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - PhpPgAdmin (latest version)
-- Page localhost/db (phpMyAdmin, Adminer, pgAdmin)
-- Enable create "new database"
 - Active "localhost" link in terminal (after running `vagrant up` command)
 
 ## Note

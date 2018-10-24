@@ -122,28 +122,22 @@ Vagrant.configure("2") do |config|
         config.vm.network "forwarded_port", guest: 80, host: vm_port, host_ip: "127.0.0.1"
     end
 
-    #if Vagrant::Util::Platform.platform =~ /darwin/ then
-     if Vagrant::Util::Platform.darwin? then
+    ## Port forwarding
+    if Vagrant::Util::Platform.darwin? || Vagrant::Util::Platform.linux? then
+
+        Vagrant::Util::Platform.darwin? ? port_os = 'port-macos' : port_os = 'port-linux'
 
         ## Enable port forwarding on startup
         config.trigger.after [:provision, :up, :reload] do |portup|
             portup.info = "Enable port forwarding on startup..."
-            portup.run = {inline: "config/os-apple.sh portup"}
+            portup.run = {inline: "config/#{port_os}.sh up"}
         end
 
         ## Disable port forwarding when shutting down
         config.trigger.before [:halt, :destroy] do |portdown|
             portdown.info = "Disable port forwarding on shutdown..."
-            portdown.run = {inline: "config/os-apple.sh portdown"}
+            portdown.run = {inline: "config/#{port_os}.sh down"}
         end
-
-    end
-
-    ## FixMe: Linux port forwarding
-    if Vagrant::Util::Platform.linux? then
-
-        ## Port forwarding ???
-
     end
 
 
