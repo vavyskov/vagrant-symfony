@@ -276,15 +276,6 @@ MSG
         vb.name = vm_name
         vb.cpus = 1
         vb.memory = 2048
-        #vb.customize ["modifyvm", :id, "--cpuexecutioncap", "50"]
-        #vb.customize ['modifyvm', :id, '--cableconnected1', 'on']
-        #vb.customize ['modifyvm', :id, '--vrde', 'on']
-        #vb.customize [
-        #    'modifyvm', :id,
-        #    '--cpuexecutioncap', '50',
-        #    '--memory", '256',
-        #]
-        ## HDD cache off !!!
         vb.customize [
             'storagectl', :id,
             '--name', 'SATA Controller',
@@ -293,21 +284,5 @@ MSG
         ## Fix slow DNS lookups
         vb.customize ['modifyvm', :id, '--natdnshostresolver1', 'on']
     end
-
-#    config.vm.define 'app' do |app|
-#        app.vm.network :private_network, ip: '10.100.0.10'
-#    end
-#    config.vm.define 'db' do |app|
-#        app.vm.box = 'windows'
-#        app.vm.network :private_network, ip: '10.100.0.20'
-#        app.vm.communicator = 'winrm'
-#        app.vm.provider :virtualbox do |vb|
-#            vb.customize [
-#                'modifyvm', :id,
-#                '--cpuexecutioncap', '100',
-#                '--memory', '1024',
-#          ]
-#        end
-#    end
 
 end
