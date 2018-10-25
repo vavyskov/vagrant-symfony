@@ -236,10 +236,6 @@ How to create your own reusable box:
     vagrant up
     vagrant package
 
-## FixMe
-
-- Warning: Connection aborted. Retrying... (vagrant up)
-
 ## ToDo
 
 - Alternative software detection if exec() is disabled (phpinfo() to array)
@@ -260,6 +256,7 @@ How to create your own reusable box:
 - Vagrant config.yaml
 - PhpPgAdmin (latest version)
 - Active "localhost" link in terminal (after running `vagrant up` command)
+- Warning: Connection aborted. Retrying... (vagrant up)
 
 ## Note
 
