@@ -134,15 +134,15 @@ Vagrant.configure("2") do |config|
         Vagrant::Util::Platform.darwin? ? port_os = 'port-macos' : port_os = 'port-linux'
 
         ## Enable port forwarding on startup
-        config.trigger.after [:provision, :up, :reload] do |portup|
-            portup.info = "Enable port forwarding on startup..."
-            portup.run = {inline: "config/#{port_os}.sh up"}
+        config.trigger.after [:up] do |portup|
+            portup.info = "Enable port forwarding on startup (may prompt for sudo password)..."
+            portup.run = {inline: "sudo sh config/#{port_os}.sh up"}
         end
 
         ## Disable port forwarding when shutting down
         config.trigger.before [:halt, :destroy] do |portdown|
-            portdown.info = "Disable port forwarding on shutdown..."
-            portdown.run = {inline: "config/#{port_os}.sh down"}
+            portdown.info = "Disable port forwarding on shutdown (may prompt for sudo password)..."
+            portdown.run = {inline: "sudo sh config/#{port_os}.sh down"}
         end
     end
 

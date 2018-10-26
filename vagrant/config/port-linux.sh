@@ -8,6 +8,8 @@ if [ $1 = "up" ]; then
     sudo iptables -t nat -I OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 4443
 elif [ $1 = "down" ]; then
     ## Disable port forwarding when shutting down
+    #sudo iptables -t nat -L OUTPUT (list all)
+    #sudo iptables -t nat -F (flush all)
     sudo iptables -t nat -D OUTPUT -p tcp -o lo --dport 80 -j REDIRECT --to-ports 8080
     sudo iptables -t nat -D OUTPUT -p tcp -o lo --dport 443 -j REDIRECT --to-ports 4443
 fi
