@@ -44,23 +44,24 @@ apt-get update
 ##
 ICU_VERSION=62.1
 if [[ $(php -i | grep "ICU version") ]]; then
-    apt-get purge --auto-remove -y php$PHP_VERSION-intl
+    apt-get purge --auto-remove -y php${PHP_VERSION}-intl
 fi
+which make || apt-get install -y make
 which g++ || apt-get install -y g++
-which phpize || apt-get install -y php$PHP_VERSION-dev
+which phpize || apt-get install -y php${PHP_VERSION}-dev
 
 
 
-ICU_SRC_FILE="icu4c-$(echo $ICU_VERSION | sed -e 's/\./_/')-src.tgz"
+ICU_SRC_FILE="icu4c-$(echo ${ICU_VERSION} | sed -e 's/\./_/')-src.tgz"
 if [[ ! -e "$ICU_SRC_FILE" ]]; then
-    wget "http://download.icu-project.org/files/icu4c/$ICU_VERSION/$ICU_SRC_FILE"
+    wget "http://download.icu-project.org/files/icu4c/${ICU_VERSION}/${ICU_SRC_FILE}"
 fi
 
-test -d icu/source || tar zxvf "$ICU_SRC_FILE"
-if [[ ! -e "/opt/icu$ICU_VERSION" ]]; then
+test -d icu/source || tar zxvf "${ICU_SRC_FILE}"
+if [[ ! -e "/opt/icu${ICU_VERSION}" ]]; then
     pushd icu/source
-        sudo mkdir "/opt/icu$ICU_VERSION"
-        ./configure --prefix="/opt/icu$ICU_VERSION" && make && sudo make install
+        sudo mkdir "/opt/icu${ICU_VERSION}"
+        ./configure --prefix="/opt/icu${ICU_VERSION}" && make && sudo make install
     popd
 fi
 
@@ -72,19 +73,19 @@ pushd build-intl
     ls -la
     test -d php-src || git clone https://github.com/php/php-src.git
     cd php-src/
-    git checkout "php-$PHP_FULL_VERSION"
+    git checkout "php-${PHP_FULL_VERSION}"
 
     cd ext/intl
     phpize
-    ./configure --with-php-config=/usr/bin/php-config --with-icu-dir="/opt/icu$ICU_VERSION"
-    make CXXFLAGS=$CXXFLAGS
+    ./configure --with-php-config=/usr/bin/php-config --with-icu-dir="/opt/icu${ICU_VERSION}"
+    make CXXFLAGS=${CXXFLAGS}
 
     sudo make install
 
     PHP_INI_SCAN_DIR=$(php -r 'phpinfo();' | grep 'Scan this dir' | grep -o '/.\+')
 
-    if [[ -d "$PHP_INI_SCAN_DIR" ]]; then
-        pushd "$PHP_INI_SCAN_DIR"
+    if [[ -d "${PHP_INI_SCAN_DIR}" ]]; then
+        pushd "${PHP_INI_SCAN_DIR}"
             test -e ../../mods-available/intl.ini && sudo ln -s ../../mods-available/intl.ini 20-intl.ini
         popd
     else
@@ -92,13 +93,13 @@ pushd build-intl
     fi
 popd;
 
-touch /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini && bash -c "echo 'extension=intl.so' > /etc/php/$PHP_VERSION/cli/conf.d/20-intl.ini"
-touch /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini && bash -c "echo 'extension=intl.so' > /etc/php/$PHP_VERSION/apache2/conf.d/20-intl.ini"
+touch /etc/php/${PHP_VERSION}/cli/conf.d/20-intl.ini && bash -c "echo 'extension=intl.so' > /etc/php/${PHP_VERSION}/cli/conf.d/20-intl.ini"
+touch /etc/php/${PHP_VERSION}/apache2/conf.d/20-intl.ini && bash -c "echo 'extension=intl.so' > /etc/php/${PHP_VERSION}/apache2/conf.d/20-intl.ini"
 
 ## Cleaning
 rm -fr build-intl icu
-rm -f $ICU_SRC_FILE
-apt-get purge --auto-remove -y g++ php$PHP_VERSION-dev
+rm -f ${ICU_SRC_FILE}
+apt-get purge --auto-remove -y g++ php${PHP_VERSION}-dev
 
 ## -----------------------------------------------------------------------------
 
