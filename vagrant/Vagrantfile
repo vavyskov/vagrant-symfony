@@ -21,6 +21,7 @@ opts = GetoptLong.new(
     [ '-h', '--help', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--provision', GetoptLong::OPTIONAL_ARGUMENT ],
     [ '--debug', GetoptLong::OPTIONAL_ARGUMENT ],
+    [ '--color', GetoptLong::OPTIONAL_ARGUMENT ],
 )
 opts.each do |opt, arg|
     case opt
