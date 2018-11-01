@@ -60,7 +60,7 @@ fi
 ## dpkg --get-selections | grep -v deinstall | grep php
 ##
 apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring php$PHP_VERSION-opcache php$PHP_VERSION-xml \
-    php$PHP_VERSION-curl php$PHP_VERSION-zip php-uploadprogress php-apcu php$PHP_VERSION-ldap
+    php$PHP_VERSION-curl php$PHP_VERSION-zip php-uploadprogress php-apcu php$PHP_VERSION-ldap php$PHP_VERSION-intl
 #apt-get install -y php$PHP_VERSION-cli libpng$PHP_VERSION-dev php$PHP_VERSION-fpm php$PHP_VERSION-bz2 php$PHP_VERSION-imap
 
 
