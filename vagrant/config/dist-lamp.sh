@@ -20,7 +20,7 @@ bash "$CURRENT_DIRECTORY/debian.sh"
 
 ## Installation
 bash "$CURRENT_DIRECTORY/../install/apache.sh"
-bash "$CURRENT_DIRECTORY/../install/php.sh" 7.1
+bash "$CURRENT_DIRECTORY/../install/php.sh" 7.0
 bash "$CURRENT_DIRECTORY/../install/mariadb.sh" 10.1
 bash "$CURRENT_DIRECTORY/../install/phpmyadmin.sh"
 bash "$CURRENT_DIRECTORY/../install/nodejs.sh"
