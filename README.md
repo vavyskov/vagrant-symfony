@@ -236,6 +236,9 @@ How to create your own reusable box:
     vagrant up
     vagrant package
 
+## FixMe
+- Current script directory path (macOS: php.sh)
+
 ## ToDo
 
 - Alternative software detection if exec() is disabled (phpinfo() to array)
