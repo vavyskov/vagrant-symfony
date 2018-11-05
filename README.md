@@ -242,7 +242,7 @@ How to create your own reusable box:
 ## ToDo
 
 - Alternative software detection if exec() is disabled (phpinfo() to array)
-- MariaDB database in `new-project.sh`
+- MariaDB database in `project-create.sh`
 - Nginx server (php.sh, adminer.sh, mailcatcher.sh)
 - DB backup/restore (project DB only as extra file)
 - MariaDB (latest only, check change version)

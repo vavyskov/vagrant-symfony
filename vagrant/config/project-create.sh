@@ -27,7 +27,7 @@ if id $1 >/dev/null 2>&1; then
 fi
 
 ## Detect virtual host
-if [ -f "${VHOST_PATH}$1.conf" ]; then
+if [ -f "${VHOST_PATH}test.$1.conf" ]; then
   echo -e "\nVirtual host '$1' exists!\n"
   exit
 fi
@@ -65,9 +65,9 @@ chown -R $1:$1 /home/$1/www
 echo -e "\nUser '$1' with password '${USER_PASSWD}' created."
 
 ## Add virtual host
-cat << EOF > ${VHOST_PATH}$1.conf
+cat << EOF > ${VHOST_PATH}test.$1.conf
 <VirtualHost *:80>
-  ServerName $1.${DOMAIN}
+  ServerName test.$1.${DOMAIN}
   #ServerAlias mywebsite.cz
 
   ServerAdmin webmaster@localhost
@@ -89,8 +89,8 @@ cat << EOF > ${VHOST_PATH}$1.conf
   </IfModule>
 </VirtualHost>
 EOF
-a2ensite -q $1
-echo -e "Virtual host '$1' created."
+a2ensite -q test.$1
+echo -e "Virtual host 'test.$1' created."
 
 ## Set database password
 if [ "$3" ]; then
@@ -107,7 +107,7 @@ sudo -u postgres psql -c "
     ALTER DATABASE $1 OWNER TO $1;
     REVOKE ALL ON DATABASE $1 FROM PUBLIC;
 "
-echo -e "Databese user '$1' with database password '${DB_PASSWD}' created.\n"
+echo -e "Databese and user '$1' with database password '${DB_PASSWD}' created.\n"
 
 ## Change database user password
 #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
