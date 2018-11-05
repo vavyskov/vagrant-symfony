@@ -243,6 +243,15 @@ Vagrant.configure("2") do |config|
 
 
 
+    ## Set vagrant login shell
+    config.vm.provision :shell do |shell|
+        shell.inline = "sudo chsh -s /bin/bash vagrant"
+    end
+
+
+
+
+
     ## Backup database
     config.trigger.before [:halt, :suspend, :destroy] do |backup|
         backup.info = "The database backup is in progress..."
