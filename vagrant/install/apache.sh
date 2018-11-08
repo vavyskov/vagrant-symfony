@@ -44,6 +44,9 @@ a2enmod mpm_itk
 ## Apache clean URL and caching
 a2enmod rewrite expires
 
+## Extension order (PHP first)
+sed -i 's/DirectoryIndex index.html index.cgi index.pl index.php/DirectoryIndex index.php index.cgi index.pl index.html/' /etc/apache2/mods-enabled/dir.conf
+
 ## -----------------------------------------------------------------------------
 
 ## Detect Vagrant

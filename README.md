@@ -32,6 +32,7 @@ Package management:
   - **yarn**
 
 Development:
+- BrowserSync
 - Drush
 - Drupal console
 
@@ -68,7 +69,7 @@ Email testing:
              
     Customization:
         
-    - Distribution (only `symfony` or `lamp`):
+    - Distribution (only `symfony`, `lamp` or `node`):
        
           vagrant --dist=lamp up
           vagrant --dist=lamp halt
@@ -221,6 +222,12 @@ The folder `vagrant/install` contains several installation scripts:
 
       sudo /vagrant/install/drupal-tools.sh
 
+- **BrowserSync** time-saving synchronised browser testing
+
+      sudo /vagrant/install/browser-sync.sh
+      
+  BrowserSync UI: `localhost:3001`
+
 - **Email testing UI**
 
       sudo /vagrant/install/maildev.sh (default)
@@ -237,13 +244,17 @@ How to create your own reusable box:
     vagrant package
 
 ## FixMe
+- Locales (file order in terminal)
 - Current script directory path (macOS: php.sh)
 
 ## ToDo
 
 - Alternative software detection if exec() is disabled (phpinfo() to array)
+- Node distribution (terminal info, PHP proxy)
+- HTTP-Server (terminal info URL 10.0.2.15 does not work)
+- BrowserSync (Node distribution) - UI port 3001 is OK, port 3000 or 80 not work correctly
 - MariaDB database in `project-create.sh`
-- Nginx server (php.sh, adminer.sh, mailcatcher.sh)
+- Nginx server (php.sh, adminer.sh, mailcatcher.sh, browser-sync.sh)
 - DB backup/restore (project DB only as extra file)
 - MariaDB (latest only, check change version)
 - VM name as "parent directory"

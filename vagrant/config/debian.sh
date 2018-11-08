@@ -58,6 +58,12 @@ apt-get install -y snmpd
 #sed -i 's/xyz/xyz/' /etc/snmp/snmpd.conf
 #service snmpd restart
 
+## Net Tools
+#apt-get install -y net-tools
+## Show port in use
+#netstat -antp
+#kill -9 <PID>
+
 ## -----------------------------------------------------------------------------
 
 ## Certificates
@@ -184,9 +190,13 @@ sed -i "s/inet_interfaces = all/inet_interfaces = loopback-only/" /etc/postfix/m
 
 ## -----------------------------------------------------------------------------
 
-## New Project
+## Create project
 cp $CURRENT_DIRECTORY/../config/project-create.sh /home/
 chmod u+x /home/project-create.sh
+
+## Delete project
+cp $CURRENT_DIRECTORY/../config/project-delete.sh /home/
+chmod u+x /home/project-delete.sh
 
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then

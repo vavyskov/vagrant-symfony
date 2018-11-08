@@ -15,6 +15,8 @@ MARIADB_PASSWORD=mariadb
 
 PHPMYADMIN_PASSWORD=phpmyadmin
 
+#DOCROOT='/home/vagrant/www/public'
+
 ## E-mail
 #MX_RECORD=mail.website.cz
 #EMAIL_DOMAIN=website.cz
