@@ -129,7 +129,8 @@ fi
 #apt-get install -y composer
 
 ## Composer (latest)
-curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+## Directory /usr/local/bin can use proxy
+curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 ## Swap (variant A)
 ## Enble dynamic swap space to prevent "Out of memory" crashes
