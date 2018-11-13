@@ -27,16 +27,7 @@ opts = GetoptLong.new(
 opts.each do |opt, arg|
     case opt
         when '--dist'
-            if arg == 'lamp'
-                vm_dist = 'lamp'
-                vm_name = 'lamp'
-            elsif arg == 'node'
-                vm_dist = 'node'
-                vm_name = 'node'
-            else
-                vm_dist = 'symfony'
-                vm_name = 'symfony'
-            end
+            vm_dist = arg
         when '--name'
             vm_name = arg
         when '--ip'
