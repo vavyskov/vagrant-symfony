@@ -7,7 +7,6 @@ Operatin system:
 
 Web server:
 - **Apache**
-- **Node.js**
 
 Programming language:
 - **PHP**
@@ -22,6 +21,9 @@ Database management:
 - **Adminer**
 - PhpMyAdmin
 - PhpPgAdmin
+
+JavaScript runtime environment:
+- **Node.js**
 
 Package management:
 - PHP
