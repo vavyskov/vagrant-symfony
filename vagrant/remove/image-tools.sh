@@ -12,17 +12,24 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
-PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
 
 ## Remove Image tools
-apt-get purge --auto-remove -y imagemagick php-imagick
+apt-get purge --auto-remove -y imagemagick
 #apt-get purge --auto-remove -y optipng gifsicle
 
 #apt-get purge --auto-remove -y libjpeg-progs
 #cjpeg -version
 #djpeg -version
+
+# Dependency detection
+if [ -d "/etc/php" ]; then
+    ## Remove PHP extension
+    PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
+    apt-get purge --auto-remove -y php${PHP_VERSION}-imagick
+    service apache2 reload
+fi
 
 ## -----------------------------------------------------------------------------
 
@@ -33,4 +40,4 @@ apt-get purge --auto-remove -y imagemagick php-imagick
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
+

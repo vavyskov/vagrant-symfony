@@ -13,24 +13,25 @@ CURRENT_DIRECTORY=$(dirname $0)
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
 
-## Dependency detection
-if ! [ -d "/etc/php" ]; then
-    ## Install PHP
-    source "$CURRENT_DIRECTORY/php.sh"
-fi
-PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
-
 ## -----------------------------------------------------------------------------
 
 ## Sources
 apt-get update
 
 ## MongoDB (default port is 27017)
-apt-get install -y mongodb php${PHP_VERSION}-mongodb
+apt-get install -y mongodb
+
+# Dependency detection
+if [ -d "/etc/php" ]; then
+    ## Install PHP extension
+    PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
+    apt-get install -y php${PHP_VERSION}-mongodb
+    service apache2 reload
+fi
+
 #apt-get install -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
 
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
 service mongodb start

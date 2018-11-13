@@ -30,6 +30,9 @@ opts.each do |opt, arg|
             if arg == 'lamp'
                 vm_dist = 'lamp'
                 vm_name = 'lamp'
+            elsif arg == 'node'
+                vm_dist = 'node'
+                vm_name = 'node'
             else
                 vm_dist = 'symfony'
                 vm_name = 'symfony'
@@ -54,11 +57,11 @@ Vagrant.configure("2") do |config|
 
 
     ## Box (required) - Template
-    config.vm.box = "vavyskov/#{vm_dist}"
+#    config.vm.box = "vavyskov/#{vm_dist}"
 
     ## Enable when do not use "Template"
-#    config.vm.box = "debian/contrib-stretch64"
-#    config.vm.provision :shell, path: "config/dist-#{vm_dist}.sh"
+    config.vm.box = "debian/contrib-stretch64"
+    config.vm.provision :shell, path: "config/dist-#{vm_dist}.sh"
 
 
 
@@ -90,6 +93,9 @@ Vagrant.configure("2") do |config|
     config.vm.network "forwarded_port", guest: 1080, host: 1080, host_ip: "127.0.0.1"
     config.vm.network "forwarded_port", guest: 1025, host: 1025, host_ip: "127.0.0.1"
 
+    ## BrowserSync
+    config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+    config.vm.network "forwarded_port", guest: 3001, host: 3001, host_ip: "127.0.0.1"
 
 
     ## Port forwarding with ports <= 1024 may not work.
@@ -238,6 +244,27 @@ Vagrant.configure("2") do |config|
     #:bsd__nfs_options => ["-maproot=0:0"]
     #bsd__nfs_options: ["alldirs","async","nolock"]
     #:linux__nfs_options => ["no_root_squash"]
+
+
+
+
+
+    ## HTTP Server
+    if vm_dist == 'node'
+        config.trigger.after [:up, :resume, :reload] do |srv|
+            srv.info = "Starting HTTP Server..."
+            srv.run_remote = {inline: "/vagrant/install/http-server.sh"}
+        end
+    end
+
+    ## FixMe: Error port 3000 "Cannot GET /" (port 3001 is OK)
+    ## BrowserSync
+#    if vm_dist == 'node'
+#        config.trigger.after [:up, :resume, :reload] do |sync|
+#            sync.info = "Starting BrowserSync..."
+#            sync.run_remote = {inline: "/vagrant/install/browser-sync.sh"}
+#        end
+#    end
 
 
 

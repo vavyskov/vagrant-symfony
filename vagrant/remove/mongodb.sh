@@ -12,13 +12,20 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
-PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
 
 ## Remove MongoDB
-apt-get purge --auto-remove -y mongodb php${PHP_VERSION}-mongodb
+apt-get purge --auto-remove -y mongodb
 #apt-get purge --auto-remove -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1
+
+# Dependency detection
+if [ -d "/etc/php" ]; then
+    ## Remove PHP extension
+    PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
+    apt-get purge --auto-remove -y php${PHP_VERSION}-mongodb
+    service apache2 reload
+fi
 
 ## -----------------------------------------------------------------------------
 
@@ -29,4 +36,4 @@ apt-get purge --auto-remove -y mongodb php${PHP_VERSION}-mongodb
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
+
