@@ -33,7 +33,8 @@ apt-get full-upgrade -y
 apt-get install -y locales
 sed -i "s/# cs_CZ.UTF-8/cs_CZ.UTF-8/" /etc/locale.gen
 dpkg-reconfigure --frontend=noninteractive locales
-update-locale LANG=cs_CZ.UTF-8
+#update-locale LANG=cs_CZ.UTF-8
+update-locale LANG=cs_CZ.UTF-8 LC_COLLATE=C
 
 ## NTP
 apt-get install -y ntp
