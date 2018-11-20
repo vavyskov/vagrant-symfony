@@ -69,10 +69,13 @@ apt-get install -y php$PHP_VERSION php$PHP_VERSION-gd php$PHP_VERSION-mbstring p
 
 
 
+## Time zone
+sed -i 's/;date.timezone =/date.timezone = "Europe\/Prague"/' /etc/php/$PHP_VERSION/cli/php.ini
+
 ## PHP configuration
 cat << EOF > /etc/php/$PHP_VERSION/apache2/conf.d/php-default.ini
 [Time zone]
-date.timezone=Europe/Prague
+date.timezone="Europe/Prague"
 
 [Error reporting]
 log_errors=On
