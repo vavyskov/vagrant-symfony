@@ -89,8 +89,8 @@ display_errors=Off
 ;opcache.huge_code_pages=1
 
 [Upload files]
-post_max_size=64M
-upload_max_filesize=32M
+post_max_size=256M
+upload_max_filesize=128M
 
 [Performance]
 memory_limit=256M
