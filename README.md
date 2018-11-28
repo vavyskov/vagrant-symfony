@@ -274,6 +274,8 @@ How to create your own reusable box:
 - PhpPgAdmin (latest version)
 - Active "localhost" link in terminal (after running `vagrant up` command)
 - Warning: Connection aborted. Retrying... (vagrant up)
+- Drush launcher
+- Drupal Console launcher
 
 ## Note
 

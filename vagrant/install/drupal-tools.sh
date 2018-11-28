@@ -31,6 +31,8 @@ chmod +x /usr/local/bin/drush
 #COMPOSER_HOME=/opt/composer composer global require drush/drush:8
 #ln -s /opt/composer/vendor/drush/drush/drush /usr/local/bin/drush
 
+## Drush launcher
+## https://github.com/drush-ops/drush-launcher
 
 
 
@@ -38,6 +40,9 @@ chmod +x /usr/local/bin/drush
 ## Drupal console
 curl https://drupalconsole.com/installer -L -o /usr/local/bin/drupal
 chmod +x /usr/local/bin/drupal
+
+## Drupal console launcher
+## https://docs.drupalconsole.com/en/getting/launcher.html
 
 ## -----------------------------------------------------------------------------
 
