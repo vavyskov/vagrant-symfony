@@ -4,7 +4,7 @@
 
 
 ## Default values
-vm_name = 'symfony'
+vm_name = 'SYMFONY'
 vm_dist = 'symfony'
 vm_port = 80
 vm_ip = '192.168.33.10'
