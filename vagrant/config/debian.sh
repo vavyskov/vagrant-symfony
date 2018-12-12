@@ -38,8 +38,8 @@ update-locale LANG=cs_CZ.UTF-8 LC_COLLATE=C
 
 ## NTP
 apt-get install -y ntp
-sed -i 's/poll/#poll/' /etc/ntp.conf
-sed -i '/#poll 3/a\poll hodiny.ispovy.acr iburst' /etc/ntp.conf
+sed -i 's/pool/#pool/' /etc/ntp.conf
+sed -i '/#pool 3/a\pool hodiny.ispovy.acr iburst' /etc/ntp.conf
 service ntp restart
 timedatectl set-timezone Europe/Prague
 
@@ -211,8 +211,8 @@ if [ -d "/vagrant" ]; then
     ## -----------------------------------------------------------------------------
 
     ## NTP
-    sed -i 's/#poll/poll/' /etc/ntp.conf
-    sed -i 's/poll hodiny/#poll hodiny/' /etc/ntp.conf
+    sed -i 's/#pool/pool/' /etc/ntp.conf
+    sed -i 's/pool hodiny/#pool hodiny/' /etc/ntp.conf
     service ntp restart
 
 
