@@ -19,6 +19,7 @@ source "$CURRENT_DIRECTORY/env.sh"
 bash "$CURRENT_DIRECTORY/debian.sh"
 
 ## Installation
+bash "$CURRENT_DIRECTORY/../install/ntp.sh" intranet
 bash "$CURRENT_DIRECTORY/../install/apache.sh"
 bash "$CURRENT_DIRECTORY/../install/php.sh" 7.2
 bash "$CURRENT_DIRECTORY/../install/php-intl.sh"

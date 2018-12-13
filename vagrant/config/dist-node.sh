@@ -19,6 +19,7 @@ source "$CURRENT_DIRECTORY/env.sh"
 bash "$CURRENT_DIRECTORY/debian.sh"
 
 ## Installation
+bash "$CURRENT_DIRECTORY/../install/ntp.sh" intranet
 bash "$CURRENT_DIRECTORY/../install/nodejs.sh"
 bash "$CURRENT_DIRECTORY/../install/image-tools.sh"
 bash "$CURRENT_DIRECTORY/../install/mongodb.sh"

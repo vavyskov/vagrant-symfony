@@ -36,13 +36,6 @@ dpkg-reconfigure --frontend=noninteractive locales
 #update-locale LANG=cs_CZ.UTF-8
 update-locale LANG=cs_CZ.UTF-8 LC_COLLATE=C
 
-## NTP
-apt-get install -y ntp
-sed -i 's/pool/#pool/' /etc/ntp.conf
-sed -i '/#pool 3/a\pool hodiny.ispovy.acr iburst' /etc/ntp.conf
-service ntp restart
-timedatectl set-timezone Europe/Prague
-
 ## VMware
 apt-get install -y open-vm-tools
 
@@ -207,14 +200,6 @@ if [ -d "/vagrant" ]; then
 
     ## Enable execute install scripts
     chmod u+x /vagrant/install/*.sh
-
-    ## -----------------------------------------------------------------------------
-
-    ## NTP
-    sed -i 's/#pool/pool/' /etc/ntp.conf
-    sed -i 's/pool hodiny/#pool hodiny/' /etc/ntp.conf
-    service ntp restart
-
 
     ## -----------------------------------------------------------------------------
 
