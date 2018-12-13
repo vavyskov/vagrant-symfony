@@ -162,6 +162,11 @@ Email testing:
 
 The folder `vagrant/install` contains several installation scripts:
 
+- **NTP** time servers
+
+      sudo /vagrant/install/ntp.sh intranet
+      sudo /vagrant/install/ntp.sh internet
+
 - **Apache** is a web server
 
       sudo /vagrant/install/apache.sh
