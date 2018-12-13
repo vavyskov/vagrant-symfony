@@ -82,12 +82,15 @@ mysql_upgrade
 ## MariaDB - security
 #mysql_secure_installation >> /vagrant/vm_build_mysql.log 2>&1
 
-## MariaDB - initialization (Dangerous)
-mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
-  CREATE DATABASE IF NOT EXISTS $MARIADB_DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
-  GRANT ALL ON $MARIADB_DB.* TO $MARIADB_USER@localhost IDENTIFIED BY '$MARIADB_PASSWORD';
-"
-#ALTER DATABASE $MARIADB_DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+## Detect Vagrant
+if [ -d "/vagrant" ]; then
+    ## MariaDB - initialization (Dangerous)
+    mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
+      CREATE DATABASE IF NOT EXISTS $MARIADB_DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+      GRANT ALL ON $MARIADB_DB.* TO $MARIADB_USER@localhost IDENTIFIED BY '$MARIADB_PASSWORD';
+    "
+    #ALTER DATABASE $MARIADB_DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+fi
 
 ## -----------------------------------------------------------------------------
 
