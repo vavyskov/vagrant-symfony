@@ -69,7 +69,7 @@ apt-get install -y mariadb-server-10.1
 apt-get install -y mariadb-server-${MARIADB_VERSION} php${PHP_VERSION}-mysql
 
 ## Configuration
-cp /vagrant/config/mariadb.cnf /etc/mysql/conf.d/
+cp $CURRENT_DIRECTORY/../config/mariadb.cnf /etc/mysql/conf.d/
 
 ## Upgrade
 systemctl restart mariadb
