@@ -66,7 +66,7 @@ echo -e "\nUser '$1' with password '${USER_PASSWD}' created."
 
 ## Add virtual host
 cat << EOF > ${VHOST_PATH}test.$1.conf
-<VirtualHost *:80>
+<VirtualHost test.$1.${DOMAIN}:80>
   ServerName test.$1.${DOMAIN}
   #ServerAlias mywebsite.cz
 
