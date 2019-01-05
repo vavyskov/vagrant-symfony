@@ -103,7 +103,7 @@ Vagrant.configure("2") do |config|
     ## Your VM -> Settings -> Network -> Advanced -> ports forwarding (here you can add ports that you need)
 
     ## HTTPS
-    config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
+    #config.vm.network "forwarded_port", guest: 443, host: 443, host_ip: "127.0.0.1"
 
     ## HTTP
     if vm_port == 80
@@ -285,7 +285,7 @@ Vagrant.configure("2") do |config|
     end
 
     ## Introduction
-    vm_port == 80 ? vm_port_info = '' : (vm_port_info = ':' + vm_port)
+    vm_port == 80 ? vm_port_info = '' : (vm_port_info = ':' + vm_port.to_s)
     config.vm.post_up_message = <<MSG
 -------------------------------------------------------------------------------
 Local #{vm_dist.upcase} development, accessible at IP 127.0.0.1#{vm_port_info} or #{vm_ip}
