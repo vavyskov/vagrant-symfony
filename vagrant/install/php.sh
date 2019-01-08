@@ -152,7 +152,12 @@ apt-get install -y swapspace
 
 ## -----------------------------------------------------------------------------
 
-## Set PHP version
+## Set PHP version for Apache
+CURRENT_PHP=`a2query -m | grep php | cut -d" " -f1`
+a2dismod $CURRENT_PHP
+a2enmod php$PHP_VERSION
+
+## Set PHP version for CLI (Command Line)
 update-alternatives --set php /usr/bin/php$PHP_VERSION
 #update-alternatives --set phar /usr/bin/phar$PHP_VERSION
 #update-alternatives --set phar.phar /usr/bin/phar.phar$PHP_VERSION
