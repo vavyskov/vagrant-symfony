@@ -51,6 +51,10 @@ else
     sed -i 's/^pool hodiny/#pool hodiny/' /etc/ntp.conf
 fi
 
+## Czech NTP servers
+# pool tik.cesnet.cz iburst
+# pool tak.cesnet.cz iburst
+
 ## -----------------------------------------------------------------------------
 
 ## Services
