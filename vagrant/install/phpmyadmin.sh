@@ -50,10 +50,19 @@ echo "Alias /phpmyadmin /usr/share/phpmyadmin" | sudo tee /etc/apache2/conf-avai
 a2enconf phpmyadmin
 service apache2 reload
 mkdir /usr/share/phpmyadmin/tmp
-chown vagrant:vagrant /usr/share/phpmyadmin/tmp
+if [ -d "/vagrant" ]; then
+    chown vagrant:vagrant /usr/share/phpmyadmin/tmp
+else
+    ## Detect Apache website user
+    ## <?php echo `whoami`; ?>
+    chown root:www-data /usr/share/phpmyadmin/tmp
+    chmod g+w /usr/share/phpmyadmin/tmp
+    ## Permission 777 is not good idea
+    #chmod 777 /usr/share/phpmyadmin/tmp
+fi
 mysql -u root -e "CREATE DATABASE IF NOT EXISTS phpmyadmin;"
 mysql -u root phpmyadmin < /usr/share/phpmyadmin/sql/create_tables.sql
-cp /vagrant/config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
+cp $CURRENT_DIRECTORY/../config/phpmyadmin-latest.inc.php /usr/share/phpmyadmin/config.inc.php
 RANDOM_BLOWFISH_SECRET=`openssl rand -base64 32 | tr -dc 'a-zA-Z0-9'`
 sed -i "s/\$cfg\['blowfish_secret'\] = ''/\$cfg\['blowfish_secret'\] = '$RANDOM_BLOWFISH_SECRET'/" /usr/share/phpmyadmin/config.inc.php
 

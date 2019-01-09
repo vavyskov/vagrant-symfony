@@ -29,6 +29,10 @@ apt-get update
 #apt-get dist-upgrade -y
 apt-get full-upgrade -y
 
+## Hostname (/etc/hostname, /etc/hosts)
+#HOSTNAME=newServerName
+#hostnamectl set-hostname $HOSTNAME
+
 ## Language
 apt-get install -y locales
 sed -i "s/# cs_CZ.UTF-8/cs_CZ.UTF-8/" /etc/locale.gen
