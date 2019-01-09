@@ -55,7 +55,7 @@ sed -i 's/DirectoryIndex index.html index.cgi index.pl index.php/DirectoryIndex 
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then
     #mkdir -p /home/vagrant/www/public
-    cp /vagrant/config/apache-dev.conf /etc/apache2/sites-available/000-default.conf
+    cp $CURRENT_DIRECTORY/../config/apache-dev.conf /etc/apache2/sites-available/000-default.conf
 fi
 
 ## -----------------------------------------------------------------------------

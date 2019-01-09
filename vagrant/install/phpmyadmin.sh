@@ -38,7 +38,7 @@ debconf-set-selections <<< "phpmyadmin phpmyadmin/app-password-confirm password 
 ## PhpMyAdmin (old)
 #sudo apt-get -y install phpmyadmin
 #chown vagrant:vagrant /var/lib/phpmyadmin/blowfish_secret.inc.php
-#cp /vagrant/config/phpmyadmin-debian.inc.php /etc/phpmyadmin/config.inc.php
+#cp $CURRENT_DIRECTORY/../config/phpmyadmin-debian.inc.php /etc/phpmyadmin/config.inc.php
 
 ## PhpMyAdmin (latest)
 curl -fSL "https://www.phpmyadmin.net/downloads/phpMyAdmin-latest-all-languages.tar.gz" -o /tmp/phpmyadmin.tar.gz

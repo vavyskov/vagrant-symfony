@@ -199,7 +199,7 @@ chmod u+x /home/project-delete.sh
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then
     ## New Project
-#    cp /vagrant/config/project-create.sh /home/
+#    cp $CURRENT_DIRECTORY/../config/project-create.sh /home/
 #    chmod u+x /home/project-create.sh
 
     ## Enable execute install scripts
@@ -215,8 +215,8 @@ if [ -d "/vagrant" ]; then
     ## -----------------------------------------------------------------------------
 
     ## E-mail
-    #cp /vagrant/config/ssmtp-dev.conf /etc/ssmtp/ssmtp.conf
-    #cp /vagrant/config/revaliases-dev /etc/ssmtp/revaliases
+    #cp $CURRENT_DIRECTORY/../config/ssmtp-dev.conf /etc/ssmtp/ssmtp.conf
+    #cp $CURRENT_DIRECTORY/../config/revaliases-dev /etc/ssmtp/revaliases
 
     #cat << EOF > /etc/ssmtp/ssmtp.conf
     #root=user@host.name
