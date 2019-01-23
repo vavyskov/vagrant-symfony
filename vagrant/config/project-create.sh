@@ -81,8 +81,8 @@ cat << EOF > ${VHOST_PATH}test.$1.conf
     Require all granted
   </Directory>
 
-  ErrorLog ${APACHE_LOG_DIR}/error_$1.log
-  CustomLog ${APACHE_LOG_DIR}/access_$1.log combined
+  ErrorLog \${APACHE_LOG_DIR}/error_$1.log
+  CustomLog \${APACHE_LOG_DIR}/access_$1.log combined
 
   <IfModule mpm_itk_module>
     AssignUserId $1 $1
