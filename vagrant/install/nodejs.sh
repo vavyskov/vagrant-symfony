@@ -21,10 +21,10 @@ apt-get update
 
 
 ## Node.js (latest)
-#curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+#curl -sL https://deb.nodesource.com/setup_11.x | bash -
 
 ## Node.js (LTS)
-curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+curl -sL https://deb.nodesource.com/setup_10.x | bash -
 
 ## Node.js
 apt-get install -y nodejs
