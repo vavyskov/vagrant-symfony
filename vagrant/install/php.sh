@@ -121,7 +121,7 @@ EOF
 ## -----------------------------------------------------------------------------
 
 ## Detect Vagrant
-if [ -d "/vagrant" ]; then
+if [[ -d "/vagrant" ]] || [[ ${HOSTNAME} =~ ^.*(dev|test).*$ ]]; then
     ## PHP configuration
     cp /vagrant/config/php-dev.ini /etc/php/$PHP_VERSION/apache2/conf.d/
 fi

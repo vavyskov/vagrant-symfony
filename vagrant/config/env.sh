@@ -3,6 +3,8 @@ set -eu
 
 ## Environment variables
 
+HOSTNAME=$(hostname)
+
 #POSTGRESQL_ROOT_PASSWORD=root
 POSTGRESQL_DB=postgresql
 POSTGRESQL_USER=postgresql
