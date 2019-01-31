@@ -3,12 +3,10 @@ set -eu
 
 ## Environment variables
 
-HOSTNAME=$(hostname)
-
-#POSTGRESQL_ROOT_PASSWORD=root
 POSTGRESQL_DB=postgresql
 POSTGRESQL_USER=postgresql
 POSTGRESQL_PASSWORD=postgresql
+#POSTGRESQL_ROOT_PASSWORD=root
 
 MARIADB_ROOT_PASSWORD=root
 MARIADB_DB=mariadb
@@ -27,3 +25,16 @@ PHPMYADMIN_PASSWORD=phpmyadmin
 #EMAIL_SMTP=smtp.centrum.cz
 #EMAIL_USERNAME=user@centrum.cz
 #EMAIL_PASSWORD=password
+
+HOSTNAME=$(hostname)
+DOMAIN=$(hostname --domain)
+VHOST_PATH="/etc/apache2/sites-available/"
+
+# If HOST contains string
+if [[ ${HOSTNAME} =~ .*dev.* ]]; then
+    HOST='dev.'
+elif [[ ${HOSTNAME} =~ .*test.* ]]; then
+    HOST='test.'
+else
+    HOST=''
+fi
