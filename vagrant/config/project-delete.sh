@@ -2,11 +2,18 @@
 #set -eu
 set -e
 
-## Current script directory path
-CURRENT_DIRECTORY=$(dirname $0)
+HOSTNAME=$(hostname)
+DOMAIN=$(hostname --domain)
+VHOST_PATH="/etc/apache2/sites-available/"
 
-## Environment variables
-source "$CURRENT_DIRECTORY/../config/env.sh"
+# If HOST contains string
+if [[ ${HOSTNAME} =~ ^.*dev.*$ ]]; then
+    HOST='dev.'
+elif [[ ${HOSTNAME} =~ ^.*test.*$ ]]; then
+    HOST='test.'
+else
+    HOST=''
+fi
 
 ## -----------------------------------------------------------------------------
 
@@ -38,11 +45,15 @@ while true; do
 
     echo -e "\nI want to delete"
     echo -e "----------------"
-    echo -e "Project:       $(tput setaf 1)${PROJECT}$(tput sgr 0)"
-    echo -e "User:          $(tput setaf 1)${USER}$(tput sgr 0)"
-    echo -e "Virtual host:  $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
-    echo -e "Database:      $(tput setaf 1)${DB}$(tput sgr 0) (replace -/_)"
-    echo -e "Database user: $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)\n"
+    echo -e "Project:        $(tput setaf 1)${PROJECT}$(tput sgr 0)"
+    echo -e "User:           $(tput setaf 1)${USER}$(tput sgr 0)"
+    echo -e "Virtual host:   $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
+    if [[ -x $(which mysql) ]]; then
+        echo -e "MySQL database: $(tput setaf 1)${DB}$(tput sgr 0) (replace -/_)"
+    fi
+    if [[ -x $(which psql) ]]; then
+        echo -e "PgSQL database user: $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)\n"
+    fi
 
     read -e -p 'Do you really want to delete it? (Yes/No/Cancel): ' -n 1 CONTINUE
     if [[ ${CONTINUE} =~ ^[Yy].*$ ]]; then
@@ -52,6 +63,9 @@ while true; do
     fi
     echo -e ''
 done
+
+## New line
+echo -e ''
 
 ## -----------------------------------------------------------------------------
 
@@ -73,22 +87,40 @@ else
   echo -e "Virtual host $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) does not exists!"
 fi
 
-## Delete database
-if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw ${DB}; then
-  sudo -u postgres dropdb ${DB}
-  echo -e "Databese $(tput setaf 2)${DB}$(tput sgr 0) deleted."
-else
-  echo -e "Database $(tput setaf 1)${DB}$(tput sgr 0) does not exists!"
+if [[ -x $(which mysql) ]]; then
+    ## Detect MySQL database
+    if [[ $(mysql -sse "SHOW DATABASES LIKE '${DB}'") ]]; then
+        mysql -e "DROP DATABASE ${DB}"
+        echo -e "MySQL databese $(tput setaf 2)${DB}$(tput sgr 0) deleted."
+    else
+        echo -e "MySQL database $(tput setaf 1)${DB}$(tput sgr 0) does not exists!"
+    fi
 
+    ## Detect MySQL database user
+    if [[ $(mysql -sse "SELECT user FROM mysql.user WHERE user = '$DB_USER'") ]]; then
+        mysql -e "DELETE FROM mysql.user WHERE user = '$DB_USER'"
+        echo -e "MySQL database user $(tput setaf 2)${DB_USER}$(tput sgr 0) deleted."
+    else
+        echo -e "MySQL database user $(tput setaf 1)${DB_USER}$(tput sgr 0) does not exists!"
+    fi
 fi
 
-## Delete database user
-if sudo -u postgres psql -t -c '\du' | cut -d \| -f 1 | grep -qw ${DB_USER}; then
-    sudo -u postgres dropuser ${DB_USER}
-  echo -e "Database user $(tput setaf 2)${DB_USER}$(tput sgr 0) deleted."
-else
-  echo -e "Database user $(tput setaf 1)${DB_USER}$(tput sgr 0) does not exists!"
+if [[ -x $(which psql) ]]; then
+    ## Delete PgSQL database
+    if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw ${DB}; then
+      sudo -u postgres dropdb ${DB}
+      echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) deleted."
+    else
+      echo -e "PgSQL database $(tput setaf 1)${DB}$(tput sgr 0) does not exists!"
+    fi
 
+    ## Delete PgSQL database user
+    if sudo -u postgres psql -t -c '\du' | cut -d \| -f 1 | grep -qw ${DB_USER}; then
+        sudo -u postgres dropuser ${DB_USER}
+        echo -e "PgSQL database user $(tput setaf 2)${DB_USER}$(tput sgr 0) deleted."
+    else
+      echo -e "PgSQL database user $(tput setaf 1)${DB_USER}$(tput sgr 0) does not exists!"
+    fi
 fi
 
 ## New line

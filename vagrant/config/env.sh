@@ -25,16 +25,3 @@ PHPMYADMIN_PASSWORD=phpmyadmin
 #EMAIL_SMTP=smtp.centrum.cz
 #EMAIL_USERNAME=user@centrum.cz
 #EMAIL_PASSWORD=password
-
-HOSTNAME=$(hostname)
-DOMAIN=$(hostname --domain)
-VHOST_PATH="/etc/apache2/sites-available/"
-
-# If HOST contains string
-if [[ ${HOSTNAME} =~ .*dev.* ]]; then
-    HOST='dev.'
-elif [[ ${HOSTNAME} =~ .*test.* ]]; then
-    HOST='test.'
-else
-    HOST=''
-fi

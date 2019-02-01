@@ -2,11 +2,18 @@
 #set -eu
 set -e
 
-## Current script directory path
-CURRENT_DIRECTORY=$(dirname $0)
+HOSTNAME=$(hostname)
+DOMAIN=$(hostname --domain)
+VHOST_PATH="/etc/apache2/sites-available/"
 
-## Environment variables
-source "$CURRENT_DIRECTORY/../config/env.sh"
+# If HOST contains string
+if [[ ${HOSTNAME} =~ ^.*dev.*$ ]]; then
+    HOST='dev.'
+elif [[ ${HOSTNAME} =~ ^.*test.*$ ]]; then
+    HOST='test.'
+else
+    HOST=''
+fi
 
 ## -----------------------------------------------------------------------------
 
@@ -53,21 +60,49 @@ while true; do
         fi
     done
 
+    if [[ -x $(which mysql) ]] && [[ -x $(which psql) ]]; then
+        echo -e "\nWhat database do you wish to create?"
+        select DB_CREATE in "MySQL and PgSQL" "MySQL" "PgSQL" "None"; do
+            case ${DB_CREATE} in
+                "MySQL and PgSQL" )
+                    DB_CREATE=true
+                    break;;
+                "MySQL" )
+                    DB_CREATE=mysql
+                    break;;
+                "PgSQL" )
+                    DB_CREATE=pgsql
+                    echo $DB_CREATE
+                    break;;
+                "None" )
+                    DB_CREATE=false
+                    echo $DB_CREATE
+                    break;;
+                * )
+                    echo "Invalid option ${REPLY}";;
+            esac
+        done
+    fi
+
     echo -e "\nYour configuration"
     echo -e "------------------"
-    echo -e "Project name:        $(tput setaf 1)${PROJECT}$(tput sgr 0)"
-    echo -e "User:                $(tput setaf 1)${USER}$(tput sgr 0)"
-    echo -e "Password:            $(tput setaf 1)${USER_PASSWD}$(tput sgr 0)"
-    echo -e "Virtual host:        $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
+    echo -e "Project name:        $(tput setaf 3)${PROJECT}$(tput sgr 0)"
+    echo -e "User:                $(tput setaf 3)${USER}$(tput sgr 0)"
+    echo -e "Password:            $(tput setaf 3)${USER_PASSWD}$(tput sgr 0)"
+    echo -e "Virtual host:        $(tput setaf 3)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
     if [[ -x $(which mysql) ]]; then
-        echo -e "MySQL database:      $(tput setaf 1)${DB}$(tput sgr 0) (replace -/_)"
-        echo -e "MySQL database user: $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)"
-        echo -e "MySQL dat. password: $(tput setaf 1)${DB_PASSWD}$(tput sgr 0)"
+        if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = mysql ]]; then
+            echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
+            echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
+            echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
+        fi
     fi
     if [[ -x $(which psql) ]]; then
-        echo -e "PSQL database:       $(tput setaf 1)${DB}$(tput sgr 0) (replace -/_)"
-        echo -e "PSQL database user:  $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)"
-        echo -e "PSQL dat. password:  $(tput setaf 1)${DB_PASSWD}$(tput sgr 0)"
+        if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = pgsql ]]; then
+            echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
+            echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
+            echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
+        fi
     fi
 
     ## New line
@@ -119,25 +154,36 @@ if [[ -f "${VHOST_PATH}${HOST}${PROJECT}.conf" ]]; then
 fi
 
 if [[ -x $(which mysql) ]]; then
-    ## ToDo: Detect MySQL database and user
-    echo "ToDo"
+    ## Detect database
+    if [[ $(mysql -sse "show databases like '${DB}'") ]]; then
+      echo -e "\nMySQL database '${DB}' exists!\n"
+      exit
+    fi
+
+    ## Detect database user
+    if [[ $(mysql -sse "SELECT user FROM mysql.user WHERE user = '$DB_USER'") ]]; then
+      echo -e "\nMySQL database user '${DB_USER}' exists!\n"
+      exit
+    fi
 fi
 
 if [[ -x $(which psql) ]]; then
     ## Detect database
     if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw ${DB}; then
-      echo -e "\nDatabase '${DB}' exists!\n"
+      echo -e "\nPgSQL database '${DB}' exists!\n"
       exit
     fi
 
     ## Detect database user
     if sudo -u postgres psql -t -c '\du' | cut -d \| -f 1 | grep -qw ${DB_USER}; then
-      echo -e "\nDatabase user '${DB_USER}' exists!\n"
+      echo -e "\nPgSQL database user '${DB_USER}' exists!\n"
       exit
     fi
 fi
 
 ## -----------------------------------------------------------------------------
+
+PROJECT_INFO="/home/${USER}/project-info.txt"
 
 ## Show user UID and GID
 # id -u username
@@ -149,6 +195,10 @@ mkdir -p /home/${USER}/www/public
 mkdir -p /home/${USER}/www/private
 chown -R ${USER}:${PROJECT} /home/${USER}/www
 echo -e "\nUser $(tput setaf 2)${USER}$(tput sgr 0) with password $(tput setaf 2)${USER_PASSWD}$(tput sgr 0) created."
+echo -e "Project:        ${PROJECT}" >> ${PROJECT_INFO}
+echo -e "----------------------------------------" >> ${PROJECT_INFO}
+echo -e "User:           ${USER}" >> ${PROJECT_INFO}
+echo -e "Password:       ${USER_PASSWD}" >> ${PROJECT_INFO}
 
 ## Add virtual host
 cat << EOF > ${VHOST_PATH}${HOST}${PROJECT}.conf
@@ -177,30 +227,41 @@ cat << EOF > ${VHOST_PATH}${HOST}${PROJECT}.conf
 EOF
 a2ensite -q ${HOST}${PROJECT} 1>/dev/null
 echo -e "Virtual host $(tput setaf 2)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) created."
+echo -e "Virtual host:   ${HOST}${PROJECT}.${DOMAIN}" >> ${PROJECT_INFO}
 
 if [[ -x $(which mysql) ]]; then
-    mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
-      CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
-      GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
-    "
-    #ALTER DATABASE $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+    if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = mysql ]]; then
+        mysql -e "
+          CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+          GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
+        "
+        #ALTER DATABASE $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
 
-    echo -e "MySQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+        echo -e "MySQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+        echo -e "MySQL databese: ${DB}" >> ${PROJECT_INFO}
+        echo -e "MySQL user:     ${DB_USER}" >> ${PROJECT_INFO}
+        echo -e "MysQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
+    fi
 fi
 
 if [[ -x $(which psql) ]]; then
-    ## Add PSQL database and database user
-    sudo -u postgres createdb ${DB}
-    sudo -u postgres psql -c "
-        CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
-        GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
-        ALTER DATABASE ${DB} OWNER TO ${DB_USER};
-        REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
-    " 1>/dev/null
-    echo -e "PSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+    if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = pgsql ]]; then
+        ## Add PgSQL database and database user
+        sudo -u postgres createdb ${DB}
+        sudo -u postgres psql -c "
+            CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
+            GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
+            ALTER DATABASE ${DB} OWNER TO ${DB_USER};
+            REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
+        " 1>/dev/null
+        echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+        echo -e "PgSQL databese: ${DB}" >> ${PROJECT_INFO}
+        echo -e "PgSQL user:     ${DB_USER}" >> ${PROJECT_INFO}
+        echo -e "PgSQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
 
-    ## Change database user password
-    #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
+        ## Change database user password
+        #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
+    fi
 fi
 
 ## New line
