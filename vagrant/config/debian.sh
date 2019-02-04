@@ -198,6 +198,10 @@ chmod u+x /usr/local/bin/project-delete
 
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then
+
+    ## Vagrant (fix "freeze halt" issue)
+    apt-get install -y libpam-systemd
+
     ## New Project
 #    cp $CURRENT_DIRECTORY/../config/project-create.sh /home/
 #    chmod u+x /home/project-create.sh
