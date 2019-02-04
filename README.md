@@ -158,6 +158,13 @@ Email testing:
             vagrant destroy
             vagrant box update
 
+## Project scripts
+
+Create/delete user and database:
+
+    sudo project-create
+    sudo project-delete
+
 ## Instalation scripts
 
 The folder `vagrant/install` contains several installation scripts:
@@ -260,7 +267,6 @@ How to create your own reusable box:
 - Node distribution (terminal info, PHP proxy)
 - HTTP-Server (terminal info URL 10.0.2.15 does not work)
 - BrowserSync (Node distribution) - UI port 3001 is OK, port 3000 or 80 not work correctly
-- MariaDB database in `project-create.sh`
 - Nginx server (php.sh, adminer.sh, mailcatcher.sh, browser-sync.sh)
 - DB backup/restore (project DB only as extra file)
 - MariaDB (latest only, check change version)

@@ -189,12 +189,12 @@ sed -i "s/inet_interfaces = all/inet_interfaces = loopback-only/" /etc/postfix/m
 ## -----------------------------------------------------------------------------
 
 ## Create project
-cp $CURRENT_DIRECTORY/../config/project-create.sh /home/
-chmod u+x /home/project-create.sh
+cp $CURRENT_DIRECTORY/../config/project-create /usr/local/bin
+chmod u+x /usr/local/bin/project-create
 
 ## Delete project
-cp $CURRENT_DIRECTORY/../config/project-delete.sh /home/
-chmod u+x /home/project-delete.sh
+cp $CURRENT_DIRECTORY/../config/project-delete /usr/local/bin
+chmod u+x /usr/local/bin/project-delete
 
 ## Detect Vagrant
 if [ -d "/vagrant" ]; then
