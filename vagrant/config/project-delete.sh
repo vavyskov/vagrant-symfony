@@ -33,7 +33,10 @@ while true; do
         if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z]+$ ]]; then
             break
         else
-            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project') with the minimum length 2 characters."
+            tput bold
+            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project')."
+            echo -e "The minimum length is 2 characters."
+            tput sgr0
         fi
     done
 

@@ -33,30 +33,23 @@ while true; do
         if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z]+$ ]]; then
             break
         else
-            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project') with the minimum length 2 characters."
+            tput bold
+            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project')."
+            echo -e "The minimum length is 2 characters."
+            tput sgr0
         fi
     done
 
     USER=${PROJECT}
     while true; do
         read -e -p "User password: " -i ${USER_PASSWD:-${PROJECT}} USER_PASSWD
-        if [[ ${USER_PASSWD} =~ ^.{2,}$ ]]; then
+        if [[ ${USER_PASSWD} =~ ^[^#:\"\'\\\ ]{2,}$ ]]; then
             break
         else
+            tput bold
+            echo -e "Excluded characters # : \" ' \ and 'space'."
             echo -e "The minimum length is 2 characters."
-        fi
-    done
-
-    # Replace character(-) in a string with another character(_)
-    DB=${PROJECT//[-]/_}
-    DB_USER=${PROJECT//[-]/_}
-
-    while true; do
-        read -e -p "Database password: " -i ${DB_PASSWD:-${PROJECT}} DB_PASSWD
-        if [[ ${DB_PASSWD} =~ ^.{2,}$ ]]; then
-            break
-        else
-            echo -e "The minimum length is 2 characters."
+            tput sgr0
         fi
     done
 
@@ -65,22 +58,44 @@ while true; do
         select DB_CREATE in "MySQL and PgSQL" "MySQL" "PgSQL" "None"; do
             case ${DB_CREATE} in
                 "MySQL and PgSQL" )
-                    DB_CREATE=true
+                    DB_CREATE=all
                     break;;
                 "MySQL" )
                     DB_CREATE=mysql
                     break;;
                 "PgSQL" )
                     DB_CREATE=pgsql
-                    echo $DB_CREATE
                     break;;
                 "None" )
                     DB_CREATE=false
-                    echo $DB_CREATE
                     break;;
                 * )
-                    echo "Invalid option ${REPLY}";;
+                    tput bold
+                    echo "Invalid option ${REPLY}"
+                    tput sgr0;;
             esac
+        done
+    fi
+
+    if [[ ! ${DB_CREATE} = false ]]; then
+
+        # Replace character(-) in a string with another character(_)
+        DB=${PROJECT//[-]/_}
+        DB_USER=${PROJECT//[-]/_}
+
+        ## New line
+        echo -e ''
+
+        while true; do
+            read -e -p "Database password: " -i ${DB_PASSWD:-${PROJECT}} DB_PASSWD
+            if [[ ${DB_PASSWD} =~ ^[^\'\\\ ]{2,}$ ]]; then
+                break
+            else
+                tput bold
+                echo -e "Excluded characters ' \ and 'space'."
+                echo -e "The minimum length is 2 characters."
+                tput sgr0
+            fi
         done
     fi
 
@@ -91,14 +106,14 @@ while true; do
     echo -e "Password:            $(tput setaf 3)${USER_PASSWD}$(tput sgr 0)"
     echo -e "Virtual host:        $(tput setaf 3)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
     if [[ -x $(which mysql) ]]; then
-        if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = mysql ]]; then
+        if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = mysql ]]; then
             echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
             echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
             echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
         fi
     fi
     if [[ -x $(which psql) ]]; then
-        if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = pgsql ]]; then
+        if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = pgsql ]]; then
             echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
@@ -153,7 +168,7 @@ if [[ -f "${VHOST_PATH}${HOST}${PROJECT}.conf" ]]; then
   exit
 fi
 
-if [[ -x $(which mysql) ]]; then
+if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = false ]]; then
     ## Detect database
     if [[ $(mysql -sse "show databases like '${DB}'") ]]; then
       echo -e "\nMySQL database '${DB}' exists!\n"
@@ -167,7 +182,7 @@ if [[ -x $(which mysql) ]]; then
     fi
 fi
 
-if [[ -x $(which psql) ]]; then
+if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = false ]]; then
     ## Detect database
     if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw ${DB}; then
       echo -e "\nPgSQL database '${DB}' exists!\n"
@@ -230,7 +245,7 @@ echo -e "Virtual host $(tput setaf 2)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) cr
 echo -e "Virtual host:   ${HOST}${PROJECT}.${DOMAIN}" >> ${PROJECT_INFO}
 
 if [[ -x $(which mysql) ]]; then
-    if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = mysql ]]; then
+    if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = mysql ]]; then
         mysql -e "
           CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
           GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
@@ -245,7 +260,7 @@ if [[ -x $(which mysql) ]]; then
 fi
 
 if [[ -x $(which psql) ]]; then
-    if [[ ${DB_CREATE} = true ]] || [[ ${DB_CREATE} = pgsql ]]; then
+    if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = pgsql ]]; then
         ## Add PgSQL database and database user
         sudo -u postgres createdb ${DB}
         sudo -u postgres psql -c "
