@@ -105,14 +105,14 @@ while true; do
     echo -e "Password:            $(tput setaf 3)${USER_PASSWD}$(tput sgr 0)"
     echo -e "Virtual host:        $(tput setaf 3)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
     if [[ -x $(which mysql) ]]; then
-        if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = mysql ]]; then
+        if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = pgsql ]]; then
             echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
             echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
             echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
         fi
     fi
     if [[ -x $(which psql) ]]; then
-        if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = pgsql ]]; then
+        if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = mysql ]]; then
             echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
