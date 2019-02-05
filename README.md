@@ -160,10 +160,12 @@ Email testing:
 
 ## Project scripts
 
-Create/delete user and database:
+Create/delete user, virtual host and database:
 
     sudo project-create
     sudo project-delete
+    
+Project info file location: `/home/<project>/project-info.txt`
 
 ## Instalation scripts
 
