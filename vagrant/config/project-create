@@ -79,7 +79,7 @@ while true; do
         echo -e ''
     fi
 
-    if [[ ! ${DB_CREATE} = false ]]; then
+    if [[ -x $(which mysql) ]] || [[ -x $(which psql) ]] || [[ ! ${DB_CREATE} = false ]]; then
 
         # Replace character(-) in a string with another character(_)
         DB=${PROJECT//[-]/_}
@@ -104,15 +104,12 @@ while true; do
     echo -e "User:                $(tput setaf 3)${USER}$(tput sgr 0)"
     echo -e "Password:            $(tput setaf 3)${USER_PASSWD}$(tput sgr 0)"
     echo -e "Virtual host:        $(tput setaf 3)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
-    if [[ -x $(which mysql) ]]; then
-        if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = pgsql ]]; then
-            echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
-            echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
-            echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
-        fi
+    if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = false ]]; then
+        echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
+        echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
+        echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
     fi
-    if [[ -x $(which psql) ]]; then
-        if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = mysql ]]; then
+    if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = false ]]; then
             echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
             echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
@@ -245,39 +242,35 @@ a2ensite -q ${HOST}${PROJECT} 1>/dev/null
 echo -e "Virtual host $(tput setaf 2)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) created."
 echo -e "Virtual host:   ${HOST}${PROJECT}.${DOMAIN}" >> ${PROJECT_INFO}
 
-if [[ -x $(which mysql) ]]; then
-    if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = pgsql ]]; then
-        mysql -e "
-          CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
-          GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
-        "
-        #ALTER DATABASE $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = false ]]; then
+    mysql -e "
+      CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
+      GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
+    "
+    #ALTER DATABASE $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
 
-        echo -e "MySQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
-        echo -e "MySQL databese: ${DB}" >> ${PROJECT_INFO}
-        echo -e "MySQL user:     ${DB_USER}" >> ${PROJECT_INFO}
-        echo -e "MysQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
-    fi
+    echo -e "MySQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+    echo -e "MySQL databese: ${DB}" >> ${PROJECT_INFO}
+    echo -e "MySQL user:     ${DB_USER}" >> ${PROJECT_INFO}
+    echo -e "MysQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
 fi
 
-if [[ -x $(which psql) ]]; then
-    if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = mysql ]]; then
-        ## Add PgSQL database and database user
-        sudo -u postgres createdb ${DB}
-        sudo -u postgres psql -c "
-            CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
-            GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
-            ALTER DATABASE ${DB} OWNER TO ${DB_USER};
-            REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
-        " 1>/dev/null
-        echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
-        echo -e "PgSQL databese: ${DB}" >> ${PROJECT_INFO}
-        echo -e "PgSQL user:     ${DB_USER}" >> ${PROJECT_INFO}
-        echo -e "PgSQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
+if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = false ]]; then
+    ## Add PgSQL database and database user
+    sudo -u postgres createdb ${DB}
+    sudo -u postgres psql -c "
+        CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
+        GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
+        ALTER DATABASE ${DB} OWNER TO ${DB_USER};
+        REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
+    " 1>/dev/null
+    echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
+    echo -e "PgSQL databese: ${DB}" >> ${PROJECT_INFO}
+    echo -e "PgSQL user:     ${DB_USER}" >> ${PROJECT_INFO}
+    echo -e "PgSQL password: ${DB_PASSWD}" >> ${PROJECT_INFO}
 
-        ## Change database user password
-        #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
-    fi
+    ## Change database user password
+    #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
 fi
 
 ## New line
