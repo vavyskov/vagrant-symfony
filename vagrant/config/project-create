@@ -110,10 +110,9 @@ while true; do
         echo -e "MySQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
     fi
     if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = false ]]; then
-            echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
-            echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
-            echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
-        fi
+        echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
+        echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
+        echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
     fi
 
     ## New line
