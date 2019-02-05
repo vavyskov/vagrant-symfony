@@ -75,6 +75,8 @@ while true; do
                     tput sgr0;;
             esac
         done
+        ## New line
+        echo -e ''
     fi
 
     if [[ ! ${DB_CREATE} = false ]]; then
@@ -82,9 +84,6 @@ while true; do
         # Replace character(-) in a string with another character(_)
         DB=${PROJECT//[-]/_}
         DB_USER=${PROJECT//[-]/_}
-
-        ## New line
-        echo -e ''
 
         while true; do
             read -e -p "Database password: " -i ${DB_PASSWD:-${PROJECT}} DB_PASSWD
@@ -205,7 +204,9 @@ PROJECT_INFO="/home/${USER}/project-info.txt"
 # id -G username
 
 ## Add user
-useradd ${USER} -p ${USER_PASSWD} -m -s /bin/bash
+useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash
+#useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash -G sudo
+
 mkdir -p /home/${USER}/www/public
 mkdir -p /home/${USER}/www/private
 chown -R ${USER}:${PROJECT} /home/${USER}/www
@@ -245,7 +246,7 @@ echo -e "Virtual host $(tput setaf 2)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) cr
 echo -e "Virtual host:   ${HOST}${PROJECT}.${DOMAIN}" >> ${PROJECT_INFO}
 
 if [[ -x $(which mysql) ]]; then
-    if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = mysql ]]; then
+    if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = pgsql ]]; then
         mysql -e "
           CREATE DATABASE IF NOT EXISTS $DB CHARACTER SET utf8mb4 COLLATE utf8mb4_czech_ci;
           GRANT ALL ON $DB.* TO $DB_USER@localhost IDENTIFIED BY '$DB_PASSWD';
@@ -260,7 +261,7 @@ if [[ -x $(which mysql) ]]; then
 fi
 
 if [[ -x $(which psql) ]]; then
-    if [[ ${DB_CREATE} = all ]] || [[ ${DB_CREATE} = pgsql ]]; then
+    if [[ ! ${DB_CREATE} = false ]] || [[ ! ${DB_CREATE} = mysql ]]; then
         ## Add PgSQL database and database user
         sudo -u postgres createdb ${DB}
         sudo -u postgres psql -c "
