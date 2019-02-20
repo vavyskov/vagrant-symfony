@@ -30,7 +30,7 @@ while true; do
         read -e -p "Project name: " -i ${PROJECT:-''} PROJECT
         ## https://regex101.com/
         ## ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{4,}$
-        if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z]+$ ]]; then
+        if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z0-9]+$ ]]; then
             break
         else
             tput bold
@@ -53,9 +53,27 @@ while true; do
         fi
     done
 
-    if [[ -x $(which mysql) ]] && [[ -x $(which psql) ]]; then
+    echo -e "\nDo you want to create a database?"
+    select DB_CREATE in "Yes" "No"; do
+        case ${DB_CREATE} in
+            "Yes" )
+                DB_CREATE=true
+                break;;
+            "No" )
+                DB_CREATE=false
+                break;;
+            * )
+                tput bold
+                echo "Invalid option ${REPLY}"
+                tput sgr0;;
+        esac
+    done
+    ## New line
+    echo -e ''
+
+    if [[ -x $(which mysql) ]] && [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = false ]]; then
         echo -e "\nWhat database do you wish to create?"
-        select DB_CREATE in "MySQL and PgSQL" "MySQL" "PgSQL" "None"; do
+        select DB_CREATE in "MySQL and PgSQL" "MySQL" "PgSQL"; do
             case ${DB_CREATE} in
                 "MySQL and PgSQL" )
                     DB_CREATE=all
@@ -65,9 +83,6 @@ while true; do
                     break;;
                 "PgSQL" )
                     DB_CREATE=pgsql
-                    break;;
-                "None" )
-                    DB_CREATE=false
                     break;;
                 * )
                     tput bold
