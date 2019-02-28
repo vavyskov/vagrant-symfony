@@ -234,6 +234,7 @@ useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash
 mkdir -p /home/${USER}/www/public
 mkdir -p /home/${USER}/www/private
 chown -R ${USER}:${PROJECT} /home/${USER}/www
+
 echo -e "User $(tput setaf 2)${USER}$(tput sgr 0) with password $(tput setaf 2)${USER_PASSWD}$(tput sgr 0) created."
 echo -e "Project:        ${PROJECT}" >> ${PROJECT_INFO}
 echo -e "----------------------------------------" >> ${PROJECT_INFO}
@@ -291,6 +292,7 @@ if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = mysql ]] && [[ ! ${DB_CREATE} =
         ALTER DATABASE ${DB} OWNER TO ${DB_USER};
         REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
     " 1>/dev/null
+
     echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
     echo -e "PgSQL databese: ${DB}" >> ${PROJECT_INFO}
     echo -e "PgSQL user:     ${DB_USER}" >> ${PROJECT_INFO}
@@ -303,7 +305,10 @@ fi
 if [[ -x $(which samba) ]]; then
     ## Add Samba user
     (echo ${SAMBA_PASSWD}; echo ${SAMBA_PASSWD}) | smbpasswd -s -a ${SAMBA_USER} 1>/dev/null
+
     echo -e "Samba user $(tput setaf 2)${SAMBA_USER}$(tput sgr 0) with password $(tput setaf 2)${SAMBA_PASSWD}$(tput sgr 0) created."
+    echo -e "Samba user:     ${SAMBA_USER}" >> ${PROJECT_INFO}
+    echo -e "Samba password: ${SAMBA_PASSWD}" >> ${PROJECT_INFO}
 
     ## Change Samba password -> Add Samba user again
 
