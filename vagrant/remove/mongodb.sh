@@ -15,6 +15,28 @@ source "$CURRENT_DIRECTORY/../config/env.sh"
 
 ## -----------------------------------------------------------------------------
 
+## Get confirmation
+while true; do
+
+    echo -e "\nI want to delete $(tput setaf 1)MongoDB$(tput sgr 0)!!!"
+
+    ## New line
+    echo -e ''
+
+    read -e -p 'Do you really want to delete it? (Yes/No/Cancel): ' -n 1 CONTINUE
+    if [[ ${CONTINUE} =~ ^[Yy].*$ ]]; then
+        break
+    elif [[ ${CONTINUE} =~ ^[Cc].*$ ]]; then
+        exit
+    fi
+    echo -e ''
+done
+
+## New line
+echo -e ''
+
+## -----------------------------------------------------------------------------
+
 ## Remove MongoDB
 apt-get purge --auto-remove -y mongodb
 #apt-get purge --auto-remove -y mongodb php-mongodb >> /vagrant/vm_build_mongodb.log 2>&1

@@ -46,17 +46,27 @@ while true; do
     DB=${PROJECT//[-]/_}
     DB_USER=${PROJECT//[-]/_}
 
+    ## Samba
+    SAMBA_USER=${USER}
+    SAMBA_PASSWD=${USER_PASSWD}
+
     echo -e "\nI want to delete"
     echo -e "----------------"
-    echo -e "Project:        $(tput setaf 1)${PROJECT}$(tput sgr 0)"
-    echo -e "User:           $(tput setaf 1)${USER}$(tput sgr 0)"
-    echo -e "Virtual host:   $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
+    echo -e "Project:             $(tput setaf 1)${PROJECT}$(tput sgr 0)"
+    echo -e "User:                $(tput setaf 1)${USER}$(tput sgr 0)"
+    echo -e "Virtual host:        $(tput setaf 1)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
     if [[ -x $(which mysql) ]]; then
         echo -e "MySQL database: $(tput setaf 1)${DB}$(tput sgr 0) (replace -/_)"
     fi
     if [[ -x $(which psql) ]]; then
-        echo -e "PgSQL database user: $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)\n"
+        echo -e "PgSQL database user: $(tput setaf 1)${DB_USER}$(tput sgr 0) (replace -/_)"
     fi
+    if [[ -x $(which samba) ]]; then
+        echo -e "Samba user:          $(tput setaf 1)${SAMBA_USER}$(tput sgr 0)"
+    fi
+
+    ## New line
+    echo -e ''
 
     read -e -p 'Do you really want to delete it? (Yes/No/Cancel): ' -n 1 CONTINUE
     if [[ ${CONTINUE} =~ ^[Yy].*$ ]]; then
@@ -72,11 +82,21 @@ echo -e ''
 
 ## -----------------------------------------------------------------------------
 
-# Delete user
+## Delete Samba user
+if [[ -x $(which samba) ]]; then
+    if [[ $(pdbedit -L | grep ${SAMBA_USER} | cut -d: -f1) = ${SAMBA_USER} ]]; then
+        smbpasswd -x ${SAMBA_USER} 1>/dev/null
+        echo -e "Samba user $(tput setaf 2)${SAMBA_USER}$(tput sgr 0) deleted."
+    else
+        echo -e "Samba user $(tput setaf 1)${SAMBA_USER}$(tput sgr 0) does not exists!"
+    fi
+fi
+
+## Delete user
 if id ${USER} >/dev/null 2>&1; then
   userdel ${USER}
   rm -fr /home/${USER}
-  echo -e "\nUser $(tput setaf 2)${USER}$(tput sgr 0) deleted."
+  echo -e "User $(tput setaf 2)${USER}$(tput sgr 0) deleted."
 else
   echo -e "User $(tput setaf 1)${USER}$(tput sgr 0) does not exists!"
 fi

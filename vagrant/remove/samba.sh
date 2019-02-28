@@ -12,14 +12,13 @@ CURRENT_DIRECTORY=$(dirname $0)
 
 ## Environment variables
 source "$CURRENT_DIRECTORY/../config/env.sh"
-PHP_VERSION=$(php -v | cut -d" " -f2 | cut -d"." -f1,2 | head -1)
 
 ## -----------------------------------------------------------------------------
 
 ## Get confirmation
 while true; do
 
-    echo -e "\nI want to delete $(tput setaf 1)SQLite$(tput sgr 0)!!!"
+    echo -e "\nI want to delete $(tput setaf 1)Samba$(tput sgr 0)!!!"
 
     ## New line
     echo -e ''
@@ -38,8 +37,8 @@ echo -e ''
 
 ## -----------------------------------------------------------------------------
 
-## Remove SQLite
-apt-get purge --auto-remove -y sqlite3 php${PHP_VERSION}-sqlite3
+## Remove Samba
+apt-get purge --auto-remove -y libcups2 samba samba-common cups
 
 ## -----------------------------------------------------------------------------
 
@@ -50,4 +49,4 @@ apt-get purge --auto-remove -y sqlite3 php${PHP_VERSION}-sqlite3
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
+#service smbd stop

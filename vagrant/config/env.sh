@@ -15,6 +15,9 @@ MARIADB_PASSWORD=mariadb
 
 PHPMYADMIN_PASSWORD=phpmyadmin
 
+HOSTNAME=$(hostname)
+DOMAIN=$(hostname --domain)
+
 #DOCROOT='/home/vagrant/www/public'
 
 ## E-mail

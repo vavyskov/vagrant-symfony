@@ -47,7 +47,7 @@ while true; do
             break
         else
             tput bold
-            echo -e "Excluded characters # : \" ' \ and 'space'."
+            echo -e "Excluded characters are # : \" ' \ and 'space'."
             echo -e "The minimum length is 2 characters."
             tput sgr0
         fi
@@ -107,13 +107,17 @@ while true; do
                     break
                 else
                     tput bold
-                    echo -e "Excluded characters ' \ and 'space'."
+                    echo -e "Excluded characters are ' \ and 'space'."
                     echo -e "The minimum length is 2 characters."
                     tput sgr0
                 fi
             done
         fi
     fi
+
+    ## Samba
+    SAMBA_USER=${USER}
+    SAMBA_PASSWD=${USER_PASSWD}
 
     echo -e "\nYour configuration"
     echo -e "------------------"
@@ -130,6 +134,10 @@ while true; do
         echo -e "PgSQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
         echo -e "PgSQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
         echo -e "PgSQL dat. password: $(tput setaf 3)${DB_PASSWD}$(tput sgr 0)"
+    fi
+    if [[ -x $(which samba) ]]; then
+        echo -e "Samba user:          $(tput setaf 3)${SAMBA_USER}$(tput sgr 0)"
+        echo -e "Samba password:      $(tput setaf 3)${SAMBA_PASSWD}$(tput sgr 0)"
     fi
 
     ## New line
@@ -216,6 +224,9 @@ PROJECT_INFO="/home/${USER}/project-info.txt"
 # id -u username
 # id -G username
 
+## New line
+echo -e ''
+
 ## Add user
 useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash
 #useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash -G sudo
@@ -223,7 +234,7 @@ useradd ${USER} -p $(openssl passwd -1 ${USER_PASSWD}) -m -s /bin/bash
 mkdir -p /home/${USER}/www/public
 mkdir -p /home/${USER}/www/private
 chown -R ${USER}:${PROJECT} /home/${USER}/www
-echo -e "\nUser $(tput setaf 2)${USER}$(tput sgr 0) with password $(tput setaf 2)${USER_PASSWD}$(tput sgr 0) created."
+echo -e "User $(tput setaf 2)${USER}$(tput sgr 0) with password $(tput setaf 2)${USER_PASSWD}$(tput sgr 0) created."
 echo -e "Project:        ${PROJECT}" >> ${PROJECT_INFO}
 echo -e "----------------------------------------" >> ${PROJECT_INFO}
 echo -e "User:           ${USER}" >> ${PROJECT_INFO}
@@ -287,6 +298,25 @@ if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = mysql ]] && [[ ! ${DB_CREATE} =
 
     ## Change database user password
     #sudo -u postgres psql -c "ALTER ROLE $POSTGRES_USER WITH ENCRYPTED PASSWORD '$POSTGRES_PASSWORD';"
+fi
+
+if [[ -x $(which samba) ]]; then
+    ## Add Samba user
+    (echo ${SAMBA_PASSWD}; echo ${SAMBA_PASSWD}) | smbpasswd -s -a ${SAMBA_USER} 1>/dev/null
+    echo -e "Samba user $(tput setaf 2)${SAMBA_USER}$(tput sgr 0) with password $(tput setaf 2)${SAMBA_PASSWD}$(tput sgr 0) created."
+
+    ## Change Samba password -> Add Samba user again
+
+    ## Detect Samba user
+    #test `pdbedit -w -L | awk -F":" '{ print $1 }' | grep '${SAMBA_USER}$' | wc -l` -eq 0 || echo "account exists"
+
+    ## List Samba user
+    #pdbedit -L
+    #pdbedit -L -v
+
+    ## Windows Samba access
+    # \\hostname\username
+
 fi
 
 ## New line

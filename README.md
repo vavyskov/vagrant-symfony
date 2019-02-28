@@ -238,6 +238,10 @@ The folder `vagrant/install` contains several installation scripts:
 
       sudo /vagrant/install/drupal-tools.sh
 
+- **Samba** re-implementation of the SMB networking protocol
+
+      sudo /vagrant/install/samba.sh
+
 - **BrowserSync** time-saving synchronised browser testing
 
       sudo /vagrant/install/browser-sync.sh
