@@ -30,11 +30,11 @@ while true; do
         read -e -p "Delete project: " -i ${PROJECT:-''} PROJECT
         ## https://regex101.com/
         ## ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{4,}$
-        if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z]+$ ]]; then
+        if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z0-9]+$ ]]; then
             break
         else
             tput bold
-            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project')."
+            echo -e "Allowed characters are lowercase letters, dash and number (e.g. 'my-project')."
             echo -e "The minimum length is 2 characters."
             tput sgr0
         fi

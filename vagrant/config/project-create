@@ -27,14 +27,14 @@ fi
 while true; do
 
     while true; do
-        read -e -p "Project name: " -i ${PROJECT:-''} PROJECT
+        read -e -p "Project name (e.g. 'my-project'): " -i ${PROJECT:-''} PROJECT
         ## https://regex101.com/
         ## ^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$^+=!*()@%&]).{4,}$
         if [[ ${PROJECT} =~ ^([a-z]+[-]*)+[a-z0-9]+$ ]]; then
             break
         else
             tput bold
-            echo -e "Allowed characters are lowercase letters and dash (e.g. 'project' or 'my-project')."
+            echo -e "Allowed characters are lowercase letters, dash and number."
             echo -e "The minimum length is 2 characters."
             tput sgr0
         fi
