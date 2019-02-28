@@ -241,6 +241,8 @@ The folder `vagrant/install` contains several installation scripts:
 - **Samba** re-implementation of the SMB networking protocol
 
       sudo /vagrant/install/samba.sh
+      
+  Windows access: `\\hostname\username`
 
 - **BrowserSync** time-saving synchronised browser testing
 
