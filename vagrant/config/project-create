@@ -330,6 +330,11 @@ echo -e ''
 ## -----------------------------------------------------------------------------
 
 ## Services
-service apache2 reload
-service postgresql reload
+service apache2 restart
 
+if [[ -x $(which mysql) ]]; then
+    service mysql restart
+fi
+if [[ -x $(which psql) ]]; then
+    service postgresql restart
+fi
