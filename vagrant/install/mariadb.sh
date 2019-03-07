@@ -63,6 +63,15 @@ apt-get install -y mariadb-server-10.1
 
 
 
+## Configuration
+#
+# mariadb.cnf (file)
+# max_allowed_packet=64M
+#
+# mysql (command)
+# SHOW VARIABLES LIKE 'max_allowed_packet';
+# SET GLOBAL max_allowed_packet=64000000;
+
 
 
 ## MariaDB
