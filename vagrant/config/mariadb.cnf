@@ -5,3 +5,4 @@ innodb_file_per_table=true
 
 [mysqld]
 plugin-load-add=auth_socket.so
+max_allowed_packet=64M
