@@ -76,6 +76,16 @@ sed -i "s/\$cfg\['blowfish_secret'\] = ''/\$cfg\['blowfish_secret'\] = '$RANDOM_
 
 
 
+## ToDo: Error $cfg['TempDir'] (./tmp/) is not accesible
+#echo "<?php echo \`whoami\`; ?>" > /usr/share/phpmyadmin/whoami.php
+## GO: localhost/phpmyadmin/whoami.php (It show your php "user")
+#chmod -R user:user /usr/share/phpmyadmin/tmp
+# rm /usr/share/phpmyadmin/whoami.php
+
+
+
+
+
 ## PhpMyAdmin - storage permission
 mysql -u root --password=$MARIADB_ROOT_PASSWORD -e "
     GRANT ALL PRIVILEGES ON phpmyadmin.* TO phpmyadmin@localhost IDENTIFIED BY '$PHPMYADMIN_PASSWORD' WITH GRANT OPTION;
