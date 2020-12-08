@@ -34,7 +34,7 @@ while true; do
             break
         else
             tput bold
-            echo -e "Allowed characters are lowercase letters, dash and number."
+            echo -e "Allowed characters are lowercase letters, dash and number (e.g. 'my-project')."
             echo -e "The minimum length is 2 characters."
             tput sgr0
         fi
@@ -285,7 +285,10 @@ fi
 
 if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = mysql ]] && [[ ! ${DB_CREATE} = false ]]; then
     ## Add PgSQL database and database user
-    sudo -u postgres createdb ${DB}
+    #sudo -u postgres createdb ${DB}
+    sudo -u postgres psql -c "
+        CREATE DATABASE ${DB} ENCODING 'UTF8' LC_COLLATE 'cs_CZ.UTF-8' LC_CTYPE 'cs_CZ.UTF-8' TEMPLATE template0;
+    " 1>/dev/null
     sudo -u postgres psql -c "
         CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
         GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
