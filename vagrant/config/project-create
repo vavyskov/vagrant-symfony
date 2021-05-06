@@ -8,9 +8,9 @@ VHOST_PATH="/etc/apache2/sites-available/"
 
 # If HOST contains string
 if [[ ${HOSTNAME} =~ ^.*dev.*$ ]]; then
-    HOST='dev.'
+    HOST='dev'
 elif [[ ${HOSTNAME} =~ ^.*test.*$ ]]; then
-    HOST='test.'
+    HOST='test'
 else
     HOST=''
 fi
@@ -124,7 +124,7 @@ while true; do
     echo -e "Project name:        $(tput setaf 3)${PROJECT}$(tput sgr 0)"
     echo -e "User:                $(tput setaf 3)${USER}$(tput sgr 0)"
     echo -e "Password:            $(tput setaf 3)${USER_PASSWD}$(tput sgr 0)"
-    echo -e "Virtual host:        $(tput setaf 3)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0)"
+    echo -e "Virtual host:        $(tput setaf 3)${PROJECT}.${HOST}.${DOMAIN}$(tput sgr 0)"
     if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = pgsql ]] && [[ ! ${DB_CREATE} = false ]]; then
         echo -e "MySQL database:      $(tput setaf 3)${DB}$(tput sgr 0) (replace -/_)"
         echo -e "MySQL database user: $(tput setaf 3)${DB_USER}$(tput sgr 0) (replace -/_)"
@@ -183,36 +183,36 @@ if id ${USER} >/dev/null 2>&1; then
 fi
 
 ## Detect virtual host
-if [[ -f "${VHOST_PATH}${HOST}${PROJECT}.conf" ]]; then
-  echo -e "\nVirtual host '${PROJECT}' exists!\n"
-  exit
+if [[ -f "${VHOST_PATH}${PROJECT}.${HOST}.conf" ]]; then
+    echo -e "\nVirtual host '${PROJECT}' exists!\n"
+    exit
 fi
 
 if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = pgsql ]] && [[ ! ${DB_CREATE} = false ]]; then
     ## Detect database
     if [[ $(mysql -sse "show databases like '${DB}'") ]]; then
-      echo -e "\nMySQL database '${DB}' exists!\n"
-      exit
+        echo -e "\nMySQL database '${DB}' exists!\n"
+        exit
     fi
 
     ## Detect database user
     if [[ $(mysql -sse "SELECT user FROM mysql.user WHERE user = '$DB_USER'") ]]; then
-      echo -e "\nMySQL database user '${DB_USER}' exists!\n"
-      exit
+        echo -e "\nMySQL database user '${DB_USER}' exists!\n"
+        exit
     fi
 fi
 
 if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = mysql ]] && [[ ! ${DB_CREATE} = false ]]; then
     ## Detect database
     if sudo -u postgres psql -lqt | cut -d \| -f 1 | grep -qw ${DB}; then
-      echo -e "\nPgSQL database '${DB}' exists!\n"
-      exit
+        echo -e "\nPgSQL database '${DB}' exists!\n"
+        exit
     fi
 
     ## Detect database user
     if sudo -u postgres psql -t -c '\du' | cut -d \| -f 1 | grep -qw ${DB_USER}; then
-      echo -e "\nPgSQL database user '${DB_USER}' exists!\n"
-      exit
+        echo -e "\nPgSQL database user '${DB_USER}' exists!\n"
+        exit
     fi
 fi
 
@@ -242,9 +242,9 @@ echo -e "User:           ${USER}" >> ${PROJECT_INFO}
 echo -e "Password:       ${USER_PASSWD}" >> ${PROJECT_INFO}
 
 ## Add virtual host
-cat << EOF > ${VHOST_PATH}${HOST}${PROJECT}.conf
-<VirtualHost ${HOST}${PROJECT}.${DOMAIN}:80>
-  ServerName ${HOST}${PROJECT}.${DOMAIN}
+cat << EOF > ${VHOST_PATH}${PROJECT}.${HOST}.conf
+<VirtualHost ${PROJECT}.${HOST}.${DOMAIN}:80>
+  ServerName ${PROJECT}.${HOST}.${DOMAIN}
   #ServerAlias mywebsite.cz
 
   ServerAdmin webmaster@localhost
@@ -266,9 +266,9 @@ cat << EOF > ${VHOST_PATH}${HOST}${PROJECT}.conf
   </IfModule>
 </VirtualHost>
 EOF
-a2ensite -q ${HOST}${PROJECT} 1>/dev/null
-echo -e "Virtual host $(tput setaf 2)${HOST}${PROJECT}.${DOMAIN}$(tput sgr 0) created."
-echo -e "Virtual host:   ${HOST}${PROJECT}.${DOMAIN}" >> ${PROJECT_INFO}
+a2ensite -q ${PROJECT}.${HOST} 1>/dev/null
+echo -e "Virtual host $(tput setaf 2)${PROJECT}.${HOST}.${DOMAIN}$(tput sgr 0) created."
+echo -e "Virtual host:   ${PROJECT}.${HOST}.${DOMAIN}" >> ${PROJECT_INFO}
 
 if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = pgsql ]] && [[ ! ${DB_CREATE} = false ]]; then
     mysql -e "
@@ -284,16 +284,19 @@ if [[ -x $(which mysql) ]] && [[ ! ${DB_CREATE} = pgsql ]] && [[ ! ${DB_CREATE} 
 fi
 
 if [[ -x $(which psql) ]] && [[ ! ${DB_CREATE} = mysql ]] && [[ ! ${DB_CREATE} = false ]]; then
-    ## Add PgSQL database and database user
+    ## Add PgSQL database, database user and set owner to public schema
     #sudo -u postgres createdb ${DB}
     sudo -u postgres psql -c "
-        CREATE DATABASE ${DB} ENCODING 'UTF8' LC_COLLATE 'cs_CZ.UTF-8' LC_CTYPE 'cs_CZ.UTF-8' TEMPLATE template0;
+        CREATE DATABASE ${DB} ENCODING 'UTF8' LC_COLLATE 'cs_CZ.UTF-8' LC_CTYPE 'cs_CZ.UTF-8' TEMPLATE template0; 
     " 1>/dev/null
     sudo -u postgres psql -c "
         CREATE USER ${DB_USER} WITH ENCRYPTED PASSWORD '${DB_PASSWD}';
         GRANT ALL ON DATABASE ${DB} TO ${DB_USER};
         ALTER DATABASE ${DB} OWNER TO ${DB_USER};
         REVOKE ALL ON DATABASE ${DB} FROM PUBLIC;
+    " 1>/dev/null
+    sudo -u postgres psql -d ${DB} -c "
+        ALTER SCHEMA public OWNER TO ${DB_USER};
     " 1>/dev/null
 
     echo -e "PgSQL databese $(tput setaf 2)${DB}$(tput sgr 0) and user $(tput setaf 2)${DB_USER}$(tput sgr 0) with password $(tput setaf 2)${DB_PASSWD}$(tput sgr 0) created."
