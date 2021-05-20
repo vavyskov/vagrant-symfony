@@ -32,7 +32,7 @@ apt-get update
 ## Adminer (latest)
 mkdir -p /usr/share/adminer/adminer
 wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php
-echo '50 2 5 * * /usr/bin/wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
+echo '50 2 5 * * root /usr/bin/wget https://www.adminer.org/latest.php -O /usr/share/adminer/adminer/index.php' > /etc/cron.d/adminer
 
 ## Adminer - alias
 ## ToDo: Detect Apache or Nginx
